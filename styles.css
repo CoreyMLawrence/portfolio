@@ -183,13 +183,13 @@ nav ul li a:hover {
 #specialties {
   display: flex;
   flex-direction: column !important;
+  padding: 3em 1em 5em;
 }
 
 .expertise-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 
 .expertise-icon {
@@ -200,13 +200,21 @@ nav ul li a:hover {
 }
 
 .expertise {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping of items */
+  margin: 1.5em -1rem; /* Negative margin to offset padding on child items */
+  max-width: 85%;
+}
+
+@media screen and (max-width: 768px) {
+  .expertise {
+    max-width: 100%;
+  }
 }
 
 .expertise-card {
+  flex: 1 1 350px; /* Flex-grow, flex-shrink, and base width of 350px */
+  margin: 1rem; /* Add margin to create spacing between cards */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -215,7 +223,7 @@ nav ul li a:hover {
   background: var(--light-gray);
   padding: 2rem;
   border-radius: 1rem;
-  margin-top: 2rem;
+  box-sizing: border-box; /* Include padding in width calculations */
 }
 
 .card-link {
@@ -226,6 +234,10 @@ nav ul li a:hover {
 
 .card-link:hover {
   transform: scale(1.02);
+}
+
+#about {
+  padding: 10%;
 }
 
 .journey {
@@ -261,6 +273,7 @@ nav ul li a:hover {
   max-width: 800px; /* Limit width for readability */
   padding: 2rem 4rem; /* Inner padding */
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 4em auto;
 }
 
 .story-content h2 {
@@ -301,8 +314,8 @@ nav ul li a:hover {
   cursor: pointer; /* Pointer cursor on hover */
   font-size: 1rem; /* Font size */
   margin-top: 1rem; /* Margin for spacing */
-  font-weight: bold; /* Make text bold */
-  transition: color 0.3s; /* Transition for color change on hover */
+  font-weight: bold;
+  transition: color 0.3s;
   outline: none;
   line-height: 0;
 }
@@ -311,10 +324,10 @@ nav ul li a:hover {
   color: var(--secondary); /* Change color on hover */
 }
 
-.image-placeholder {
+.headshot {
   width: 100%;
   height: auto;
-  border-radius: 20rem;
+  border-radius: 50rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -354,13 +367,21 @@ nav ul li a:hover {
 #projects {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  padding: 3em 1em 5em;
 }
-
 .projects {
   margin-top: 2em;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  max-width: 85%;
+}
+
+@media screen and (max-width: 768px) {
+  .projects {
+    max-width: 100%;
+  }
 }
 
 .project-card {
@@ -375,8 +396,8 @@ nav ul li a:hover {
 }
 
 .project-image {
-  width: auto;
-  height: 200px;
+  width: 100%;
+  height: auto;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   overflow: hidden;

@@ -193,15 +193,24 @@ document.addEventListener('DOMContentLoaded', function () {
   let fullStory = document.querySelector('.full-story');
   let storyContent = document.querySelector('.story-content');
   let closeButton = document.querySelector('.close-button');
+  let body = document.querySelector('body');
 
   function toggleStory() {
-    if (fullStory.style.display != 'flex') {
+    const isVisible = fullStory.style.display === 'flex';
+
+    if (!isVisible) {
       fullStory.style.display = 'flex';
       closeButton.style.display = 'flex';
+      body.style.overflowY = 'hidden'; // Disable body scroll
     } else {
-      fullStory.style.display = 'none';
-      closeButton.style.display = 'none';
+      closeFullStory();
     }
+  }
+
+  function closeFullStory() {
+    fullStory.style.display = 'none';
+    closeButton.style.display = 'none';
+    body.style.overflowY = 'auto'; // Re-enable body scroll
   }
 
   document
@@ -210,20 +219,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && fullStory.style.display === 'flex') {
-      fullStory.style.display = 'none';
-      closeButton.style.display = 'none';
+      closeFullStory();
     }
   });
 
   fullStory.addEventListener('click', function (event) {
-    if (event.target !== storyContent && !storyContent.contains(event.target)) {
-      fullStory.style.display = 'none';
-      closeButton.style.display = 'none';
+    if (event.target === fullStory) {
+      // Only close if clicking outside the content
+      closeFullStory();
     }
   });
 
-  closeButton.addEventListener('click', function () {
-    fullStory.style.display = 'none';
-    closeButton.style.display = 'none';
-  });
+  closeButton.addEventListener('click', closeFullStory);
 });
