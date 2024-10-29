@@ -215,7 +215,7 @@ nav ul li a:hover {
   background: var(--light-gray);
   padding: 2rem;
   border-radius: 1rem;
-  transition: transform 0.3s ease;
+  margin-top: 2rem;
 }
 
 .card-link {
@@ -228,9 +228,6 @@ nav ul li a:hover {
   transform: scale(1.02);
 }
 
-.expertise-card:hover {
-  transform: translateY(-10px);
-}
 .journey {
   background: var(--light-gray);
 }
@@ -354,14 +351,12 @@ nav ul li a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-top: -4rem;
 }
 
 .project-card {
   background: var(--light-gray);
   padding: 2rem 2em 1em 2em;
   border-radius: 1rem;
-  transition: transform 0.3s ease;
   min-height: 600px;
 }
 

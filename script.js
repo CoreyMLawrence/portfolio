@@ -66,18 +66,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Scroll animations
-  gsap.from('.expertise-card', {
-    scrollTrigger: {
-      trigger: '.expertise',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse',
+  gsap.fromTo(
+    '.expertise-card',
+    {
+      y: 50,
+      opacity: 0,
     },
-    duration: 1,
-    y: 50,
-    opacity: 0,
-    stagger: 0.2,
-    ease: 'power3.out',
-  });
+    {
+      y: 0, // End at y: 0
+      opacity: 1,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.expertise',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    }
+  );
 
   gsap.from('.journey-content', {
     scrollTrigger: {
@@ -118,18 +125,26 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power3.out',
   });
 
-  gsap.from('.project-card', {
-    scrollTrigger: {
-      trigger: '.projects',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse',
+  // Scroll animations
+  gsap.fromTo(
+    '.project-card',
+    {
+      x: 50, // Start at x: 50
+      opacity: 0,
     },
-    duration: 1,
-    y: 50,
-    opacity: 0,
-    stagger: 0.2,
-    ease: 'power3.out',
-  });
+    {
+      x: 0, // End at x: 0
+      opacity: 1,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.projects',
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+    }
+  );
 
   // CTA section initial staggered animations
   gsap.from('.cta-content h2', {
