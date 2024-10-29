@@ -36,18 +36,13 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
+  max-width: 100vw;
   margin: 0 auto;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 1rem;
   min-width: 100%;
   padding: 0 5%;
   height: 100%; /* Ensure nav takes the full height of the header */
-}
-
-.fredericka {
-  font-family: 'Fredericka the Great', cursive;
 }
 
 .logo a {
@@ -87,6 +82,10 @@ nav ul li a:hover {
   position: relative;
 }
 
+.section-title {
+  font-size: 4rem !important;
+}
+
 .hero {
   background: var(--light-gray);
   flex-direction: column;
@@ -103,6 +102,7 @@ nav ul li a:hover {
 }
 
 .headline {
+  width: 100%;
   font-size: 4.5rem;
   font-weight: 700;
   color: var(--text);
@@ -253,7 +253,19 @@ nav ul li a:hover {
   justify-content: flex-start;
   align-items: center;
   overflow-y: auto; /* Allow scrolling */
-  padding: 2rem 0;
+}
+
+.story-content {
+  background: white; /* Background for the reader */
+  border-radius: 1rem; /* Rounded corners */
+  max-width: 800px; /* Limit width for readability */
+  padding: 2rem 4rem; /* Inner padding */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.story-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .close-button {
@@ -279,14 +291,6 @@ nav ul li a:hover {
 
 .close-button:focus {
   outline: none;
-}
-
-.story-content {
-  background: white; /* Background for the reader */
-  border-radius: 1rem; /* Rounded corners */
-  max-width: 800px; /* Limit width for readability */
-  padding: 2rem 4rem; /* Inner padding */
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .read-more-button {
@@ -347,7 +351,13 @@ nav ul li a:hover {
   color: var(--primary);
 }
 
+#projects {
+  display: flex;
+  flex-direction: column;
+}
+
 .projects {
+  margin-top: 2em;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
@@ -373,7 +383,7 @@ nav ul li a:hover {
 }
 
 h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1.5rem;
 }
 
@@ -389,12 +399,21 @@ p {
 }
 
 @media (max-width: 768px) {
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
   .journey-content {
     grid-template-columns: 1fr;
   }
 
   .section {
-    padding: calc(var(--spacing) / 2) 5vw;
+    padding: calc(var(--spacing) / 2) 0;
+  }
+
+  .section-title {
+    font-size: 10rem !important;
   }
 
   .headline {
