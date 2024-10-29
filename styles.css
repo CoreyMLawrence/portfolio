@@ -43,6 +43,7 @@ nav {
   min-width: 100%;
   padding: 0 5%;
   height: 100%; /* Ensure nav takes the full height of the header */
+  border-bottom: 1px solid rgba(50, 50, 50, 0.08);
 }
 
 .logo a {
@@ -508,6 +509,10 @@ nav ul li a:hover {
 @media screen and (max-width: 768px) {
   .projects {
     max-width: 100%;
+  }
+
+  #devolve-link {
+    order: -1;
   }
 }
 
