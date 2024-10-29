@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     duration: 1,
     padding: '0.5em 0em', // Initial padding
     ease: 'power3.out',
-    delay: 0.4, // Adjust the delay as needed to fit your sequence
+    delay: 0.0, // Adjust the delay as needed to fit your sequence
     onComplete: () => {
       gsap.to('#highlight', {
         padding: '0.5em 2.5em', // Final padding

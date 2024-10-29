@@ -50,13 +50,23 @@ nav {
   color: #333;
   text-decoration: none;
   font-weight: 900;
+  width: 10em;
 }
 
 nav ul {
   display: flex;
+  justify-content: center;
+  align-items: center !important;
   list-style: none;
+  text-align: center;
   margin: 0;
   padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  nav ul {
+    display: none;
+  }
 }
 
 nav ul li {
@@ -72,6 +82,34 @@ nav ul li a {
 
 nav ul li a:hover {
   color: #007aff;
+}
+
+.cta-mobile {
+  background-color: var(--primary);
+  color: #ffffff;
+  padding: 0.4rem 0.8rem; /* Smaller padding for mobile */
+  border-radius: 30px; /* Keep the same border radius */
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 1rem; /* Adjust font size for mobile */
+}
+
+.cta-mobile:hover {
+  background-color: var(--secondary);
+  transform: scale(1.05);
+}
+
+.email-button-container {
+  width: 10em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 768px) {
+  .email-button-container {
+    width: auto;
+  }
 }
 
 .section {
@@ -210,6 +248,7 @@ nav ul li a:hover {
   flex-wrap: wrap; /* Allow wrapping of items */
   margin: 1.5em -1rem; /* Negative margin to offset padding on child items */
   max-width: 85%;
+  gap: 2rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -447,7 +486,7 @@ p {
   }
 
   .section {
-    padding: 0 1.2em;
+    padding: 5em 1.2em;
   }
 
   .section-title {
