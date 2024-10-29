@@ -90,7 +90,7 @@ nav ul li a:hover {
   padding: 0.4rem 0.8rem; /* Smaller padding for mobile */
   border-radius: 30px; /* Keep the same border radius */
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
   transition: background-color 0.3s, transform 0.3s;
   font-size: 1rem; /* Adjust font size for mobile */
 }
