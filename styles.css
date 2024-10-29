@@ -1,0 +1,457 @@
+:root {
+  --primary: #007aff;
+  --secondary: #005bb5;
+  --background: #ffffff;
+  --text: #1d1d1f;
+  --gray: #86868b;
+  --light-gray: #f5f5f7;
+  --spacing: 120px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+header {
+  background-color: rgba(245, 245, 247, 0.5); /* Adjust for transparency */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 996;
+  height: 60px; /* Adjust as needed */
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 1rem;
+  min-width: 100%;
+  padding: 0 5%;
+  height: 100%; /* Ensure nav takes the full height of the header */
+}
+
+.fredericka {
+  font-family: 'Fredericka the Great', cursive;
+}
+
+.logo a {
+  font-size: 1.5rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin-left: 2rem;
+}
+
+nav ul li a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #007aff;
+}
+
+.section {
+  padding: var(--spacing) 10vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hero {
+  background: var(--light-gray);
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+#above-title {
+  font-size: 1.75rem;
+  margin: 0;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.headline {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
+}
+
+.subheadline {
+  font-size: 2rem;
+  color: var(--gray);
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto 2rem;
+  font-weight: 500;
+}
+
+.headine-line1 {
+  transform: translateY(60px);
+}
+
+.headline-line2 {
+  position: relative;
+  display: inline-block;
+}
+
+.highlight-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* So it doesn't interfere with text selection */
+}
+
+#highlight {
+  position: absolute;
+  background-color: rgba(248, 234, 0, 0.5);
+  border-radius: 2em;
+  height: 1em;
+  bottom: 0.05em;
+  left: -0.4em;
+  z-index: 1;
+}
+
+#highlighted-text {
+  position: relative;
+  z-index: 2;
+}
+
+.connect-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.connect-button {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  background-color: var(--light-gray);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.connect-button:hover {
+  background-color: var(--primary);
+  color: #ffffff !important;
+}
+
+.connect-button:visited {
+  color: var(--text);
+}
+
+#specialties {
+  display: flex;
+  flex-direction: column !important;
+}
+
+.expertise-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.expertise {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4rem;
+  margin-top: 2rem; /* Optional spacing above the grid */
+}
+
+.expertise-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background: var(--light-gray);
+  padding: 2rem;
+  border-radius: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.card-link {
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.3s;
+}
+
+.card-link:hover {
+  transform: scale(1.02);
+}
+
+.expertise-card:hover {
+  transform: translateY(-10px);
+}
+.journey {
+  background: var(--light-gray);
+}
+
+.journey-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.full-story {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.2); /* Slight background color */
+  backdrop-filter: blur(8px); /* Blurring effect */
+  z-index: 998; /* Ensure it's on top */
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto; /* Allow scrolling */
+  padding: 2rem 0;
+}
+
+.close-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  border: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 999;
+}
+
+.close-button:hover {
+  background-color: var(--secondary);
+}
+
+.close-button:focus {
+  outline: none;
+}
+
+.story-content {
+  background: white; /* Background for the reader */
+  border-radius: 1rem; /* Rounded corners */
+  max-width: 800px; /* Limit width for readability */
+  padding: 2rem 4rem; /* Inner padding */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.read-more-button {
+  background: none; /* Remove background */
+  color: var(--primary); /* Use the primary blue color */
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 1rem; /* Font size */
+  margin-top: 1rem; /* Margin for spacing */
+  font-weight: bold; /* Make text bold */
+  transition: color 0.3s; /* Transition for color change on hover */
+  outline: none;
+  line-height: 0;
+}
+
+.read-more-button:hover {
+  color: var(--secondary); /* Change color on hover */
+}
+
+.image-placeholder {
+  width: 100%;
+  height: auto;
+  border-radius: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  overflow: hidden;
+}
+
+.cta {
+  background-color: var(--primary);
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cta:hover {
+  background-color: var(--secondary);
+  transform: scale(1.05);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  text-align: center;
+  margin: 4rem 0;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: -4rem;
+}
+
+.project-card {
+  background: var(--light-gray);
+  padding: 2rem 2em 1em 2em;
+  border-radius: 1rem;
+  transition: transform 0.3s ease;
+  min-height: 600px;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+}
+
+.project-image {
+  width: auto;
+  height: 200px;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: var(--gray);
+}
+
+@media (max-width: 768px) {
+  .journey-content {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: calc(var(--spacing) / 2) 5vw;
+  }
+
+  .headline {
+    font-size: 3rem;
+  }
+}
+
+.cta-section {
+  background: var(--primary);
+  color: var(--background);
+  text-align: center;
+  padding: calc(var(--spacing) / 2) 10vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 997;
+}
+
+.cta-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cta-content h2 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--background);
+  max-width: 800px;
+  line-height: 1.2;
+}
+
+.cta-content p {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 700px;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.cta-button {
+  background: #ffffff;
+  color: var(--primary);
+  padding: 1rem 2.5rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  background: var(--background);
+  color: var(--secondary);
+}

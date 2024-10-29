@@ -1,0 +1,202 @@
+document.addEventListener('DOMContentLoaded', function () {
+  gsap.registerPlugin(ScrollTrigger);
+  // Initial animations
+  gsap.from('.headline', {
+    duration: 1,
+    y: 50,
+    opacity: 0,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.headline-line2', {
+    duration: 1,
+    y: 30,
+    opacity: 0,
+    delay: 0.4, // Slightly increased delay to differentiate from line 1
+    ease: 'power3.out',
+  });
+
+  gsap.from('.subheadline', {
+    duration: 1,
+    opacity: 0,
+    delay: 0.6,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.hero .cta', {
+    duration: 1,
+    opacity: 0,
+    delay: 0.9,
+    ease: 'power3.out',
+  });
+
+  // Fade in for the connect links
+  gsap.from('.connect-links', {
+    duration: 1,
+    opacity: 0,
+    delay: 0.9, // Starts after the CTA
+    ease: 'power3.out',
+  });
+
+  // Add animation for the #highlight block
+  gsap.from('#highlight', {
+    duration: 1,
+    padding: '0em 0em', // Initial padding
+    ease: 'power3.out',
+    delay: 0.4, // Adjust the delay as needed to fit your sequence
+    onComplete: () => {
+      gsap.to('#highlight', {
+        padding: '0em 2.6em', // Final padding
+        duration: 0.5, // Duration for the padding expansion
+        ease: 'power3.out',
+      });
+    },
+  });
+
+  // Scroll animations
+  gsap.from('.expertise-card', {
+    scrollTrigger: {
+      trigger: '.expertise',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 50,
+    opacity: 0,
+    stagger: 0.2,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.journey-content', {
+    scrollTrigger: {
+      trigger: '.journey-content',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    x: -50,
+    opacity: 0,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.image-placeholder img', {
+    scrollTrigger: {
+      trigger: '.journey-content',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1.5,
+    scale: 0.9,
+    opacity: 0,
+    rotation: 10,
+    ease: 'power3.out',
+    transformOrigin: 'center center',
+  });
+
+  gsap.from('.stats > div', {
+    scrollTrigger: {
+      trigger: '.stats',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 30,
+    opacity: 0,
+    stagger: 0.2,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.project-card', {
+    scrollTrigger: {
+      trigger: '.projects',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 50,
+    opacity: 0,
+    stagger: 0.2,
+    ease: 'power3.out',
+  });
+
+  // CTA section initial staggered animations
+  gsap.from('.cta-content h2', {
+    duration: 1.2,
+    y: 40,
+    opacity: 0,
+    ease: 'power3.out',
+    delay: 0.2,
+  });
+
+  gsap.from('.cta-content p', {
+    duration: 1.2,
+    y: 40,
+    opacity: 0,
+    ease: 'power3.out',
+    delay: 0.4,
+  });
+
+  gsap.from('.cta-button', {
+    duration: 1.2,
+    y: 40,
+    opacity: 0,
+    scale: 0.95,
+    ease: 'elastic.out(1, 0.6)',
+    delay: 0.6,
+    transformOrigin: 'center center',
+  });
+
+  // CTA section scroll-triggered staggered animations
+  gsap.from('.cta-section', {
+    scrollTrigger: {
+      trigger: '.cta-section',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1.5,
+    y: 60,
+    opacity: 0,
+    ease: 'power3.out',
+    stagger: {
+      each: 0.15,
+      from: 'start',
+    },
+  });
+
+  let fullStory = document.querySelector('.full-story');
+  let storyContent = document.querySelector('.story-content');
+  let closeButton = document.querySelector('.close-button');
+
+  function toggleStory() {
+    if (fullStory.style.display != 'flex') {
+      fullStory.style.display = 'flex';
+      closeButton.style.display = 'flex';
+    } else {
+      fullStory.style.display = 'none';
+      closeButton.style.display = 'none';
+    }
+  }
+
+  document
+    .querySelector('.read-more-button')
+    .addEventListener('click', toggleStory);
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && fullStory.style.display === 'flex') {
+      fullStory.style.display = 'none';
+      closeButton.style.display = 'none';
+    }
+  });
+
+  fullStory.addEventListener('click', function (event) {
+    if (event.target !== storyContent && !storyContent.contains(event.target)) {
+      fullStory.style.display = 'none';
+      closeButton.style.display = 'none';
+    }
+  });
+
+  closeButton.addEventListener('click', function () {
+    fullStory.style.display = 'none';
+    closeButton.style.display = 'none';
+  });
+});
