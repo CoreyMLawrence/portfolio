@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add animation for the #highlight block
   gsap.from('#highlight', {
     duration: 1,
-    padding: '0em 0em', // Initial padding
+    padding: '0.5em 0em', // Initial padding
     ease: 'power3.out',
     delay: 0.4, // Adjust the delay as needed to fit your sequence
     onComplete: () => {
       gsap.to('#highlight', {
-        padding: '0em 2.6em', // Final padding
+        padding: '0.5em 2.5em', // Final padding
         duration: 0.5, // Duration for the padding expansion
         ease: 'power3.out',
       });
