@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power3.out',
   });
 
-  gsap.from('.image-placeholder img', {
+  gsap.from('.headshot img', {
     scrollTrigger: {
       trigger: '.journey-content',
       start: 'top 80%',
@@ -122,6 +122,18 @@ document.addEventListener('DOMContentLoaded', function () {
     y: 30,
     opacity: 0,
     stagger: 0.2,
+    ease: 'power3.out',
+  });
+
+  gsap.from('#project-title', {
+    scrollTrigger: {
+      trigger: '#project-title',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 50,
+    opacity: 0,
     ease: 'power3.out',
   });
 
@@ -231,4 +243,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   closeButton.addEventListener('click', closeFullStory);
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault(); // Prevent default anchor click behavior
+
+      const targetId = this.getAttribute('href'); // Get the target section ID
+      const targetSection = document.querySelector(targetId); // Select the target section
+
+      // Scroll to the target section
+      if (targetSection) {
+        targetSection.scrollIntoView();
+
+        // Clear the URL hash after a short delay
+        history.pushState(
+          '',
+          document.title,
+          window.location.pathname + window.location.search
+        );
+      } // Adjust the delay as needed
+    });
+  });
 });
