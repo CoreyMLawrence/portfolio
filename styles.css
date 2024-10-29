@@ -201,15 +201,27 @@ nav ul li a:hover {
 .connect-links {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
+}
+
+.connect-links a {
+  text-decoration: none;
+  color: var(--primary) !important;
+  margin: 0;
+  padding: 0;
 }
 
 .connect-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--text);
-  background-color: var(--light-gray);
+  color: var(--primary) !important;
+  background-color: var(--background);
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   text-decoration: none;
@@ -217,7 +229,7 @@ nav ul li a:hover {
 }
 
 .connect-button:hover {
-  background-color: var(--primary);
+  background-color: var(--secondary);
   color: #ffffff !important;
 }
 
