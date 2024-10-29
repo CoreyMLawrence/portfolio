@@ -204,7 +204,7 @@ nav ul li a:hover {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-  margin: 2rem 0;
+  margin: 2rem 0 3rem;
 }
 
 .connect-links a {
@@ -253,6 +253,12 @@ nav ul li a:hover {
   height: 3em;
 }
 
+@media screen and (max-width: 768px) {
+  #email-button {
+    order: -1;
+  }
+}
+
 #email-button:hover {
   width: 16em;
   transform: translateY(0) !important;
@@ -275,6 +281,7 @@ nav ul li a:hover {
   color: var(--primary);
   transition: opacity 0.3s ease;
   text-wrap: nowrap;
+  gap: 0.25rem;
 }
 #email-address {
   opacity: 0;
