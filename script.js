@@ -53,6 +53,18 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   });
 
+  gsap.from('#expertise-title', {
+    scrollTrigger: {
+      trigger: '#expertise-title',
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 50,
+    opacity: 0,
+    ease: 'power3.out',
+  });
+
   // Scroll animations
   gsap.from('.expertise-card', {
     scrollTrigger: {

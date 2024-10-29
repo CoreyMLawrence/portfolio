@@ -192,12 +192,18 @@ nav ul li a:hover {
   width: 100%;
 }
 
+.expertise-icon {
+  height: 100px;
+  width: 100px;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
 .expertise {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 4rem;
-  margin-top: 2rem; /* Optional spacing above the grid */
+  gap: 3rem;
 }
 
 .expertise-card {
