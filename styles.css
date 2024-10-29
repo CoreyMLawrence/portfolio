@@ -200,6 +200,7 @@ nav ul li a:hover {
 
 .connect-links {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
@@ -209,8 +210,6 @@ nav ul li a:hover {
 .connect-links a {
   text-decoration: none;
   color: var(--primary) !important;
-  margin: 0;
-  padding: 0;
 }
 
 .connect-button {
@@ -225,16 +224,68 @@ nav ul li a:hover {
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s ease, transform 0.3s;
 }
 
 .connect-button:hover {
-  background-color: var(--secondary);
-  color: #ffffff !important;
+  transform: translateY(-4px);
 }
 
-.connect-button:visited {
-  color: var(--text);
+.connect-button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none; /* Optional: to remove underline from link */
+}
+
+.connect-button:hover #email-icon,
+.connect-button:hover #email-label {
+  opacity: 0;
+}
+
+.connect-button:hover #email-address {
+  opacity: 1;
+  transition: opacity 0.5s ease; /* Smooth transition */
+}
+
+#email-button {
+  transition: width 0.5s ease !important;
+  width: 9em;
+  height: 3em;
+}
+
+#email-button:hover {
+  width: 16em;
+  transform: translateY(0) !important;
+}
+
+#email-label-area {
+  position: relative;
+}
+
+#email-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary);
+  transition: opacity 0.3s ease;
+  text-wrap: nowrap;
+}
+#email-address {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary);
+  transition: opacity 0.3s ease;
 }
 
 #specialties {

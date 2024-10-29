@@ -203,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   let fullStory = document.querySelector('.full-story');
-  let storyContent = document.querySelector('.story-content');
   let closeButton = document.querySelector('.close-button');
   let body = document.querySelector('body');
 
@@ -261,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
           document.title,
           window.location.pathname + window.location.search
         );
-      } // Adjust the delay as needed
+      }
     });
   });
 });
