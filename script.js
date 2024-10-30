@@ -1,50 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  gsap.registerPlugin(ScrollTrigger);
-  // Initial animations
-  gsap.from('.headline', {
-    duration: 1,
-    y: 50,
-    opacity: 0,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.headline-line2', {
-    duration: 1,
-    y: 30,
-    opacity: 0,
-    delay: 0.4, // Slightly increased delay to differentiate from line 1
-    ease: 'power3.out',
-  });
-
-  gsap.from('.subheadline', {
-    duration: 1,
-    opacity: 0,
-    delay: 0.6,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.hero .cta', {
-    duration: 1,
-    opacity: 0,
-    delay: 0.9,
-    ease: 'power3.out',
-  });
-
-  // Add animation for the #highlight block
-  gsap.from('#highlight', {
-    duration: 1,
-    padding: '0.5em 0em', // Initial padding
-    ease: 'power3.out',
-    delay: 0.0, // Adjust the delay as needed to fit your sequence
-    onComplete: () => {
-      gsap.to('#highlight', {
-        padding: '0.5em 2.5em', // Final padding
-        duration: 0.5, // Duration for the padding expansion
-        ease: 'power3.out',
-      });
-    },
-  });
-
   gsap.from('#expertise-title', {
     scrollTrigger: {
       trigger: '#expertise-title',
@@ -371,82 +325,82 @@ document.addEventListener('DOMContentLoaded', function () {
     warning: 'color: #f59e0b; font-weight: bold;',
   };
 
-  console.clear();
+  // console.clear();
 
-  // Improved ASCII art logo with more distinct COREY
-  console.log(`
-█▀▀ █▀█ █▀█ █▀▀ █▄█   █░░ ▄▀█ █░█░█ █▀█ █▀▀ █▄░█ █▀▀ █▀▀
-█▄▄ █▄█ █▀▄ ██▄ ░█░   █▄▄ █▀█ ▀▄▀▄▀ █▀▄ ██▄ █░▀█ █▄▄ ██▄
-`);
+  //   // Improved ASCII art logo with more distinct COREY
+  //   console.log(`
+  // █▀▀ █▀█ █▀█ █▀▀ █▄█   █░░ ▄▀█ █░█░█ █▀█ █▀▀ █▄░█ █▀▀ █▀▀
+  // █▄▄ █▄█ █▀▄ ██▄ ░█░   █▄▄ █▀█ ▀▄▀▄▀ █▀▄ ██▄ █░▀█ █▄▄ ██▄
+  // `);
 
-  // Main greeting
-  console.log(
-    '%cWelcome to the Matrix of Marketing & Code! 🚀',
-    consoleStyles.title
-  );
+  //   // Main greeting
+  //   console.log(
+  //     '%cWelcome to the Matrix of Marketing & Code! 🚀',
+  //     consoleStyles.title
+  //   );
 
-  // Clever subtitle
-  console.log(
-    '%cWhere algorithms meet aesthetics and functions tell stories...',
-    consoleStyles.subtitle
-  );
+  //   // Clever subtitle
+  //   console.log(
+  //     '%cWhere algorithms meet aesthetics and functions tell stories...',
+  //     consoleStyles.subtitle
+  //   );
 
-  // Interactive element
-  console.log(
-    "\n%c👾 Hey there, curious developer!%c\nSince you've ventured into the console, you must be someone who appreciates the details. Let's have some fun!\n",
-    consoleStyles.highlight,
-    ''
-  );
+  //   // Interactive element
+  //   console.log(
+  //     "\n%c👾 Hey there, curious developer!%c\nSince you've ventured into the console, you must be someone who appreciates the details. Let's have some fun!\n",
+  //     consoleStyles.highlight,
+  //     ''
+  //   );
 
-  // Create an interactive game/puzzle
-  const secretCode = ['marketing', 'code', 'human'];
-  console.log(
-    '%cTry this:%c Type %crevealTalents()%c to unlock some hidden expertise...',
-    consoleStyles.warning,
-    '',
-    consoleStyles.code,
-    ''
-  );
+  //   // Create an interactive game/puzzle
+  //   const secretCode = ['marketing', 'code', 'human'];
+  //   console.log(
+  //     '%cTry this:%c Type %crevealTalents()%c to unlock some hidden expertise...',
+  //     consoleStyles.warning,
+  //     '',
+  //     consoleStyles.code,
+  //     ''
+  //   );
 
-  // Define the interactive function
-  window.revealTalents = () => {
-    console.clear();
-    console.log('%c🎯 Skills Unlocked!', consoleStyles.title);
+  //   // Define the interactive function
+  //   window.revealTalents = () => {
+  //     console.clear();
+  //     console.log('%c🎯 Skills Unlocked!', consoleStyles.title);
 
-    const skills = [
-      { category: '🎨 Marketing Magic', level: '████████░░', years: 8 },
-      { category: '💻 Code Crafting', level: '███████░░░', years: 3 },
-      {
-        category: '🤖 AI Architecture',
-        level: '████████░░',
-        expertise: 'Advanced',
-      },
-      {
-        category: '🧠 Human-Centered Design',
-        level: '█████████░',
-        projects: 50,
-      },
-    ];
+  //     const skills = [
+  //       { category: '🎨 Marketing Magic', level: '████████░░', years: 8 },
+  //       { category: '💻 Code Crafting', level: '███████░░░', years: 3 },
+  //       {
+  //         category: '🤖 AI Architecture',
+  //         level: '████████░░',
+  //         expertise: 'Advanced',
+  //       },
+  //       {
+  //         category: '🧠 Human-Centered Design',
+  //         level: '█████████░',
+  //         projects: 50,
+  //       },
+  //     ];
 
-    console.table(skills);
+  //     console.table(skills);
 
-    console.log(
-      `
-%cBut wait, there's more! 🎁
-Looking for a developer who can bridge the gap between marketing and technology?
-Let's connect and build something amazing together!
+  //     console.log(
+  //       `
+  // %cBut wait, there's more! 🎁
+  // Looking for a developer who can bridge the gap between marketing and technology?
+  // Let's connect and build something amazing together!
 
-%c📧 cmlawrence445@gmail.com
-%c💼 https://linkedin.com/in/corey-lawrence-85621386
-%c⚡ Fun fact: Did you know that the first "bug" in computing was an actual bug? 
-   In 1947, Grace Hopper found a moth causing issues in the Harvard Mark II computer. 
-  `,
-      consoleStyles.highlight,
-      consoleStyles.code,
-      consoleStyles.code,
-      consoleStyles.subtitle
-    );
+  // %c📧 cmlawrence445@gmail.com
+  // %c💼 https://linkedin.com/in/corey-lawrence-85621386
+  // %c⚡ Fun fact: Did you know that the first "bug" in computing was an actual bug?
+  //    In 1947, Grace Hopper found a moth causing issues in the Harvard Mark II computer.
+  //   `,
+  //       consoleStyles.highlight,
+  //       consoleStyles.code,
+  //       consoleStyles.code,
+  //       consoleStyles.subtitle
+  //     );
 
-    return "🚀 Thanks for exploring! Let's create something extraordinary together!";
-  };
+  //     return "🚀 Thanks for exploring! Let's create something extraordinary together!";
+  //   };
 });
