@@ -466,6 +466,13 @@ nav ul li a:hover {
   justify-content: center;
   color: var(--gray);
   overflow: hidden;
+  margin-bottom: 5em;
+}
+
+@media screen and (max-width: 768px) {
+  .headshot {
+    border-radius: 40vw;
+  }
 }
 
 .cta {
@@ -502,6 +509,7 @@ nav ul li a:hover {
   flex-direction: column;
   overflow-x: hidden;
   padding: 3em 1em 5em;
+  margin: 5em 0;
 }
 .projects {
   margin-top: 2em;
