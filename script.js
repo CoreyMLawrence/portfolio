@@ -212,19 +212,24 @@ document.addEventListener('DOMContentLoaded', function () {
   let fullStory = document.querySelector('.full-story');
   let closeButton = document.querySelector('.close-button');
   let body = document.querySelector('body');
-  let isFullStoryOpen = false; // Track if full story is open
+  let isFullStoryOpen = false;
 
   function toggleStory() {
-    const isVisible = fullStory.style.display === 'flex';
-    if (!isVisible) {
-      fullStory.style.display = 'flex';
-      closeButton.style.display = 'flex';
-      body.style.overflowY = 'hidden'; // Disable body scroll
-      history.pushState({ fullStoryOpen: true }, ''); // Add history state
-      isFullStoryOpen = true;
+    if (!isFullStoryOpen) {
+      openFullStory();
     } else {
-      closeFullStory(false); // Pass false to avoid adding another history entry
+      closeFullStory(false);
     }
+  }
+
+  function openFullStory() {
+    fullStory.style.display = 'flex';
+    closeButton.style.display = 'flex';
+    body.style.overflowY = 'hidden'; // Disable body scroll
+    if (!history.state || !history.state.fullStoryOpen) {
+      history.pushState({ fullStoryOpen: true }, ''); // Only push history once
+    }
+    isFullStoryOpen = true;
   }
 
   function closeFullStory(updateHistory = true) {
@@ -234,16 +239,15 @@ document.addEventListener('DOMContentLoaded', function () {
       body.style.overflowY = 'auto'; // Re-enable body scroll
       isFullStoryOpen = false;
 
-      // Only go back in history if updateHistory is true
-      if (updateHistory && history.state && history.state.fullStoryOpen) {
-        history.back();
+      if (updateHistory) {
+        history.back(); // Only go back if updateHistory is true
       }
     }
   }
 
   // Listen for the popstate event to close the full story
   window.addEventListener('popstate', function (event) {
-    if (event.state && event.state.fullStoryOpen) {
+    if (isFullStoryOpen && (!event.state || !event.state.fullStoryOpen)) {
       closeFullStory(false); // Close without triggering history.back()
     }
   });
@@ -253,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .addEventListener('click', toggleStory);
 
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && fullStory.style.display === 'flex') {
+    if (event.key === 'Escape' && isFullStoryOpen) {
       closeFullStory();
     }
   });
@@ -266,40 +270,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
   closeButton.addEventListener('click', closeFullStory);
 
-  // Swipe detection variables
+  // Swipe detection
   let startX = 0;
   let startY = 0;
   let isSwiping = false;
-  const threshold = 70; // Minimum swipe distance
+  const threshold = 70;
 
-  // Touch start event
   fullStory.addEventListener('touchstart', function (event) {
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
-    isSwiping = false; // Reset swiping status
+    isSwiping = false;
   });
 
-  // Touch move event
   fullStory.addEventListener('touchmove', function (event) {
     const touch = event.touches[0];
     const deltaX = touch.clientX - startX;
     const deltaY = touch.clientY - startY;
 
-    // Determine if we are swiping
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      isSwiping = true; // Set swiping to true if horizontal movement is greater
-      event.preventDefault(); // Prevent default scroll behavior only if swiping
+      isSwiping = true;
+      event.preventDefault();
     }
   });
 
-  // Touch end event
   fullStory.addEventListener('touchend', function (event) {
     if (isSwiping) {
       const touch = event.changedTouches[0];
       const deltaX = touch.clientX - startX;
 
-      // Check for horizontal swipe
       if (Math.abs(deltaX) > threshold) {
         closeFullStory();
       }
