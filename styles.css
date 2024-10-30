@@ -134,11 +134,12 @@ nav ul li a:hover {
   gap: 1rem;
 }
 
-#above-title {
+#above-headline {
   font-size: 1.75rem;
   margin: 0;
   font-weight: 500;
   margin-top: 1rem;
+  margin-bottom: 0.25rem;
 }
 
 .headline {
@@ -313,6 +314,10 @@ nav ul li a:hover {
   width: 100px;
   padding: 1em;
   margin-bottom: 1em;
+}
+
+#full-stack-icon {
+  transform: scale(1.1);
 }
 
 .expertise {
@@ -585,6 +590,8 @@ p {
   justify-content: center;
   gap: 1rem;
   z-index: 997;
+  height: calc(100vh + 60px);
+  padding-top: 8em;
 }
 
 .cta-content {

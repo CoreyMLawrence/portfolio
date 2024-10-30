@@ -30,14 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power3.out',
   });
 
-  // Fade in for the connect links
-  gsap.from('.connect-links', {
-    duration: 1,
-    opacity: 0,
-    delay: 0.9, // Starts after the CTA
-    ease: 'power3.out',
-  });
-
   // Add animation for the #highlight block
   gsap.from('#highlight', {
     duration: 1,
@@ -200,6 +192,16 @@ document.addEventListener('DOMContentLoaded', function () {
       each: 0.15,
       from: 'start',
     },
+  });
+
+  gsap.from('.connect-links', {
+    duration: 1.2,
+    y: 40,
+    opacity: 0,
+    scale: 0.95,
+    ease: 'power3.out',
+    delay: 0.6,
+    transformOrigin: 'center center',
   });
 
   let fullStory = document.querySelector('.full-story');
