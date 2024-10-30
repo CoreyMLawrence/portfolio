@@ -149,41 +149,17 @@ document.addEventListener('DOMContentLoaded', function () {
       },
     }
   );
-
-  // CTA section initial staggered animations
-  gsap.from('.cta-content h2', {
-    duration: 1.2,
-    y: 40,
-    opacity: 0,
-    ease: 'power3.out',
-    delay: 0.2,
-  });
-
-  gsap.from('.cta-content p', {
-    duration: 1.2,
-    y: 40,
-    opacity: 0,
-    ease: 'power3.out',
-    delay: 0.4,
-  });
-
-  gsap.from('.cta-button', {
-    duration: 1.2,
-    y: 40,
-    opacity: 0,
-    scale: 0.95,
-    ease: 'elastic.out(1, 0.6)',
-    delay: 0.6,
-    transformOrigin: 'center center',
-  });
-
-  // CTA section scroll-triggered staggered animations
-  gsap.from('.cta-section', {
+  // Create a timeline for the CTA section animations
+  const tl = gsap.timeline({
     scrollTrigger: {
       trigger: '.cta-section',
       start: 'top 85%',
       toggleActions: 'play none none reverse',
     },
+  });
+
+  // Add animations to the timeline
+  tl.from('.cta-section', {
     duration: 1.5,
     y: 60,
     opacity: 0,
@@ -192,17 +168,42 @@ document.addEventListener('DOMContentLoaded', function () {
       each: 0.15,
       from: 'start',
     },
-  });
-
-  gsap.from('.connect-links', {
-    duration: 1.2,
-    y: 40,
-    opacity: 0,
-    scale: 0.95,
-    ease: 'power3.out',
-    delay: 0.6,
-    transformOrigin: 'center center',
-  });
+  })
+    .from(
+      '.cta-content h2',
+      {
+        duration: 1.2,
+        y: 40,
+        opacity: 0,
+        ease: 'power3.out',
+        delay: 0.2,
+      },
+      '-=1.2'
+    ) // Overlap with the previous animation
+    .from(
+      '.cta-content p',
+      {
+        duration: 1.2,
+        y: 40,
+        opacity: 0,
+        ease: 'power3.out',
+        delay: 0.4,
+      },
+      '-=1.2'
+    ) // Overlap with the previous animation
+    .from(
+      '.connect-links',
+      {
+        duration: 1.2,
+        y: 40,
+        opacity: 0,
+        scale: 0.95,
+        ease: 'power3.out',
+        delay: 0.6,
+        transformOrigin: 'center center',
+      },
+      '-=1.2'
+    ); // Overlap with the previous animation
 
   let fullStory = document.querySelector('.full-story');
   let closeButton = document.querySelector('.close-button');
