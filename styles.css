@@ -138,6 +138,13 @@ nav ul li a:hover {
   gap: 1rem;
 }
 
+.headline,
+.headline-line2,
+.subheadline,
+.hero .cta {
+  opacity: 0;
+}
+
 #above-headline {
   font-size: 1.75rem;
   margin: 0;
