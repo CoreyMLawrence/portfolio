@@ -271,27 +271,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // // Attach event listeners to all anchor links
-  // document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  //   anchor.addEventListener('click', function (e) {
-  //     e.preventDefault(); // Prevent default anchor click behavior
+  // Attach event listeners to all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
 
-  //     const targetId = this.getAttribute('href'); // Get the target section ID
+      const targetId = this.getAttribute('href');
+      let customOffset = 0;
 
-  //     // Specify custom offsets based on section
-  //     let customOffset = 0; // Default offset
-  //     if (targetId === '#projects') {
-  //       customOffset = 50; // Custom offset for Projects
-  //     } else if (targetId === '#about') {
-  //       customOffset = -80; // Custom offset for About
-  //     } else if (targetId === '#specialties') {
-  //       customOffset = 40; // Custom offset for Specialties
-  //     }
+      switch (targetId) {
+        case '#projects':
+          customOffset = -30;
+          break;
+        case '#about':
+          customOffset = 80;
+          break;
+        case '#specialties':
+          customOffset = -40;
+          break;
+      }
 
-  //     // Call the unified scroll function
-  //     scrollToSection(targetId, customOffset);
-  //   });
-  // });
+      scrollToSection(targetId, customOffset);
+    });
+  });
+
+  function scrollToSection(targetId, customOffset) {
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      const elementPosition =
+        targetElement.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition + customOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth', // or 'auto' depending on your needs
+      });
+    }
+  }
 
   // Add this to your script.js
 
