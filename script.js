@@ -212,35 +212,39 @@ document.addEventListener('DOMContentLoaded', function () {
   let fullStory = document.querySelector('.full-story');
   let closeButton = document.querySelector('.close-button');
   let body = document.querySelector('body');
+  let isFullStoryOpen = false; // Track if full story is open
 
   function toggleStory() {
     const isVisible = fullStory.style.display === 'flex';
-
     if (!isVisible) {
       fullStory.style.display = 'flex';
       closeButton.style.display = 'flex';
       body.style.overflowY = 'hidden'; // Disable body scroll
-
-      // Add a new entry to the history stack
-      history.pushState({ fullStoryOpen: true }, '');
+      history.pushState({ fullStoryOpen: true }, ''); // Add history state
+      isFullStoryOpen = true;
     } else {
-      closeFullStory();
+      closeFullStory(false); // Pass false to avoid adding another history entry
     }
   }
 
-  function closeFullStory() {
-    fullStory.style.display = 'none';
-    closeButton.style.display = 'none';
-    body.style.overflowY = 'auto'; // Re-enable body scroll
+  function closeFullStory(updateHistory = true) {
+    if (isFullStoryOpen) {
+      fullStory.style.display = 'none';
+      closeButton.style.display = 'none';
+      body.style.overflowY = 'auto'; // Re-enable body scroll
+      isFullStoryOpen = false;
 
-    // Go back in history to remove the last entry
-    history.back();
+      // Only go back in history if updateHistory is true
+      if (updateHistory && history.state && history.state.fullStoryOpen) {
+        history.back();
+      }
+    }
   }
 
   // Listen for the popstate event to close the full story
   window.addEventListener('popstate', function (event) {
     if (event.state && event.state.fullStoryOpen) {
-      closeFullStory();
+      closeFullStory(false); // Close without triggering history.back()
     }
   });
 
@@ -297,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Check for horizontal swipe
       if (Math.abs(deltaX) > threshold) {
-        closeFullStory(); // Close if swipe is beyond threshold
+        closeFullStory();
       }
     }
   });
