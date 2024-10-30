@@ -271,27 +271,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Attach event listeners to all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault(); // Prevent default anchor click behavior
+  // // Attach event listeners to all anchor links
+  // document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  //   anchor.addEventListener('click', function (e) {
+  //     e.preventDefault(); // Prevent default anchor click behavior
 
-      const targetId = this.getAttribute('href'); // Get the target section ID
+  //     const targetId = this.getAttribute('href'); // Get the target section ID
 
-      // Specify custom offsets based on section
-      let customOffset = 0; // Default offset
-      if (targetId === '#projects') {
-        customOffset = 50; // Custom offset for Projects
-      } else if (targetId === '#about') {
-        customOffset = -80; // Custom offset for About
-      } else if (targetId === '#specialties') {
-        customOffset = 40; // Custom offset for Specialties
-      }
+  //     // Specify custom offsets based on section
+  //     let customOffset = 0; // Default offset
+  //     if (targetId === '#projects') {
+  //       customOffset = 50; // Custom offset for Projects
+  //     } else if (targetId === '#about') {
+  //       customOffset = -80; // Custom offset for About
+  //     } else if (targetId === '#specialties') {
+  //       customOffset = 40; // Custom offset for Specialties
+  //     }
 
-      // Call the unified scroll function
-      scrollToSection(targetId, customOffset);
-    });
-  });
+  //     // Call the unified scroll function
+  //     scrollToSection(targetId, customOffset);
+  //   });
+  // });
 
   // Add this to your script.js
 
