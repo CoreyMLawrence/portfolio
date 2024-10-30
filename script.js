@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
   gsap.from('#expertise-title', {
     scrollTrigger: {
       trigger: '#expertise-title',
-      start: 'top 80%',
+      start: 'top close%',
       toggleActions: 'play none none reverse',
     },
     duration: 1,
@@ -204,7 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       '-=1.2'
     ); // Overlap with the previous animation
-
   let fullStory = document.querySelector('.full-story');
   let closeButton = document.querySelector('.close-button');
   let body = document.querySelector('body');
@@ -239,13 +238,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
   fullStory.addEventListener('click', function (event) {
     if (event.target === fullStory) {
-      // Only close if clicking outside the content
       closeFullStory();
     }
   });
 
-  // Function to close the full story (existing function)
   closeButton.addEventListener('click', closeFullStory);
+
+  // Swipe detection variables
+  let startX = 0;
+  let startY = 0;
+  let isSwiping = false;
+  const threshold = 70; // Minimum swipe distance
+
+  // Touch start event
+  fullStory.addEventListener('touchstart', function (event) {
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    isSwiping = false; // Reset swiping status
+  });
+
+  // Touch move event
+  fullStory.addEventListener('touchmove', function (event) {
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+
+    // Determine if we are swiping
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      isSwiping = true; // Set swiping to true if horizontal movement is greater
+      event.preventDefault(); // Prevent default scroll behavior only if swiping
+    }
+  });
+
+  // Touch end event
+  fullStory.addEventListener('touchend', function (event) {
+    if (isSwiping) {
+      const touch = event.changedTouches[0];
+      const deltaX = touch.clientX - startX;
+
+      // Check for horizontal swipe
+      if (Math.abs(deltaX) > threshold) {
+        closeFullStory(); // Close if swipe is beyond threshold
+      }
+    }
+  });
 
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
