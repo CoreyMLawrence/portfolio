@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         y: 40,
         opacity: 0,
         ease: 'power3.out',
-        delay: 0.2,
+        delay: 0,
       },
       '-=1.2'
     ) // Overlap with the previous animation
@@ -204,6 +204,11 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       '-=1.2'
     ); // Overlap with the previous animation
+  //
+  //
+  //
+  //
+  //
   let fullStory = document.querySelector('.full-story');
   let closeButton = document.querySelector('.close-button');
   let body = document.querySelector('body');
@@ -215,6 +220,9 @@ document.addEventListener('DOMContentLoaded', function () {
       fullStory.style.display = 'flex';
       closeButton.style.display = 'flex';
       body.style.overflowY = 'hidden'; // Disable body scroll
+
+      // Add a new entry to the history stack
+      history.pushState({ fullStoryOpen: true }, '');
     } else {
       closeFullStory();
     }
@@ -224,7 +232,17 @@ document.addEventListener('DOMContentLoaded', function () {
     fullStory.style.display = 'none';
     closeButton.style.display = 'none';
     body.style.overflowY = 'auto'; // Re-enable body scroll
+
+    // Go back in history to remove the last entry
+    history.back();
   }
+
+  // Listen for the popstate event to close the full story
+  window.addEventListener('popstate', function (event) {
+    if (event.state && event.state.fullStoryOpen) {
+      closeFullStory();
+    }
+  });
 
   document
     .querySelector('.read-more-button')
@@ -284,6 +302,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  //
+  //
+  //
+  //
+  //
+  //
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
