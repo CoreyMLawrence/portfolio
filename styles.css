@@ -22,6 +22,10 @@ body {
   overflow-x: hidden;
 }
 
+.no-pointer {
+  pointer-events: none;
+}
+
 header {
   background-color: rgba(245, 245, 247, 0.5); /* Adjust for transparency */
   position: fixed;
