@@ -557,8 +557,9 @@ nav ul li a:hover {
 }
 
 .language-icon {
+  max-width: 50px;
+  max-height: 50px;
   width: 25px;
-  height: 25px;
 }
 
 h2 {
