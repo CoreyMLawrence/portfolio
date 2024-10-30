@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   gsap.from('#expertise-title', {
     scrollTrigger: {
       trigger: '#expertise-title',
-      start: 'top close%',
+      start: 'top 80%',
       toggleActions: 'play none none reverse',
     },
     duration: 1,
