@@ -53,18 +53,29 @@ document.addEventListener('DOMContentLoaded', function () {
     delay: 0.6,
     ease: 'power3.out',
   });
+  let padding;
+  let paddingStart;
+
+  if (window.innerWidth > 445) {
+    padding = '0.5em 50%';
+    paddingStart = '0.5em 0';
+  } else {
+    padding = '0.5em 54%';
+    paddingStart = '0.5em 0';
+  }
 
   // Add animation for the #highlight block
   gsap.from('#highlight', {
     duration: 0.8,
-    padding: '0.5em 0em',
+    padding: paddingStart,
     opacity: 0,
     ease: 'power3.out',
     delay: 0.0,
   });
+
   gsap.to('#highlight', {
     duration: 0.8,
-    padding: '0.5em 2.5em',
+    padding: padding,
     opacity: 1,
     ease: 'power3.out',
     delay: 1,
