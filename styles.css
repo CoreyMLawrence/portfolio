@@ -527,6 +527,13 @@ nav ul li a:hover {
   padding: 3em 3em 5em;
   margin: 5em 0;
 }
+
+@media screen and (max-width: 768px) {
+  #projects {
+    padding: 3em 1em 5em;
+  }
+}
+
 .projects {
   display: flex;
   flex-wrap: wrap;
