@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     padding = '0.5em 50%';
     paddingStart = '0.5em 0';
   } else {
-    padding = '0.5em 54%';
+    padding = '0.5em 55%';
     paddingStart = '0.5em 0';
   }
 
