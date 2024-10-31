@@ -552,10 +552,6 @@ nav ul li a:hover {
   max-width: 380px;
 }
 
-.project-card p {
-  margin-bottom: 2rem;
-}
-
 .project-card:hover {
   transform: translateY(-10px);
 }
@@ -563,7 +559,10 @@ nav ul li a:hover {
 @media screen and (max-width: 768px) {
   .project-card {
     min-width: 100%;
-    min-height: calc(max-height + 4rem);
+  }
+
+  .project-card p {
+    padding-bottom: 2rem;
   }
 }
 
