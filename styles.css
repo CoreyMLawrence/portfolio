@@ -563,6 +563,7 @@ nav ul li a:hover {
 @media screen and (max-width: 768px) {
   .project-card {
     min-width: 100%;
+    min-height: calc(max-height + 4rem);
   }
 }
 
