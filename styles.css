@@ -68,7 +68,7 @@ nav ul {
   padding: 0;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   nav ul {
     display: none;
   }
@@ -318,6 +318,8 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 calc(8% - 2em);
+  width: 100%;
 }
 
 .expertise-icon {
@@ -333,20 +335,21 @@ nav ul li a:hover {
 
 .expertise {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping of items */
-  margin: 1.5em -1rem; /* Negative margin to offset padding on child items */
-  max-width: 85%;
+  flex-wrap: wrap;
+  margin: 1.5em;
   gap: 2rem;
+  max-width: 1500px;
 }
 
 @media screen and (max-width: 768px) {
   .expertise {
-    max-width: 100%;
+    max-width: 450px;
+    margin: 1.5em 0%;
   }
 }
 
 .expertise-card {
-  flex: 1 1 350px; /* Flex-grow, flex-shrink, and base width of 350px */
+  flex: 1 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -355,7 +358,7 @@ nav ul li a:hover {
   background: var(--light-gray);
   padding: 2rem;
   border-radius: 1rem;
-  box-sizing: border-box; /* Include padding in width calculations */
+  box-sizing: border-box;
 }
 
 .card-link {
@@ -387,6 +390,7 @@ nav ul li a:hover {
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
+  max-width: 1500px;
 }
 
 .full-story {
@@ -480,12 +484,6 @@ nav ul li a:hover {
   margin-bottom: 5em;
 }
 
-@media screen and (max-width: 768px) {
-  .headshot {
-    border-radius: 40vw;
-  }
-}
-
 .cta {
   background-color: var(--primary);
   color: #ffffff;
@@ -523,16 +521,16 @@ nav ul li a:hover {
   margin: 5em 0;
 }
 .projects {
-  margin-top: 2em;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
-  max-width: 85%;
+  max-width: 1500px;
+  justify-content: center;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 798) {
   .projects {
-    max-width: 100%;
+    margin: 2em 0;
   }
 
   #devolve-link {
@@ -540,15 +538,28 @@ nav ul li a:hover {
   }
 }
 
+@media screen and (max-width: 1420px) and (min-width: 798px) {
+  .projects {
+    margin: 2em 0%;
+  }
+}
+
 .project-card {
   background: var(--light-gray);
   padding: 2rem 2em 1em 2em;
   border-radius: 1rem;
-  min-height: 620px;
+  min-height: 650px;
+  max-width: 380px;
 }
 
 .project-card:hover {
   transform: translateY(-10px);
+}
+
+@media screen and (max-width: 768px) {
+  .project-card {
+    min-width: 100%;
+  }
 }
 
 .project-image {
