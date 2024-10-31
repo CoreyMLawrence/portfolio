@@ -322,6 +322,12 @@ nav ul li a:hover {
   width: 100%;
 }
 
+@media screen and (max-width: 1500px) {
+  .expertise-container {
+    padding: 0 3%;
+  }
+}
+
 .expertise-icon {
   height: 100px;
   width: 100px;
@@ -359,6 +365,7 @@ nav ul li a:hover {
   padding: 2rem;
   border-radius: 1rem;
   box-sizing: border-box;
+  min-width: 350px;
 }
 
 .card-link {
@@ -517,7 +524,7 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  padding: 3em 1em 5em;
+  padding: 3em 3em 5em;
   margin: 5em 0;
 }
 .projects {
@@ -540,7 +547,7 @@ nav ul li a:hover {
 
 @media screen and (max-width: 1420px) and (min-width: 798px) {
   .projects {
-    margin: 2em 0%;
+    margin: 2em 0;
   }
 }
 
