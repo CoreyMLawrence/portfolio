@@ -158,6 +158,33 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       '-=1.2'
     ); // Overlap with the previous animation
+
+  // Simple slide up for the title
+  gsap.from('#languages-title', {
+    scrollTrigger: {
+      trigger: '#languages-title',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1,
+    y: 30,
+    opacity: 0,
+    ease: 'power2.out',
+  });
+
+  // Elastic entrance for all language items together
+  gsap.from('.language-item', {
+    scrollTrigger: {
+      trigger: '.languages-container',
+      start: 'top 75%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 2,
+    y: 100,
+    opacity: 0,
+    ease: 'elastic.out(1, 0.75)', // Smooth elastic bounce
+    stagger: 0, // All items animate together
+  });
   //
   //
   //

@@ -379,7 +379,6 @@ nav ul li a:hover {
 .card-link {
   text-decoration: none;
   color: var(--text);
-  transition: transform 0.3s;
 }
 
 .card-link:hover {
