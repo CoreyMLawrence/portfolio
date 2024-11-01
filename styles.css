@@ -548,13 +548,13 @@ nav ul li a:hover {
   gap: 2rem;
   max-width: 1500px;
   justify-content: center;
+  margin-top: 1.5em;
 }
 
 @media screen and (max-width: 798) {
   .projects {
     margin: 2em 0;
   }
-
   #devolve-link {
     order: -1;
   }
@@ -582,6 +582,7 @@ nav ul li a:hover {
   .project-card {
     min-width: 100%;
     max-height: auto;
+    padding: 2rem 1.5em 1em 1.5em;
   }
 
   .project-card p {
