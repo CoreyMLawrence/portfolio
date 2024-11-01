@@ -48,6 +48,7 @@ nav {
   padding: 0 5%;
   height: 100%; /* Ensure nav takes the full height of the header */
   border-bottom: 1px solid rgba(50, 50, 50, 0.08);
+  min-width: 330px;
 }
 
 .logo a {
@@ -315,10 +316,10 @@ nav ul li a:hover {
   transition: opacity 0.3s ease;
 }
 
-#specialties {
+#expertise {
   display: flex;
   flex-direction: column !important;
-  padding: 3em 1em 5em;
+  padding: 8em 1em 8em;
 }
 
 .expertise-container {
@@ -383,6 +384,49 @@ nav ul li a:hover {
 
 .card-link:hover {
   transform: scale(1.02);
+}
+
+#languages-title {
+  margin: 6rem 0 2rem 0;
+}
+
+.languages-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  gap: 1em;
+  padding: 0 calc(8% - 2em);
+  width: 100%;
+}
+
+@media screen and (max-width: 1500px) {
+  .languages-container {
+    padding: 0 3%;
+  }
+}
+
+.language-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  transition: transform 0.3s;
+}
+
+.language-item:hover {
+  transform: scale(1.05);
+}
+
+.technologies-icon {
+  width: 80px; /* Large icon size */
+  height: auto;
+}
+
+.tech-icon {
+  width: 40px; /* Technology icon size */
+  height: auto;
+  margin-top: 5px; /* Space between technology icons */
 }
 
 #about {
