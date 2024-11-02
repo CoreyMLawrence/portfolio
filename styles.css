@@ -379,6 +379,7 @@ nav ul li a:hover {
 .card-link {
   text-decoration: none;
   color: var(--text);
+  transition: transform 0.3s;
 }
 
 .card-link:hover {
@@ -415,6 +416,10 @@ nav ul li a:hover {
 
 .language-item:hover {
   transform: scale(1.05);
+}
+
+.language-item h3 {
+  color: var(--gray);
 }
 
 .technologies-icon {
