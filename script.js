@@ -172,6 +172,11 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power2.out',
   });
 
+  let stagger = 0.03;
+  if (window.innerWidth < 768) {
+    stagger = 0.1;
+  }
+
   // Elastic entrance for all language items together
   gsap.from('.language-item', {
     scrollTrigger: {
@@ -182,8 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
     duration: 2,
     y: 200,
     opacity: 0,
-    ease: 'elastic.out(1, 0.85)', // Smooth elastic bounce
-    stagger: 0.02, // slightly staggered
+    ease: 'elastic.out(1, 1.9)', // Smooth elastic bounce
+    stagger: stagger, // slightly staggered
   });
   //
   //
