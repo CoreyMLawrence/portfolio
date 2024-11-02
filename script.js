@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
     duration: 2,
     y: 100,
     opacity: 0,
-    ease: 'elastic.out(1, 0.75)', // Smooth elastic bounce
+    ease: 'elastic.out(1, 0.5)', // Smooth elastic bounce
     stagger: 0, // All items animate together
   });
   //
