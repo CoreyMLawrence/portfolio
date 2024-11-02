@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
     y: 200,
     opacity: 0,
     ease: 'elastic.out(1, 0.85)', // Smooth elastic bounce
-    stagger: 0.015, // slightly staggered
+    stagger: 0.02, // slightly staggered
   });
   //
   //
