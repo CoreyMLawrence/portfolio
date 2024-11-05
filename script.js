@@ -315,8 +315,8 @@ document.addEventListener('DOMContentLoaded', function () {
         case '#about':
           customOffset = 80; // Offset for About
           break;
-        case '#specialties':
-          customOffset = -40; // Offset for Specialties
+        case '#expertise':
+          customOffset = 10; // Offset for Specialties
           break;
       }
 

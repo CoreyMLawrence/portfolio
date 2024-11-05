@@ -31,27 +31,31 @@ document.addEventListener('DOMContentLoaded', function () {
   gsap.from('.subheadline', {
     duration: 1,
     opacity: 0,
+    y: 20,
     delay: 0.6,
     ease: 'power3.out',
   });
   gsap.to('.subheadline', {
     duration: 1,
     opacity: 1,
+    y: 0,
     delay: 0.6,
     ease: 'power3.out',
   });
 
   gsap.from('.hero .cta', {
-    duration: 1,
+    duration: 0.8,
     opacity: 0,
+    y: 20,
     delay: 0.6,
-    ease: 'power3.out',
+    ease: 'power1.out',
   });
   gsap.to('.hero .cta', {
-    duration: 1,
+    duration: 0.8,
     opacity: 1,
+    y: 0,
     delay: 0.6,
-    ease: 'power3.out',
+    ease: 'power1.out',
   });
   let padding;
   let paddingStart;

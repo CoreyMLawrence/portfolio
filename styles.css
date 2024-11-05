@@ -394,16 +394,15 @@ nav ul li a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 20px;
+  padding: 50px;
   gap: 1em;
-  width: 80%;
+  width: 100%;
   max-width: calc(1500px);
 }
 
 @media screen and (max-width: 1500px) {
   .languages-container {
     padding: 0 3%;
-    width: 100%;
   }
 }
 
@@ -556,7 +555,7 @@ nav ul li a:hover {
   border-radius: 30px;
   text-decoration: none;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s;
 }
 
 .cta:hover {
