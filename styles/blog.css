@@ -161,7 +161,7 @@ button.prism-copy-button:hover {
 /* Style h3 headings */
 .blog-post h3 {
   font-size: 2rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   line-height: 1.4;
 }
@@ -283,11 +283,12 @@ button.prism-copy-button:hover {
 
 .data-type-icon[data-type='Symbol'] .icon-text {
   transition: transform 0.3s;
+  font-size: 1.4rem;
 }
 
 .data-type-icon[data-type='Object'] {
   background: linear-gradient(135deg, #ffd60a, #ff9f0a);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 }
 
 .data-type-icon[data-type='Object']:hover .icon-text {
@@ -308,12 +309,13 @@ button.prism-copy-button:hover {
 }
 
 .data-type-icon[data-type='Function'] .icon-text {
-  font-style: italic;
+  font-size: 1.4rem;
 }
 
 .data-type-icon[data-type='Function']:hover .icon-text {
   font-size: 1rem !important;
   padding: 1rem;
+  font-style: italic;
 }
 
 .data-type-icon[data-type='Array'] .icon-text {
@@ -439,10 +441,14 @@ button.prism-copy-button:hover {
     font-size: 1rem;
   }
 
+  #post-intro {
+    padding: 0 1rem;
+  }
+
   /* Style question cards */
   .question-card {
     margin-bottom: 3rem;
-    padding: 1rem;
+    padding: 1.25rem;
     border-bottom: 1px solid #ddd;
   }
 

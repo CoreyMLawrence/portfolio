@@ -103,16 +103,15 @@
 
     <main class="blog-post">
       <article class="content">
-        <div class="meta" id="post-meta">
-          <time datetime="2024-11-13">Nov 13, 2024</time>
-          <span class="reading-time">7 min read</span>
-        </div>
-
-        <h1 id="post-title">
-          10 Essential JavaScript Interview Questions for Beginners
-        </h1>
-
         <div class="intro" id="post-intro">
+          <div class="meta" id="post-meta">
+            <time datetime="2024-11-13">Nov 13, 2024</time>
+            <span class="reading-time">7 min read</span>
+          </div>
+          <h1 id="post-title">
+            10 Essential JavaScript Interview Questions for Beginners
+          </h1>
+
           <p>
             For new developers, that first JavaScript interview can feel like a
             big leap. You’re excited, maybe a little nervous, and ready to
@@ -120,11 +119,10 @@
             together the top JavaScript questions and clear, memorable answers
             so you’ll walk into your interview ready to shine.
           </p>
+          <h2>Core JavaScript Questions Every Beginner Should Know</h2>
         </div>
 
         <section class="questions" id="post-questions">
-          <h2>Core JavaScript Questions Every Beginner Should Know</h2>
-
           <div class="question-card">
             <h3>1. What are the main data types in JavaScript?</h3>
             <div class="answer">
@@ -138,16 +136,16 @@
               <!-- Add interactive icons -->
               <div class="interactive-icons">
                 <div class="data-type-icon" data-type="String">
-                  <span class="icon-text">"A"</span>
+                  <span class="icon-text">String</span>
                 </div>
                 <div class="data-type-icon" data-type="Number">
-                  <span class="icon-text">123</span>
+                  <span class="icon-text">Number</span>
                 </div>
                 <div class="data-type-icon" data-type="BigInt">
                   <span class="icon-text">BigInt</span>
                 </div>
                 <div class="data-type-icon" data-type="Boolean">
-                  <span class="icon-text">true</span>
+                  <span class="icon-text">Boolean</span>
                 </div>
                 <div class="data-type-icon" data-type="Null">
                   <span class="icon-text">null</span>
@@ -156,16 +154,16 @@
                   <span class="icon-text">undef</span>
                 </div>
                 <div class="data-type-icon" data-type="Symbol">
-                  <span class="icon-text">Sym</span>
+                  <span class="icon-text">Symbol</span>
                 </div>
                 <div class="data-type-icon" data-type="Object">
-                  <span class="icon-text">{...}</span>
+                  <span class="icon-text">Object</span>
                 </div>
                 <div class="data-type-icon" data-type="Array">
-                  <span class="icon-text">[ ]</span>
+                  <span class="icon-text">Array</span>
                 </div>
                 <div class="data-type-icon" data-type="Function">
-                  <span class="icon-text">fn()</span>
+                  <span class="icon-text">Function</span>
                 </div>
               </div>
               <div class="importance">
@@ -705,15 +703,50 @@ console.log(counter.count);      // undefined</code></pre>
       </article>
     </main>
 
-    <footer>
-      <div class="cta-section">
-        <div class="cta-content">
-          <h2>Ready to start your next project?</h2>
-          <p>Let's work together to bring your ideas to life.</p>
-          <a href="mailto:your@email.com" class="cta-button">Get in Touch</a>
-        </div>
+    <section class="section cta-section" id="contact">
+      <div class="cta-content">
+        <h2>Ready to bring your vision to life?</h2>
+        <p>
+          Let's transform your ideas into digital experiences that captivate and
+          inspire. Together, we'll craft something extraordinary.
+        </p>
       </div>
-    </footer>
+      <div class="connect-links">
+        <a
+          class="connect-button"
+          href="https://linkedin.com/in/corey-lawrence-85621386"
+          target="_blank"
+        >
+          <img src="../../assets/icons/linkedin.svg" alt="LinkedIn" />
+          <div>LinkedIn</div>
+        </a>
+        <a
+          class="connect-button"
+          id="email-button"
+          href="mailto:cmlawrence445@gmail.com"
+        >
+          <div id="email-label-area">
+            <div id="email-label">
+              <img
+                id="email-icon"
+                src="../../assets/icons/email.svg"
+                alt="Email"
+              />
+              Email Me
+            </div>
+            <div id="email-address">cmlawrence445@gmail.com</div>
+          </div>
+        </a>
+        <a
+          class="connect-button"
+          href="https://github.com/CoreyMLawrence"
+          target="_blank"
+        >
+          <img src="../../assets/icons/github.svg" alt="GitHub" />
+          <div>GitHub</div>
+        </a>
+      </div>
+    </section>
     <!-- Include Prism.js scripts at the end of the body -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <!-- Include animations.js at the end of the body -->

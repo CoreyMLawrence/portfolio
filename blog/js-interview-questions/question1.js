@@ -74,16 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
 
       case 'Boolean':
-        // Flip between true and false
-        gsap.to(iconContent, {
-          rotateY: 180,
-          duration: 0.5,
-          onComplete: () => {
-            iconContent.textContent =
-              iconContent.textContent === 'true' ? 'false' : 'true';
-            gsap.set(iconContent, { rotateY: 0 });
-          },
-        });
+        // Flip between true and false continuously using GSAP
+        const flipBoolean = () => {
+          const timeoutId = setTimeout(() => {
+            gsap.to(iconContent, {
+              rotateY: 180,
+              duration: 0.5,
+              onComplete: () => {
+                iconContent.textContent =
+                  iconContent.textContent === 'true' ? 'false' : 'true';
+                gsap.set(iconContent, { rotateY: 0 });
+                flipBoolean();
+              },
+            });
+          }, 500);
+          icon.setAttribute('data-timeout', timeoutId);
+        };
+        flipBoolean();
         break;
 
       case 'Null':
@@ -179,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
 
       case 'Array': {
-        const originalArrayContent = '[   ]';
+        const originalArrayContent = 'Array';
         icon.setAttribute('data-original', originalArrayContent);
         iconContent.innerHTML = '';
         iconContent.classList.add('array-content');
@@ -262,11 +269,16 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
 
       case 'Boolean':
-        iconContent.textContent = 'true';
+        iconContent.textContent = 'Boolean';
+        gsap.killTweensOf(iconContent); // Stop the GSAP animation
+        gsap.set(iconContent, { rotateY: 0 }); // Reset rotation
+        clearTimeout(icon.getAttribute('data-timeout')); // Stop the flipBoolean function
+        icon.removeAttribute('data-timeout');
         break;
 
       case 'Null':
         // Restore original opacity
+        gsap.killTweensOf(iconContent); // Stop any ongoing GSAP animation
         gsap.to(iconContent, {
           opacity: 1,
           duration: 0.3,

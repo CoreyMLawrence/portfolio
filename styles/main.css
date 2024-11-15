@@ -35,7 +35,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 996;
+  z-index: 996 !important;
   height: 60px; /* Adjust as needed */
 }
 
@@ -712,7 +712,7 @@ p {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  z-index: 997;
+  z-index: 999 !important;
   height: calc(100vh + 60px);
   padding-top: 8em;
 }
