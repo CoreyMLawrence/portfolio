@@ -9,24 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial animation sequence
   gsap.set(icons, { opacity: 0, scale: 0.5 });
 
-  // Create scroll-triggered animation
-  icons.forEach((icon, index) => {
-    gsap.to(icon, {
-      scrollTrigger: {
-        trigger: icon,
-        start: 'top bottom',
-        toggleActions: 'play none none reverse',
-      },
-      opacity: 1,
-      scale: 1,
-      duration: 0.5,
-      ease: 'power2.inout',
-      delay: index * 0.05,
-      onComplete: () => {
+  // Create scroll-triggered animation for all icons at once
+  gsap.to(icons, {
+    scrollTrigger: {
+      trigger: icons[0], // Trigger animation when the first icon is in view
+      start: 'top bottom',
+      toggleActions: 'play none none reverse',
+    },
+    opacity: 1,
+    scale: 1,
+    duration: 0.5,
+    ease: 'power2.inout',
+    stagger: 0.05, // Stagger the animation for each icon
+    onComplete: () => {
+      icons.forEach((icon) => {
         icon.classList.add('hover-enabled');
         icon.style.pointerEvents = 'auto';
-      },
-    });
+      });
+    },
   });
 
   function createHoverEffect(icon, type) {
