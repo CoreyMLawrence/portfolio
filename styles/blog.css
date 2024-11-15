@@ -1,0 +1,455 @@
+.blog-post {
+  max-width: 800px;
+  margin: 120px auto 60px;
+  padding: 0 2rem;
+  line-height: 1.8;
+  font-size: 1.125rem;
+  overflow-x: hidden;
+}
+
+.blog-header {
+  margin-bottom: 4rem;
+}
+
+.blog-title {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.blog-meta {
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+
+.blog-image {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.blog-content {
+  font-size: 1.1rem;
+}
+
+.blog-content h2 {
+  font-size: 2rem;
+  margin: 3rem 0 1.5rem;
+}
+
+.blog-content h3 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+}
+
+/* Enhance code block styling */
+pre[class*='language-'] {
+  position: relative;
+  background: #2d2d2d;
+  color: #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 3rem 0;
+  font-size: 1rem;
+  overflow-x: auto;
+}
+
+pre[class*='language-']::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: #6c63ff;
+  color: #fff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+button.prism-copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 5rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button.prism-copy-button:hover {
+  color: #6c63ff;
+}
+
+.answer {
+  color: var(--gray);
+}
+
+.callout {
+  background: var(--light-gray);
+  padding: 2rem;
+  border-radius: 1rem;
+  margin: 2rem 0;
+}
+
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.callout-box {
+  background: var(--light-gray);
+  padding: 1.5rem;
+  border-left: 4px solid var(--primary);
+  border-radius: 0.5rem;
+  margin: 4rem 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.callout-box p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.infographic {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.infographic img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.conclusion {
+  margin-top: 5rem;
+}
+
+.conclusion h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.conclusion p {
+  margin-bottom: 1.75rem;
+}
+
+/* Enhance main heading */
+.blog-post h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+
+/* Style h2 headings */
+.blog-post h2 {
+  font-size: 2.5rem;
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+/* Style h3 headings */
+.blog-post h3 {
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+/* Adjust paragraph spacing */
+.blog-post p {
+  margin-bottom: 1.75rem;
+}
+
+/* Style question cards */
+.question-card {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.answer ul {
+  list-style-type: disc;
+  margin-left: 2rem;
+}
+
+/* Emphasize 'Why it's important' sections */
+.importance {
+  margin-top: 1.5rem;
+  padding: 1.5rem 1.5rem 0.2rem 1.5rem;
+  background-color: #f9fafb;
+  border-left: 4px solid var(--primary);
+}
+
+/* Styles for interactive icons */
+.interactive-icons {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 2.5rem 0;
+  width: 100%;
+}
+
+.data-type-icon {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background: var(--light-gray);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --quote-opacity: 0;
+}
+
+.data-type-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.icon-text {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Custom styles for each data type */
+.data-type-icon[data-type='String'] {
+  background: linear-gradient(135deg, #ff9f0a, #ff375f);
+}
+
+.data-type-icon[data-type='String']::before,
+.data-type-icon[data-type='String']::after {
+  content: '"';
+  position: absolute;
+  font-size: 2em;
+  opacity: var(--quote-opacity);
+  transition: opacity 0.3s;
+}
+
+.data-type-icon[data-type='String']::before {
+  left: 20%;
+}
+
+.data-type-icon[data-type='String']::after {
+  right: 20%;
+}
+
+.data-type-icon[data-type='Number'] {
+  background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+}
+
+.data-type-icon[data-type='Boolean'] {
+  background: linear-gradient(135deg, #ff375f, #ff2d55);
+}
+
+.data-type-icon[data-type='Boolean'] .icon-text {
+  transition: transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.data-type-icon[data-type='Null'] {
+  background: linear-gradient(135deg, #32d74b, #30d158);
+}
+
+.data-type-icon[data-type='Undefined'] {
+  background: linear-gradient(135deg, #5e5ce6, #5856d6);
+}
+
+.data-type-icon[data-type='Undefined'] .icon-text {
+  font-family: serif;
+  font-style: italic;
+}
+
+.data-type-icon[data-type='Symbol'] {
+  background: linear-gradient(135deg, #bf5af2, #af52de);
+}
+
+.data-type-icon[data-type='Symbol'] .icon-text {
+  transition: transform 0.3s;
+}
+
+.data-type-icon[data-type='Object'] {
+  background: linear-gradient(135deg, #ffd60a, #ff9f0a);
+  font-size: 1.8rem;
+}
+
+.data-type-icon[data-type='Object']:hover .icon-text {
+  font-size: 1.2rem !important;
+}
+
+.data-type-icon[data-type='BigInt'] {
+  background: linear-gradient(135deg, #8e8e93, #aeaeb2);
+}
+
+.data-type-icon[data-type='BigInt']:hover {
+  z-index: 20;
+}
+
+/* Custom styles for the 'Function' data type */
+.data-type-icon[data-type='Function'] {
+  background: linear-gradient(135deg, #ff9f0a, #ff375f);
+}
+
+.data-type-icon[data-type='Function'] .icon-text {
+  font-style: italic;
+}
+
+.data-type-icon[data-type='Function']:hover .icon-text {
+  font-size: 1rem !important;
+  padding: 1rem;
+}
+
+.data-type-icon[data-type='Array'] .icon-text {
+  font-size: 1.5rem;
+}
+
+.array-bracket-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.array-bracket {
+  color: #ffffff;
+  font-size: 1.5em;
+}
+
+.array-content {
+  font-size: 1.3em;
+  color: #ffffff;
+}
+
+.icon-text {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  width: max-content;
+  max-width: 200px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0 8px;
+  border-style: solid;
+  border-color: var(--text) transparent transparent transparent;
+}
+
+.animation-wrapper {
+  margin: 1rem 0; /* Ensure proper spacing */
+  text-align: center;
+}
+
+.equality-animation {
+  font-size: 1.5rem;
+  margin: 0.5rem 0; /* Adjust margin to reduce space */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.result {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-color: #4ecdc4;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 10rem;
+  margin: 0 auto;
+}
+
+#strict-result {
+  background-color: #ff6b6b !important;
+}
+
+.result-text {
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .blog-post {
+    margin-top: 100px;
+    padding: 0 0.75rem;
+  }
+
+  .blog-title {
+    font-size: 2rem;
+  }
+
+  pre[class*='language-'] {
+    font-size: 0.9rem;
+  }
+
+  .blog-post h1 {
+    font-size: 2.4rem;
+  }
+
+  .blog-post h2 {
+    font-size: 2rem;
+  }
+
+  .blog-post h3 {
+    font-size: 1.6rem;
+  }
+
+  .blog-post p {
+    font-size: 1rem;
+  }
+
+  /* Style question cards */
+  .question-card {
+    margin-bottom: 3rem;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .answer ul {
+    list-style-type: none;
+    margin-left: 0rem;
+  }
+}
+
+/* Ensure media queries are at the end of the file */

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Preparing for your first JavaScript interview? Discover the top 10 beginner-friendly questions and answers to build confidence and ace your coding interview!"
+    />
+    <meta
+      name="keywords"
+      content="JavaScript, interview questions, beginner, coding interview, programming, web development"
+    />
+    <meta name="author" content="Corey Lawrence" />
+    <link
+      rel="canonical"
+      href="https://yourdomain.com/js-interview-questions/index.html"
+    />
+
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="10 Essential JavaScript Interview Questions for Beginners (With Answers to Help You Stand Out!)"
+    />
+    <meta
+      property="og:description"
+      content="Preparing for your first JavaScript interview? Discover the top 10 beginner-friendly questions and answers to build confidence and ace your coding interview!"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://yourdomain.com/js-interview-questions/index.html"
+    />
+    <meta
+      property="og:image"
+      content="https://coreylawrence.me/assets/images//js-interview-questions.webp"
+    />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "10 Essential JavaScript Interview Questions for Beginners",
+        "description": "Preparing for your first JavaScript interview? Discover the top 10 beginner-friendly questions and answers to build confidence and ace your coding interview!",
+        "author": {
+          "@type": "Person",
+          "name": "Corey Lawrence"
+        },
+        "datePublished": "2024-11-14",
+        "image": "https://coreylawrence.me/assets/images//js-interview-questions.webp"
+      }
+    </script>
+    <title>
+      10 Essential JavaScript Interview Questions for Beginners (With Answers to
+      Help You Stand Out!)
+    </title>
+    <link rel="stylesheet" href="../../styles/main.css" />
+    <link rel="stylesheet" href="../../styles/blog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
+    ></script>
+    <link rel="icon" type="image/png" href="../../favicon.png" sizes="32x32" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="../../favicon-16x16.png"
+      sizes="16x16"
+    />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="/" aria-label="Corey Lawrence Home">Corey Lawrence</a>
+        </div>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#expertise">Expertise</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#projects">Projects</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <div class="email-button-container">
+          <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+            >Email Me</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <main class="blog-post">
+      <article class="content">
+        <div class="meta" id="post-meta">
+          <time datetime="2024-11-13">Nov 13, 2024</time>
+          <span class="reading-time">7 min read</span>
+        </div>
+
+        <h1 id="post-title">
+          10 Essential JavaScript Interview Questions for Beginners
+        </h1>
+
+        <div class="intro" id="post-intro">
+          <p>
+            For new developers, that first JavaScript interview can feel like a
+            big leap. You’re excited, maybe a little nervous, and ready to
+            showcase your skills. To make sure you’re fully prepped, I’ve put
+            together the top JavaScript questions and clear, memorable answers
+            so you’ll walk into your interview ready to shine.
+          </p>
+        </div>
+
+        <section class="questions" id="post-questions">
+          <h2>Core JavaScript Questions Every Beginner Should Know</h2>
+
+          <div class="question-card">
+            <h3>1. What are the main data types in JavaScript?</h3>
+            <div class="answer">
+              <p><strong>Answer:</strong> JavaScript has several data types:</p>
+              <p
+                style="font-style: italic; font-size: 0.75rem; margin-top: 10px"
+              >
+                Hover or touch each icon to find out more. Click or touch again
+                to see a longer description.
+              </p>
+              <!-- Add interactive icons -->
+              <div class="interactive-icons">
+                <div class="data-type-icon" data-type="String">
+                  <span class="icon-text">"A"</span>
+                </div>
+                <div class="data-type-icon" data-type="Number">
+                  <span class="icon-text">123</span>
+                </div>
+                <div class="data-type-icon" data-type="BigInt">
+                  <span class="icon-text">BigInt</span>
+                </div>
+                <div class="data-type-icon" data-type="Boolean">
+                  <span class="icon-text">true</span>
+                </div>
+                <div class="data-type-icon" data-type="Null">
+                  <span class="icon-text">null</span>
+                </div>
+                <div class="data-type-icon" data-type="Undefined">
+                  <span class="icon-text">undef</span>
+                </div>
+                <div class="data-type-icon" data-type="Symbol">
+                  <span class="icon-text">Sym</span>
+                </div>
+                <div class="data-type-icon" data-type="Object">
+                  <span class="icon-text">{...}</span>
+                </div>
+                <div class="data-type-icon" data-type="Array">
+                  <span class="icon-text">[ ]</span>
+                </div>
+                <div class="data-type-icon" data-type="Function">
+                  <span class="icon-text">fn()</span>
+                </div>
+              </div>
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Knowing data types helps
+                  you write accurate, efficient code and shows you’re solid on
+                  JavaScript fundamentals.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>2. What’s the difference between == and ===?</h3>
+            <div class="answer">
+              <strong>Answer:</strong>
+              <ul>
+                <li>
+                  <code
+                    style="color: #007aff; font-weight: 700; font-size: 1.5rem"
+                    >==</code
+                  >
+                  checks if values are equal, even if they are different types
+                  (like <code>5 == '5'</code> is true).
+                </li>
+                <li>
+                  <code
+                    style="color: #007aff; font-weight: 700; font-size: 1.5rem"
+                    >===</code
+                  >
+                  checks if values and types are the same (like
+                  <code>5 === '5'</code> is false).
+                </li>
+              </ul>
+              <div class="animation-wrapper">
+                <div class="equality-animation" id="loose-equality">
+                  <code>5 == "5"</code>
+                </div>
+                <div class="result" id="loose-result">
+                  <span class="result-text">true</span>
+                </div>
+                <div class="equality-animation" id="strict-equality">
+                  <code>5 === "5"</code>
+                </div>
+                <div class="result" id="strict-result">
+                  <span class="result-text">false</span>
+                </div>
+              </div>
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Using
+                  <code>===</code> reduces errors by enforcing strict
+                  comparisons, which is great for catching bugs early.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>3. Explain let, const, and var</h3>
+            <div class="answer">
+              <strong>Answer:</strong>
+              <ul>
+                <li>
+                  <code style="color: #007aff; font-weight: 700">let</code> and
+                  <code style="color: #007aff; font-weight: 700">const</code>
+                  are block-scoped. This means they only exist within the block
+                  (like inside curly braces <code>{}</code>) where they are
+                  defined. Variables created using <code>"let"</code> can be
+                  changed, but those that use <code>"const"</code> cannot.
+                  <pre><code class="language-javascript">// Example of block-scoped variables with let and const
+{
+  let x = 10;
+  const y = 20;
+  
+  console.log(x); // 10: 'x' is accessible inside the block
+  console.log(y); // 20: 'y' is accessible inside the block
+}
+
+// Outside the block
+console.log(x); // Error: x is not defined
+console.log(y); // Error: y is not defined
+
+// Redeclaring variables inside the same scope 
+let b = 1;
+let b = 2; // Error: Identifier 'b' has already been declared
+
+// Redeclaring const inside the same scope
+const c = 1;
+const c = 2; // Error: Identifier 'c' has already been declared                   
+</code></pre>
+                  <br />
+                </li>
+                <li>
+                  <code style="color: #007aff; font-weight: 700">var</code> is
+                  function-scoped. This means it exists within the function
+                  where it is defined. It can be redeclared, which can cause
+                  issues in larger programs.
+                  <pre><code class="language-javascript">// Example of function-scoped variables with var
+function exampleVar() {
+  var z = 30;
+  console.log(z); // 30: 'z' is accessible inside the function
+}
+exampleVar();
+
+// Outside the function
+console.log(z); // Error: z is not defined
+
+// Redeclaring variables with var
+var a = 1;
+var a = 2; // Allowed: 'var' allows redeclaration
+console.log(a); // 2: The second declaration overwrites the first one</code></pre>
+                </li>
+              </ul>
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Understanding scope and
+                  variable declarations is crucial to organizing code
+                  effectively.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>
+              4. What is an array in JavaScript? How is it different from an
+              object?
+            </h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> An
+                <span style="color: #007aff; font-weight: 700">array</span>
+                is an ordered list of values accessed by numerical indexes
+                (starting at 0). Use arrays when you need to store and process
+                items in a specific sequence.
+              </p>
+              <p>
+                An
+                <span style="color: #007aff; font-weight: 700">object</span> is
+                a collection of key-value pairs, where keys are strings that
+                describe the data they contain. Use objects when you need to
+                represent entities with named properties.
+              </p>
+              <pre><code class="language-javascript">// Array: ordered list with numeric indexes
+let fruits = ['apple', 'banana'];
+
+// Object: named properties
+let person = { name: 'Corey', age: 32 };</code></pre>
+              <div class="importance">
+                <p>
+                  <strong>Why it's important:</strong> Arrays excel at managing
+                  ordered lists (like items in a shopping cart), while objects
+                  are perfect for structured data (like user profiles). Knowing
+                  when to use each makes your code more efficient and easier to
+                  maintain.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>5. What are the different types of functions in JavaScript?</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> In JavaScript, functions come in
+                several types, each with its own syntax and use cases. The main
+                types of functions are:
+              </p>
+              <ul>
+                <li>
+                  <strong>Function Declarations:</strong> These are the most
+                  common functions, defined with the 'function' keyword.
+                </li>
+                <li>
+                  <strong>Function Expressions:</strong> Functions that are
+                  assigned to variables, can be anonymous or named.
+                </li>
+                <li>
+                  <strong>Arrow Functions:</strong> A shorter syntax for writing
+                  function expressions, using the '=>' arrow notation.
+                </li>
+                <li>
+                  <strong>Anonymous Functions:</strong> Functions without a
+                  name, typically used as arguments or in callbacks.
+                </li>
+                <li>
+                  <strong
+                    >Immediately Invoked Function Expressions (IIFE):</strong
+                  >
+                  A function that is defined and invoked immediately after
+                  creation, often used for creating local scopes.
+                </li>
+              </ul>
+              <br />
+              <h4>Examples:</h4>
+              <pre><code class="language-javascript">// Function Declaration
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+// Function Expression
+const square = function(x) {
+    return x * x;
+};
+
+// Arrow Function
+const add = (a, b) => a + b;
+
+// Anonymous Function
+setTimeout(function() {
+    console.log("This runs after 1 second");
+}, 1000);
+
+// IIFE (Immediately Invoked Function Expression)
+(function() {
+    console.log("I am executed immediately!");
+})();
+                </code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Understanding the
+                  different types of functions allows you to write more concise,
+                  flexible, and modular code. Each type has its use case, so
+                  knowing when and how to use them is essential for effective
+                  JavaScript programming.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>6. How does JavaScript handle asynchronous programming?</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> JavaScript runs on a single thread,
+                meaning it can only do one thing at a time. However,
+                asynchronous programming allows JavaScript to perform tasks like
+                loading data or waiting for timers without blocking other
+                operations. It achieves this using techniques like callbacks,
+                promises, and `async/await`.
+              </p>
+              <br />
+              <h4>1. Using Callbacks</h4>
+              <p>
+                Callbacks are functions passed into other functions to be
+                executed later. They allow JavaScript to continue running other
+                code while waiting for something to finish.
+              </p>
+              <pre><code class="language-javascript">// Example using a callback
+function fetchData(callback) {
+  setTimeout(() => {
+    callback("Data fetched");
+  }, 1000);
+}
+
+fetchData((data) => {
+  console.log(data); // "Data fetched" after 1 second
+});
+                </code></pre>
+              <br />
+              <h4>2. Using Promises</h4>
+              <p>
+                Promises are objects that represent the eventual completion (or
+                failure) of an asynchronous operation. You can chain `.then()`
+                to handle the result once it's ready.
+              </p>
+              <pre><code class="language-javascript">// Example using a Promise
+function fetchDataPromise() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Data fetched");
+    }, 1000);
+  });
+}
+
+fetchDataPromise().then((data) => {
+  console.log(data); // "Data fetched" after 1 second
+});
+                </code></pre>
+              <br />
+              <h4>3. Using Async/Await</h4>
+              <p>
+                `async/await` is a more modern and cleaner way to handle async
+                code. It allows you to write asynchronous code that looks like
+                regular, synchronous code. `async` functions return a promise,
+                and `await` pauses the execution until the promise is resolved.
+              </p>
+              <pre><code class="language-javascript">
+// Example using async/await
+async function fetchDataAsync() {
+  const data = await fetchDataPromise();
+  console.log(data); // "Data fetched" after 1 second
+}
+
+fetchDataAsync();
+                </code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Asynchronous programming
+                  is crucial for building fast, responsive web applications. It
+                  allows tasks like fetching data from a server, waiting for
+                  user input, or handling timers without freezing or blocking
+                  the rest of the app. This is especially important when working
+                  with APIs or performing actions that take time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>7. What’s the difference between null and undefined?</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> In JavaScript, both `null` and
+                `undefined` represent the absence of a value, but they are used
+                in different contexts:
+              </p>
+
+              <ul>
+                <li>
+                  <code
+                    ><span style="color: #007aff; font-weight: 700"
+                      >undefined</span
+                    ></code
+                  >: This means a variable has been declared, but it hasn’t been
+                  assigned a value yet. It’s the default value JavaScript gives
+                  to variables that are declared but not initialized.
+                </li>
+                <li>
+                  <code
+                    ><span style="color: #007aff; font-weight: 700"
+                      >null</span
+                    ></code
+                  >: This is an intentional assignment of "no value" to a
+                  variable. It explicitly represents a lack of value and is
+                  often used to indicate that a variable should be empty or
+                  cleared.
+                </li>
+              </ul>
+
+              <h4>Example:</h4>
+              <pre><code class="language-javascript">// undefined example
+let myVar;
+console.log(myVar); //undefined: variable is declared but not assigned a value
+// null example
+let myObject = null;
+console.log(myObject); // null: explicitly set to indicate no value
+        </code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it’s important:</strong> Understanding the
+                  difference between 'null' and 'undefined' helps you avoid bugs
+                  and makes your code more predictable. For example, if you
+                  expect a variable to be explicitly empty, using 'null' is a
+                  clear choice, while 'undefined' can signal that something is
+                  missing or not yet initialized.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>8. What is hoisting in JavaScript?</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> Hoisting is when JavaScript
+                automatically moves your function and variable declarations to
+                the top of their scope before running the code. Think of it like
+                JavaScript "lifting" these declarations up. However, only the
+                declarations move up, not the values you assign to variables.
+              </p>
+
+              <h4>Examples:</h4>
+              <pre><code class="language-javascript">// Functions are fully hoisted - this works!
+sayHello(); // Outputs: "Hi there!"
+
+function sayHello() {
+  console.log("Hi there!");
+}
+
+// Variables declared with 'var' are hoisted, but not their values
+console.log(message); // undefined (not an error!)
+var message = "Hello";
+
+// Variables with 'let' and 'const' are hoisted but not initialized
+console.log(name); // Error: Cannot access 'name' before initialization
+let name = "Alex";</code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it's important:</strong> Understanding hoisting
+                  helps you avoid common bugs in your code. It's best practice
+                  to declare your variables at the top of their scope and your
+                  functions before you use them - this makes your code easier to
+                  read and maintain.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <h3>9. What are the most common array methods in JavaScript?</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> JavaScript arrays have several built-in
+                methods that help you manipulate data. The most commonly used
+                ones are:
+              </p>
+              <ul>
+                <li>
+                  <code>map()</code>: Creates a new array by transforming each
+                  element
+                </li>
+                <li>
+                  <code>filter()</code>: Creates a new array with elements that
+                  pass a test
+                </li>
+                <li>
+                  <code>reduce()</code>: Reduces an array to a single value
+                </li>
+                <li>
+                  <code>push()/pop()</code>: Add/remove elements from the end
+                </li>
+                <li>
+                  <code>forEach()</code>: Executes a function on each element
+                </li>
+              </ul>
+
+              <h4>Examples:</h4>
+              <pre><code class="language-javascript">const numbers = [1, 2, 3, 4, 5];
+
+// map(): double each number
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+// filter(): get even numbers
+const evens = numbers.filter(num => num % 2 === 0);
+console.log(evens); // [2, 4]
+
+// reduce(): sum all numbers
+const sum = numbers.reduce((total, num) => total + num, 0);
+console.log(sum); // 15
+
+// forEach(): log each number
+numbers.forEach(num => console.log(num));</code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it's important:</strong> Array methods are
+                  essential for data manipulation in JavaScript. They provide
+                  clean, readable alternatives to writing loops manually and are
+                  used extensively in real-world applications. Understanding
+                  these methods shows you can work efficiently with data
+                  structures.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="question-card">
+            <h3>10. Explain closures in JavaScript</h3>
+            <div class="answer">
+              <p>
+                <strong>Answer:</strong> A closure happens when a function
+                "remembers" the variables from its outer scope even after the
+                outer function has finished running. Think of it like creating a
+                secure bubble around some data that can only be accessed by the
+                functions you define.
+              </p>
+
+              <h4>Real-world Example:</h4>
+              <pre><code class="language-javascript">// Create a counter that can't be modified from outside
+function createCounter() {
+  let count = 0;  // This variable is private and protected
+  
+  return {
+    increment: function() {
+      count++;
+      return count;
+    },
+    decrement: function() {
+      count--;
+      return count;
+    },
+    getCount: function() {
+      return count;
+    }
+  };
+}
+
+const counter = createCounter();
+console.log(counter.getCount());  // 0
+counter.increment();              // 1
+counter.increment();              // 2
+counter.decrement();             // 1
+
+// The 'count' variable can't be accessed directly:
+console.log(count);              // ReferenceError: count is not defined
+console.log(counter.count);      // undefined</code></pre>
+
+              <div class="importance">
+                <p>
+                  <strong>Why it's important:</strong> Closures are a powerful
+                  way to create private variables and maintain state in
+                  JavaScript. They're used extensively in modern JavaScript for:
+                </p>
+                <ul>
+                  <li>
+                    Data privacy: Keeping variables safe from outside
+                    interference
+                  </li>
+                  <li>
+                    State management: Maintaining values between function calls
+                  </li>
+                  <li>
+                    Module design: Creating self-contained code with private and
+                    public parts
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="conclusion" id="post-conclusion">
+          <h2>Wrapping It Up</h2>
+          <p>
+            Mastering JavaScript is just the beginning—what truly matters is how
+            you use that knowledge to solve real problems and create meaningful
+            experiences for users. Whether it's handling async code or
+            structuring data, always think about the impact on the end user.
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <footer>
+      <div class="cta-section">
+        <div class="cta-content">
+          <h2>Ready to start your next project?</h2>
+          <p>Let's work together to bring your ideas to life.</p>
+          <a href="mailto:your@email.com" class="cta-button">Get in Touch</a>
+        </div>
+      </div>
+    </footer>
+    <!-- Include Prism.js scripts at the end of the body -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Include animations.js at the end of the body -->
+    <script src="./question1.js"></script>
+    <script src="./question2.js"></script>
+    <script src="./question3.js"></script>
+    <script src="./animations.js"></script>
+  </body>
+</html>

@@ -58,7 +58,7 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
 
     <!-- Preload Critical Resources -->
     <link rel="preload" as="image" href="/CoreyLawrence.webp" />
@@ -87,8 +87,9 @@
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
     ></script>
-    <script src="/top.js"></script>
-    <script defer src="/script.js"></script>
+    <script src="./scripts/top.js"></script>
+    <script defer src="./scripts/script.js"></script>
+    <script src="./blog/js-interview-questions/animations.js"></script>
   </head>
 
   <body>
@@ -139,7 +140,7 @@
             <img
               class="expertise-icon"
               id="full-stack-icon"
-              src="full-stack.svg"
+              src="./assets/icons/full-stack.svg"
               alt="AI Interface Design"
             />
             <h3>AI Interface Design</h3>
@@ -153,7 +154,7 @@
           <div class="expertise-card">
             <img
               class="expertise-icon"
-              src="graph.svg"
+              src="./assets/icons/graph.svg"
               alt="Business-Driven Engineering"
             />
             <h3>Business-Driven Engineering</h3>
@@ -167,7 +168,7 @@
           <div class="expertise-card">
             <img
               class="expertise-icon"
-              src="user.svg"
+              src="./assets/icons/user.svg"
               alt="Human-Centered Systems"
             />
             <h3>Human-Centered Systems</h3>
@@ -186,7 +187,7 @@
           <img
             class="technologies-icon"
             id="javascript-icon"
-            src="language-javascript.svg"
+            src="./assets/icons/language-javascript.svg"
             alt="JavaScript"
           />
           <h3>JavaScript</h3>
@@ -195,7 +196,7 @@
           <img
             class="technologies-icon"
             id="typescript-icon"
-            src="language-typescript.svg"
+            src="./assets/icons/language-typescript.svg"
             alt="TypeScript"
           />
           <h3>TypeScript</h3>
@@ -204,7 +205,7 @@
           <img
             class="technologies-icon"
             id="react-icon"
-            src="language-react.svg"
+            src="./assets/icons/language-react.svg"
             alt="React"
           />
           <h3>React</h3>
@@ -213,7 +214,7 @@
           <img
             class="technologies-icon"
             id="node-icon"
-            src="language-node.svg"
+            src="./assets/icons/language-node.svg"
             alt="Node.js"
           />
           <h3>Node.js</h3>
@@ -222,7 +223,7 @@
           <img
             class="technologies-icon"
             id="html-icon"
-            src="language-html.svg"
+            src="./assets/icons/language-html.svg"
             alt="HTML5"
           />
           <h3>HTML5</h3>
@@ -231,7 +232,7 @@
           <img
             class="technologies-icon"
             id="css-icon"
-            src="css.svg"
+            src="./assets/icons/language-css.svg"
             alt="CSS3"
           />
           <h3>CSS3</h3>
@@ -240,7 +241,7 @@
           <img
             class="technologies-icon"
             id="python-icon"
-            src="language-python.svg"
+            src="./assets/icons/language-python.svg"
             alt="Python"
           />
           <h3>Python</h3>
@@ -249,7 +250,7 @@
           <img
             class="technologies-icon"
             id="cpp-icon"
-            src="language-cpp.svg"
+            src="./assets/icons/language-cpp.svg"
             alt="C++"
           />
           <h3>C++</h3>
@@ -438,7 +439,7 @@
         </div>
         <div class="headshot">
           <img
-            src="./CoreyLawrence.webp"
+            src="./assets/images/CoreyLawrence.webp"
             alt="Corey Lawrence Software Engineer"
           />
         </div>
@@ -457,7 +458,7 @@
           <div class="project-card">
             <img
               class="project-image"
-              src="comfort-airlines.webp"
+              src="./assets/images/comfort-airlines.webp"
               alt="Comfort Airlines Aircraft Simulator"
             />
             <h3>Comfort Airlines: Aircraft Simulator</h3>
@@ -471,13 +472,21 @@
               real-world aviation logistics.
             </p>
             <div class="languages">
-              <img class="language-icon" src="python.svg" alt="Python" />
               <img
                 class="language-icon"
-                src="javascript-plain.svg"
+                src="./assets/icons/python.svg"
+                alt="Python"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/javascript-plain.svg"
                 alt="JavaScript"
               />
-              <img class="language-icon" src="html.svg" alt="HTML" />
+              <img
+                class="language-icon"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
             </div>
           </div>
         </a>
@@ -491,7 +500,7 @@
           <div class="project-card">
             <img
               class="project-image"
-              src="devolveAI.webp"
+              src="./assets/images/devolveAI.webp"
               alt="DevolveAI Project"
             />
             <h3>DevolveAI: AI-Powered Decompiler</h3>
@@ -506,17 +515,25 @@
             <div class="languages">
               <img
                 class="language-icon"
-                src="ai.svg"
+                src="./assets/icons/ai.svg"
                 style="width: 50px; margin: -12px"
                 alt="Artificial Intelligence"
               />
               <img
                 class="language-icon"
-                src="javascript-plain.svg"
+                src="./assets/icons/javascript-plain.svg"
                 alt="JavaScript"
               />
-              <img class="language-icon" src="html.svg" alt="HTML" />
-              <img class="language-icon" src="bash.svg" alt="Bash" />
+              <img
+                class="language-icon"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/bash.svg"
+                alt="Bash"
+              />
             </div>
           </div>
         </a>
@@ -529,7 +546,7 @@
           <div class="project-card" id="adventureAI">
             <img
               class="project-image"
-              src="adventureAI.webp"
+              src="./assets/images/adventureAI.webp"
               alt="AdventureAI Game"
             />
             <h3>AdventureAI: Interactive Storytelling</h3>
@@ -544,19 +561,23 @@
             <div class="languages">
               <img
                 class="language-icon"
-                src="ai.svg"
+                src="./assets/icons/ai.svg"
                 style="width: 50px; margin: -12px"
                 alt="Artificial Intelligence"
               />
               <img
                 class="language-icon"
-                src="javascript-plain.svg"
+                src="./assets/icons/javascript-plain.svg"
                 alt="JavaScript"
               />
-              <img class="language-icon" src="html.svg" alt="HTML" />
               <img
                 class="language-icon"
-                src="SQL.svg"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/SQL.svg"
                 alt="SQL"
                 style="width: 50px; margin: -12px -6px"
               />
@@ -572,7 +593,7 @@
           <div class="project-card">
             <img
               class="project-image"
-              src="phonelo.webp"
+              src="./assets/images/phonelo.webp"
               alt="Phonelo Project"
             />
             <h3>Phonelo: University Solutions Product Page</h3>
@@ -585,11 +606,19 @@
               features boost user engagement and conversion rates.
             </p>
             <div class="languages">
-              <img class="language-icon" src="html.svg" alt="HTML" />
-              <img class="language-icon" src="css.svg" alt="CSS" />
               <img
                 class="language-icon"
-                src="javascript-plain.svg"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/css.svg"
+                alt="CSS"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/javascript-plain.svg"
                 alt="JavaScript"
               />
             </div>
@@ -604,7 +633,7 @@
           <div class="project-card">
             <img
               class="project-image"
-              src="CoreyLawrenceMusic.webp"
+              src="./assets/images/CoreyLawrenceMusic.webp"
               alt="Personal Music Player Project"
             />
             <h3>Personal Music Player: Progressive Web App</h3>
@@ -619,11 +648,19 @@
             </p>
 
             <div class="languages">
-              <img class="language-icon" src="html.svg" alt="HTML" />
-              <img class="language-icon" src="css.svg" alt="CSS" />
               <img
                 class="language-icon"
-                src="javascript-plain.svg"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/css.svg"
+                alt="CSS"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/javascript-plain.svg"
                 alt="JavaScript"
               />
             </div>
@@ -633,7 +670,7 @@
           <div class="project-card">
             <img
               class="project-image"
-              src="phonelo-dashboard.webp"
+              src="./assets/images/phonelo-dashboard.webp"
               alt="Audio Speech Detector Project"
             />
             <h3>Audio Wave Speech Player: React Component</h3>
@@ -650,12 +687,24 @@
             <div class="languages">
               <img
                 class="language-icon"
-                src="typescript.svg"
+                src="./assets/icons/typescript.svg"
                 alt="TypeScript"
               />
-              <img class="language-icon" src="react.svg" alt="React" />
-              <img class="language-icon" src="html.svg" alt="HTML" />
-              <img class="language-icon" src="css.svg" alt="CSS" />
+              <img
+                class="language-icon"
+                src="./assets/icons/react.svg"
+                alt="React"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/html.svg"
+                alt="HTML"
+              />
+              <img
+                class="language-icon"
+                src="./assets/icons/css.svg"
+                alt="CSS"
+              />
             </div>
           </div>
         </a>
@@ -676,7 +725,7 @@
           href="https://linkedin.com/in/corey-lawrence-85621386"
           target="_blank"
         >
-          <img src="linkedin.svg" alt="LinkedIn" />
+          <img src="./assets/icons/linkedin.svg" alt="LinkedIn" />
           <div>LinkedIn</div>
         </a>
         <a
@@ -686,7 +735,7 @@
         >
           <div id="email-label-area">
             <div id="email-label">
-              <img id="email-icon" src="email.svg" alt="Email Me" />
+              <img id="email-icon" src="./assets/icons/email.svg" alt="Email" />
               Email Me
             </div>
             <div id="email-address">cmlawrence445@gmail.com</div>
@@ -697,7 +746,7 @@
           href="https://github.com/CoreyMLawrence"
           target="_blank"
         >
-          <img src="github.svg" alt="GitHub" />
+          <img src="./assets/icons/github.svg" alt="GitHub" />
           <div>GitHub</div>
         </a>
       </div>
