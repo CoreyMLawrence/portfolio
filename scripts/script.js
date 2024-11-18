@@ -334,13 +334,13 @@ document.addEventListener('DOMContentLoaded', function () {
       // Updated breakpoints
       switch (targetId) {
         case '#projects':
-          customOffset = -30; // Offset for Projects
+          customOffset = document.innerWidth > 900 ? -30 : -20; // Offset for Projects
           break;
         case '#about':
-          customOffset = 80; // Offset for About
+          customOffset = document.innerWidth > 900 ? 80 : -40; // Offset for About
           break;
         case '#expertise':
-          customOffset = 10; // Offset for Specialties
+          customOffset = document.innerWidth > 900 ? 10 : 50; // Offset for Specialties
           break;
       }
 
