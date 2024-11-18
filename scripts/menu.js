@@ -11,10 +11,12 @@ const MobileMenu = {
   config: {
     closedHeight: '60px',
     openHeight: '330px',
-    animationDelay: 400,
-    transitionDuration: 500,
     closedZIndex: 996,
     openZIndex: 9999,
+    closedBGC: 'rgba(245, 245, 247, .5)',
+    openBGC: 'rgba(245, 245, 247, .75)',
+    animationDelay: 400,
+    transitionDuration: 500,
   },
 
   state: {
@@ -34,6 +36,7 @@ const MobileMenu = {
     // Set initial state
     this.elements.menu.style.height = this.config.closedHeight;
     this.elements.menu.style.zIndex = this.config.closedZIndex;
+    this.elements.menu.style.backgroundColor = this.config.closedBGC;
 
     // Setup GSAP animation timeline
     this.timeline = gsap.timeline({ paused: true });
@@ -92,8 +95,10 @@ const MobileMenu = {
 
     if (newState) {
       this.elements.menu.style.zIndex = this.config.openZIndex;
+      this.elements.menu.style.backgroundColor = this.config.openBGC;
       this.timeline.play();
     } else {
+      this.elements.menu.style.backgroundColor = this.config.closedBGC;
       setTimeout(() => {
         this.elements.menu.style.zIndex = this.config.closedZIndex;
       }, 500);

@@ -30,7 +30,6 @@ body {
 }
 
 header {
-  background-color: rgba(245, 245, 247, 0.5); /* Adjust for transparency */
   position: fixed;
   top: 0;
   left: 0;
@@ -43,7 +42,7 @@ header {
   }
   #mobile-menu {
     height: 60px;
-    transition: height 0.5s;
+    transition: background-color 0.5s, height 0.5s;
     z-index: 996;
   }
 
@@ -88,7 +87,7 @@ header {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 8px;
-    padding: 2em;
+    padding: 2.25em 2em;
     width: 100vw;
     text-align: left;
   }
@@ -119,6 +118,7 @@ header {
   #desktop-menu {
     height: 60px;
     z-index: 996 !important;
+    background-color: rgba(245, 245, 247, 0.5); /* Adjust for transparency */
   }
 }
 
