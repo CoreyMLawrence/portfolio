@@ -25,7 +25,6 @@ const MobileMenu = {
     // Initialize DOM elements
     this.elements = {
       menu: document.querySelector('#mobile-menu'),
-      indicatorUp: document.querySelector('#menu-indicator-up'),
       indicatorDown: document.querySelector('#menu-indicator-down'),
       menuHidden: document.querySelector('#menu-hidden'),
     };
@@ -35,6 +34,16 @@ const MobileMenu = {
     // Set initial state
     this.elements.menu.style.height = this.config.closedHeight;
     this.elements.menu.style.zIndex = this.config.closedZIndex;
+
+    // Setup GSAP animation timeline
+    this.timeline = gsap.timeline({ paused: true });
+    this.timeline.to(this.elements.indicatorDown, {
+      duration: 0.4,
+      rotation: -180,
+      y: -6, // Compensate for rotation offset
+      transformOrigin: '50% 50%',
+      ease: 'power2.inOut',
+    });
 
     // Bind event listeners
     this.bindEvents();
@@ -83,27 +92,12 @@ const MobileMenu = {
 
     if (newState) {
       this.elements.menu.style.zIndex = this.config.openZIndex;
+      this.timeline.play();
     } else {
       setTimeout(() => {
         this.elements.menu.style.zIndex = this.config.closedZIndex;
       }, 500);
-    }
-
-    // Toggle indicators
-    if (newState) {
-      this.elements.indicatorDown.style.opacity = '0';
-      setTimeout(() => {
-        this.elements.indicatorDown.style.display = 'none';
-        this.elements.indicatorUp.style.display = 'block';
-        this.elements.indicatorUp.style.opacity = '1';
-      }, this.config.animationDelay);
-    } else {
-      this.elements.indicatorUp.style.opacity = '0';
-      setTimeout(() => {
-        this.elements.indicatorUp.style.display = 'none';
-        this.elements.indicatorDown.style.display = 'block';
-        this.elements.indicatorDown.style.opacity = '1';
-      }, this.config.animationDelay);
+      this.timeline.reverse();
     }
 
     // Toggle menu content visibility
