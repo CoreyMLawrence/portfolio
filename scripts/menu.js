@@ -44,6 +44,7 @@ const MobileMenu = {
     // Bind methods to this context
     this.toggleMenu = this.toggleMenu.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
 
     // Add click handler for menu itself
     this.elements.menu.addEventListener('click', (e) => {
@@ -53,6 +54,9 @@ const MobileMenu = {
 
     // Handle clicks outside menu
     document.addEventListener('click', this.handleClickOutside);
+
+    // Handle scroll to close menu
+    window.addEventListener('scroll', this.handleScroll);
 
     // Prevent menu from closing when clicking menu items (let them handle their own close)
     this.elements.menuHidden.addEventListener('click', (e) => {
@@ -118,6 +122,12 @@ const MobileMenu = {
       !this.elements.menu.contains(event.target) &&
       !event.target.closest('#menu-hidden')
     ) {
+      this.toggleMenu(false);
+    }
+  },
+
+  handleScroll() {
+    if (this.state.isOpen) {
       this.toggleMenu(false);
     }
   },
