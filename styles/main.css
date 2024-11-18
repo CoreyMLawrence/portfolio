@@ -35,8 +35,90 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 996 !important;
-  height: 60px; /* Adjust as needed */
+}
+
+@media screen and (max-width: 979px) {
+  nav {
+    padding: 0 16px !important;
+  }
+  #mobile-menu {
+    height: 60px;
+    transition: height 0.5s;
+    z-index: 996;
+  }
+
+  #desktop-menu {
+    display: none;
+  }
+
+  #menu-indicator-up,
+  #menu-indicator-down {
+    transition: opacity 0.5s;
+  }
+
+  .menu-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 10em;
+    gap: 5px;
+  }
+
+  .menu-actions img {
+    padding-bottom: 4px;
+  }
+
+  #mobile-menu nav {
+    overflow: hidden;
+    flex-direction: column;
+  }
+
+  #menu-visible {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 12px 0 0 0;
+  }
+
+  #menu-hidden ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 2em;
+    width: 100vw;
+    text-align: left;
+  }
+
+  #menu-hidden li {
+    width: 100%;
+    margin: 0;
+    padding-bottom: 8px;
+    padding-top: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  #menu-hidden a {
+    padding: 0.5em 80vw 0.5em 5px;
+  }
+
+  .full-width {
+    padding-right: 80vw;
+    padding-left: 5px;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  #mobile-menu {
+    display: none;
+  }
+  #desktop-menu {
+    height: 60px;
+    z-index: 996 !important;
+  }
 }
 
 nav {
@@ -60,6 +142,7 @@ nav {
   text-decoration: none;
   font-weight: 900;
   width: 10em;
+  text-wrap: nowrap;
 }
 
 nav ul {
@@ -71,15 +154,6 @@ nav ul {
   margin: 0;
   padding: 0;
   gap: 2rem;
-}
-
-@media screen and (max-width: 900px) {
-  nav ul {
-    display: none;
-  }
-}
-
-nav ul li {
 }
 
 nav ul li a {
@@ -377,6 +451,7 @@ nav ul li a:hover {
   border-radius: 1rem;
   box-sizing: border-box;
   min-width: 350px;
+  border-bottom: 1px solid #ddd;
 }
 
 .card-link {
@@ -624,6 +699,7 @@ nav ul li a:hover {
   border-radius: 1rem;
   min-height: 650px;
   max-width: 380px;
+  border-bottom: 1px solid #ddd;
 }
 
 .project-card:hover {

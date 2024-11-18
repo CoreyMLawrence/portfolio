@@ -54,6 +54,8 @@
         "image": "https://coreylawrence.me/assets/images/js-interview-questions.webp"
       }
     </script>
+    <script src="../../scripts/menu.js"></script>
+
     <title>
       10 Essential JavaScript Interview Questions for Beginners (With Answers to
       Help You Stand Out!)
@@ -86,23 +88,62 @@
     />
   </head>
   <body>
-    <header>
+    <header id="desktop-menu">
       <nav>
         <div class="logo">
-          <a href="/" aria-label="Corey Lawrence Home">Corey Lawrence</a>
+          <a href="./">Corey Lawrence</a>
         </div>
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/#expertise">Expertise</a></li>
           <li><a href="/#about">About</a></li>
           <li><a href="/#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="../">Blog</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li style="border: none"><a href="../">Blog</a></li>
         </ul>
         <div class="email-button-container">
           <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
             >Email Me</a
           >
+        </div>
+      </nav>
+    </header>
+    <header id="mobile-menu">
+      <nav>
+        <div id="menu-visible">
+          <div class="logo">
+            <a style="cursor: default">Corey Lawrence</a>
+          </div>
+          <div class="menu-actions">
+            <img
+              id="menu-indicator-down"
+              src="../../assets/icons/down.svg"
+              alt="Open Menu"
+            />
+            <img
+              id="menu-indicator-up"
+              src="../../assets/icons/up.svg"
+              alt="Close Menu"
+              style="display: none"
+            />
+            <div class="email-button-container">
+              <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+                >Email Me</a
+              >
+            </div>
+          </div>
+        </div>
+        <div id="menu-hidden">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/#expertise">Expertise</a></li>
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li style="border: none">
+              <a style="color: #007aff !important" href="../">Blog</a>
+            </li>
+          </ul>
         </div>
       </nav>
     </header>
