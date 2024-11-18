@@ -103,6 +103,7 @@ header {
 
   #menu-hidden a {
     padding: 0.5em 80vw 0.5em 5px;
+    font-size: 1rem !important;
   }
 
   .full-width {
