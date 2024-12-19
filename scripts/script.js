@@ -214,6 +214,39 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'elastic.out(1, 1.9)', // Smooth elastic bounce
     stagger: stagger, // slightly staggered
   });
+
+  // Animation for #threeD-title
+  gsap.from('#threeD-title', {
+    scrollTrigger: {
+      trigger: '#threeD-title',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1.5,
+    y: 50,
+    z: -200,
+    rotationX: 45,
+    rotationY: 45,
+    opacity: 0,
+    ease: 'power3.out',
+  });
+
+  // Animation for #threeD-title-mobile
+  gsap.from('#threeD-title-mobile', {
+    scrollTrigger: {
+      trigger: '#threeD-title-mobile',
+      start: 'top 85%',
+      toggleActions: 'play none none reverse',
+    },
+    duration: 1.5,
+    y: 50,
+    z: -200,
+    rotationX: 45,
+    rotationY: 45,
+    opacity: 0,
+    ease: 'power3.out',
+  });
+
   //
   //
   //

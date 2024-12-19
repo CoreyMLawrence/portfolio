@@ -744,7 +744,11 @@
         </a>
       </div>
     </section>
-
+    <h2 id="threeD-title-mobile">Immersive WebGL Creations</h2>
+    <section id="threeD" class="section">
+      <h2 id="threeD-title">Immersive WebGL Creations</h2>
+      <div class="app"></div>
+    </section>
     <section class="section cta-section" id="contact">
       <div class="cta-content">
         <h2>Ready to bring your vision to life?</h2>
@@ -785,5 +789,14 @@
         </a>
       </div>
     </section>
+    <script defer type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script defer type="module" src="./scripts/three.js"></script>
   </body>
 </html>
