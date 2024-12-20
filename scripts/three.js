@@ -101,6 +101,7 @@ const controls = setupControls();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let INTERSECTED;
+let autoPan = true;
 
 // Add more lights
 const pointLight = new THREE.PointLight('#ffffff', 1, 100);
@@ -207,14 +208,6 @@ const particlesMaterial = new THREE.PointsMaterial({
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
 
-// Handle mouse move
-function onMouseMove(event) {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
-
-window.addEventListener('mousemove', onMouseMove);
-
 // Handle click event
 function onClick(event) {
   if (INTERSECTED) {
@@ -222,7 +215,10 @@ function onClick(event) {
   }
 }
 
-window.addEventListener('click', onClick);
+window.addEventListener('click', (event) => {
+  onClick(event);
+  autoPan = false;
+});
 
 // Handle window resize
 function handleResize() {
@@ -243,6 +239,10 @@ window.addEventListener('resize', handleResize);
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
+
+  if (autoPan) {
+    scene.rotation.y += 0.005;
+  }
 
   // Update raycaster
   raycaster.setFromCamera(mouse, camera);
