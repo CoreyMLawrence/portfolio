@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     padding: paddingStart,
     opacity: 0,
     ease: 'power3.out',
-    delay: 0.0,
+    delay: 0,
   });
 
   gsap.to('#highlight', {
@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power3.out',
     delay: 1,
   });
+
   window.addEventListener('load', function () {
     // Handle initial URL hash
     if (window.location.hash) {

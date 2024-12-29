@@ -20,7 +20,7 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--light-gray);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -137,12 +137,13 @@ nav {
   min-width: 330px;
 }
 
+.logo div,
 .logo a {
   font-size: 1.5rem;
   color: #333;
   text-decoration: none;
   font-weight: 900;
-  width: 10em;
+  width: 9.5em;
   text-wrap: nowrap;
 }
 
@@ -177,6 +178,8 @@ nav ul li a:hover {
   font-weight: 500;
   transition: background-color 0.3s, transform 0.3s;
   font-size: 1rem; /* Adjust font size for mobile */
+  text-align: center;
+  text-wrap: nowrap;
 }
 
 .cta-mobile:hover {
@@ -210,7 +213,7 @@ nav ul li a:hover {
 }
 
 .hero {
-  background: var(--light-gray);
+  background: white;
   flex-direction: column;
   justify-content: center;
   text-align: center;
@@ -272,6 +275,7 @@ nav ul li a:hover {
   width: 5em;
   text-wrap: nowrap;
   pointer-events: none; /* So it doesn't interfere with text selection */
+  z-index: 2000;
 }
 
 #highlight {
@@ -398,6 +402,7 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column !important;
   padding: 8em 1em 8em;
+  background-color: #ffffff;
 }
 
 .expertise-container {
@@ -662,6 +667,7 @@ nav ul li a:hover {
   overflow-x: hidden;
   padding: 3em 3em 5em;
   margin: 5em 0;
+  background-color: #ffffff;
 }
 
 @media screen and (max-width: 768px) {
@@ -833,7 +839,7 @@ p {
   }
 
   .headline {
-    font-size: 3rem;
+    font-size: 3.25rem;
   }
 }
 

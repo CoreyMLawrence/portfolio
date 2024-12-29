@@ -95,38 +95,26 @@ document.addEventListener('DOMContentLoaded', function () {
     ease: 'power3.out',
   });
 
-  gsap.from('#project-title', {
-    scrollTrigger: {
-      trigger: '#project-title',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse',
-    },
-    duration: 1,
-    y: 50,
-    opacity: 0,
-    ease: 'power3.out',
-  });
-
-  // Scroll animations
-  gsap.fromTo(
-    '.project-card',
-    {
-      x: 50, // Start at x: 50
-      opacity: 0,
-    },
-    {
-      x: 0, // End at x: 0
-      opacity: 1,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.projects',
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-    }
-  );
+  // // Scroll animations
+  // gsap.fromTo(
+  //   '.project-card',
+  //   {
+  //     x: 50, // Start at x: 50
+  //     opacity: 0,
+  //   },
+  //   {
+  //     x: 0, // End at x: 0
+  //     opacity: 1,
+  //     duration: 1,
+  //     stagger: 0.2,
+  //     ease: 'power3.out',
+  //     scrollTrigger: {
+  //       trigger: '.projects',
+  //       start: 'top 80%',
+  //       toggleActions: 'play none none reverse',
+  //     },
+  //   }
+  // );
   // Create a timeline for the CTA section animations
   const tl = gsap.timeline({
     scrollTrigger: {
@@ -215,37 +203,37 @@ document.addEventListener('DOMContentLoaded', function () {
     stagger: stagger, // slightly staggered
   });
 
-  // Animation for #threeD-title
-  gsap.from('#threeD-title', {
-    scrollTrigger: {
-      trigger: '#threeD-title',
-      start: 'top 85%',
-      toggleActions: 'play none none reverse',
-    },
-    duration: 1.5,
-    y: 50,
-    z: -200,
-    rotationX: 45,
-    rotationY: 45,
-    opacity: 0,
-    ease: 'power3.out',
-  });
+  // // Animation for #threeD-title
+  // gsap.from('#threeD-title', {
+  //   scrollTrigger: {
+  //     trigger: '#threeD-title',
+  //     start: 'top 85%',
+  //     toggleActions: 'play none none reverse',
+  //   },
+  //   duration: 1.5,
+  //   y: 50,
+  //   z: -200,
+  //   rotationX: 45,
+  //   rotationY: 45,
+  //   opacity: 0,
+  //   ease: 'power3.out',
+  // });
 
-  // Animation for #threeD-title-mobile
-  gsap.from('#threeD-title-mobile', {
-    scrollTrigger: {
-      trigger: '#threeD-title-mobile',
-      start: 'top 85%',
-      toggleActions: 'play none none reverse',
-    },
-    duration: 1.5,
-    y: 50,
-    z: -200,
-    rotationX: 45,
-    rotationY: 45,
-    opacity: 0,
-    ease: 'power3.out',
-  });
+  // // Animation for #threeD-title-mobile
+  // gsap.from('#threeD-title-mobile', {
+  //   scrollTrigger: {
+  //     trigger: '#threeD-title-mobile',
+  //     start: 'top 85%',
+  //     toggleActions: 'play none none reverse',
+  //   },
+  //   duration: 1.5,
+  //   y: 50,
+  //   z: -200,
+  //   rotationX: 45,
+  //   rotationY: 45,
+  //   opacity: 0,
+  //   ease: 'power3.out',
+  // });
 
   //
   //
@@ -319,23 +307,31 @@ document.addEventListener('DOMContentLoaded', function () {
   let isSwiping = false;
   const threshold = 70;
 
-  fullStory.addEventListener('touchstart', function (event) {
-    const touch = event.touches[0];
-    startX = touch.clientX;
-    startY = touch.clientY;
-    isSwiping = false;
-  });
+  fullStory.addEventListener(
+    'touchstart',
+    function (event) {
+      const touch = event.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      isSwiping = false;
+    },
+    { passive: true }
+  );
 
-  fullStory.addEventListener('touchmove', function (event) {
-    const touch = event.touches[0];
-    const deltaX = touch.clientX - startX;
-    const deltaY = touch.clientY - startY;
+  fullStory.addEventListener(
+    'touchmove',
+    function (event) {
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - startX;
+      const deltaY = touch.clientY - startY;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      isSwiping = true;
-      event.preventDefault();
-    }
-  });
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        isSwiping = true;
+        event.preventDefault(); // This will not work if the listener is passive
+      }
+    },
+    { passive: false }
+  );
 
   fullStory.addEventListener('touchend', function (event) {
     if (isSwiping) {

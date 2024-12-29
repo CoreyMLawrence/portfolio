@@ -3,7 +3,11 @@
   <head>
     <!-- Essential Meta Tags -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0
+    viewport-fit=cover"
+    />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- SEO Meta Tags -->
@@ -59,6 +63,8 @@
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/projects.css" />
+    <link rel="stylesheet" href="./styles/projects-mobile.css" />
 
     <!-- Preload Critical Resources -->
     <link rel="preload" as="image" href="/assets/images/CoreyLawrence.webp" />
@@ -100,9 +106,9 @@
         </div>
         <ul>
           <li><a href="./">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
           <li><a href="#expertise">Expertise</a></li>
           <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="./blog/">Blog</a></li>
         </ul>
@@ -117,7 +123,7 @@
       <nav>
         <div id="menu-visible">
           <div class="logo">
-            <a style="cursor: default">Corey Lawrence</a>
+            <div style="cursor: default">Corey Lawrence</div>
           </div>
           <div class="menu-actions">
             <img
@@ -135,9 +141,9 @@
         <div id="menu-hidden">
           <ul>
             <li><a class="full-width" href="./">Home</a></li>
+            <li><a class="full-width" href="#projects">Projects</a></li>
             <li><a class="full-width" href="#expertise">Expertise</a></li>
             <li><a class="full-width" href="#about">About</a></li>
-            <li><a class="full-width" href="#projects">Projects</a></li>
             <li><a class="full-width" href="#contact">Contact</a></li>
             <li class="full-width" style="border: none">
               <a style="color: #007aff !important" href="/blog">Blog</a>
@@ -166,6 +172,329 @@
       <a href="#contact" class="cta">Work with me</a>
     </section>
 
+    <section id="projects">
+      <div id="projects-title-area">
+        <h2 id="project-title">
+          <div id="word1">Designing</div>
+          <div id="word2">for</div>
+          <div id="word3">Impact</div>
+        </h2>
+        <p id="projects-description">
+          These projects highlight my focus on creating user-centered solutions
+          that tackle complex challenges with precision and creativity.
+        </p>
+      </div>
+      <div id="comfort-airlines" class="project">
+        <div id="comfort-title-area" class="title-area">
+          <h3>
+            Comfort Airlines: <br /><span id="comfort-gradient"
+              >Airline Simulator</span
+            >
+          </h3>
+        </div>
+        <a
+          id="comfort-mockup"
+          href="https://github.com/CoreyMLawrence/Comfort-Airlines"
+          target="_blank"
+          aria-label="Visit Comfort Airlines on GitHub"
+        >
+          <video autoplay muted loop playsinline>
+            <source
+              src="./assets/videos/comfort-airlines.mp4"
+              type="video/mp4"
+            />
+            <track kind="captions" src="" srclang="en" label="English" />
+          </video>
+        </a>
+        <div class="description" id="comfort-description">
+          <div id="comfort-languages" class="project-languages">
+            <img
+              class="language-icon"
+              src="./assets/icons/python.svg"
+              alt="Python"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/javascript-plain.svg"
+              alt="JavaScript"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/html.svg"
+              alt="HTML"
+            />
+            <img class="language-icon" src="./assets/icons/css.svg" alt="CSS" />
+          </div>
+          <p>
+            This simulator uses advanced algorithms to maximize profit in air
+            scheduling. The intuitive user interface
+            <span style="color: black"
+              >makes complex data easy to understand</span
+            >, allowing users to navigate ticketing, scheduling, and financial
+            operations effortlessly.
+          </p>
+        </div>
+      </div>
+      <div id="music-player" class="project">
+        <div id="music-title-area" class="title-area">
+          <h3>
+            Music Player PWA: <br /><span id="music-gradient"
+              >Progressive Web App</span
+            >
+          </h3>
+        </div>
+        <div id="music-mockup">
+          <a
+            href="https://coreylawrencemusic.duckdns.org"
+            alt="Visit Music Player PWA"
+            target="_blank"
+          >
+            <img
+              id="music-first"
+              src="./assets/images/music-main.webp"
+              alt="Personal Music Player
+          Project"
+            />
+          </a>
+          <a
+            href="https://coreylawrencemusic.duckdns.org"
+            alt="Visit Music Player PWA"
+            target="_blank"
+          >
+            <img
+              src="./assets/images/music-control.webp"
+              alt="Personal Music Player
+            Control Center Example"
+            />
+          </a>
+          <a
+            href="https://coreylawrencemusic.duckdns.org"
+            alt="Visit Music Player PWA"
+            target="_blank"
+          >
+            <img
+              src="./assets/images/music-song-drawer.webp"
+              alt="Personal Music Player Song Drawer"
+            />
+          </a>
+        </div>
+        <div class="description" id="music-description">
+          <div id="music-languages" class="project-languages">
+            <img
+              class="language-icon"
+              src="./assets/icons/javascript-plain.svg"
+              alt="JavaScript"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/html.svg"
+              alt="HTML"
+            />
+            <img class="language-icon" src="./assets/icons/css.svg" alt="CSS" />
+          </div>
+          <p>
+            The music player PWA offers efficient audio playback and
+            <span style="color: black">dynamic song management</span>. Utilizing
+            advanced JavaScript, it
+            <span style="color: black">intelligently preloads audio</span>
+            based on connectivity and is offline capable.
+          </p>
+        </div>
+        <div id="music-features" class="features">
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/airplane-square.svg"
+              alt="Offline Capable"
+            />
+            <p>Works offline after initial load</p>
+          </div>
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/document-download.svg"
+              alt="Installable on iOS and Android"
+            />
+            <p>Installable on both iOS and Android devices</p>
+          </div>
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/music-playlist.svg"
+              alt="Integrates with Media Kit API"
+            />
+            <p>Seamlessly integrates with Media Session API</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="devolve" class="project">
+        <div id="devolve-title-area" class="title-area">
+          <h3>
+            DevolveAI: <br /><span id="devolve-gradient"
+              >AI-Powered Decompiler</span
+            >
+          </h3>
+        </div>
+        <div id="devolve-mockup">
+          <div class="video-container" id="video1">
+            <p>
+              An AI tool that
+              <span style="color: black"
+                >turns executables into readable code</span
+              >
+              with a simple web interface, making reverse engineering easy.
+            </p>
+            <video
+              class="devolve-video"
+              id="video2"
+              autoplay
+              muted
+              loop
+              playsinline
+            >
+              <source src="./assets/videos/devolve1.mp4" type="video/mp4" />
+              <track kind="captions" src="" srclang="en" label="English" />
+            </video>
+          </div>
+          <div class="video-container">
+            <video autoplay muted loop playsinline>
+              <source src="./assets/videos/devolve2.mp4" type="video/mp4" />
+              <track kind="captions" src="" srclang="en" label="English" />
+            </video>
+            <p>
+              The <i>Refine</i> feature makes it simple to
+              <span style="color: black">change coding language</span>, add
+              comments, and customize further.
+            </p>
+          </div>
+        </div>
+        <div class="description" id="devolve-description">
+          <div id="devolve-languages" class="project-languages">
+            <img
+              class="language-icon"
+              src="./assets/icons/python.svg"
+              alt="Python"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/gemini.svg"
+              alt="gemini"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/javascript-plain.svg"
+              alt="JavaScript"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/language-php.svg"
+              alt="php"
+            />
+          </div>
+          <p>
+            DevolveAI stands out for its simplicity and accessibility. It’s a
+            beginner-friendly tool available directly in your web browser,
+            <span style="color: black"> eliminating</span> the need for complex
+            software and <span style="color: black"> hours of training</span>.
+          </p>
+        </div>
+      </div>
+
+      <div id="adventureai-player" class="project">
+        <div id="adventureai-title-area" class="title-area">
+          <h3>
+            AdventureAI: <br /><span id="adventureai-gradient"
+              >AI-Powered Adventure Game</span
+            >
+          </h3>
+        </div>
+
+        <a
+          id="adventureai-mockup"
+          href="https://adventureai.duckdns.org/"
+          target="_blank"
+        >
+          <div id="adventureai-cover">
+            <img
+              id="adventureai-mobile"
+              src="assets/images/AdventureAI-mobile1.webp"
+              alt="AdventureAI on mobile device"
+            />
+            <img
+              id="adventureai-full"
+              src="assets/images/AdventureAI-full.webp"
+              alt="AdventureAI on desktop device"
+            />
+          </div>
+        </a>
+
+        <div class="description" id="adventureai-description">
+          <div id="music-languages" class="project-languages">
+            <img
+              class="language-icon"
+              src="./assets/icons/javascript-plain.svg"
+              alt="JavaScript"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/gemini.svg"
+              alt="gemini"
+            />
+            <img
+              class="language-icon"
+              src="./assets/icons/html.svg"
+              alt="HTML"
+            />
+            <img class="language-icon" src="./assets/icons/css.svg" alt="CSS" />
+          </div>
+
+          <p>
+            AdventureAI is a humorous choose-your-own-adventure game with
+            <span style="color: black">dynamic storytelling</span>, vibrant
+            visuals, and a responsive design. Its intuitive interface and
+            <span style="color: black">AI integration</span> create a
+            personalized, engaging experience with every playthrough.
+          </p>
+        </div>
+        <div id="adventureai-features" class="features">
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/text-ai.svg"
+              alt="Offline Capable"
+            />
+            <p>Experience a unique and original story every time you play.</p>
+          </div>
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/settings.svg"
+              alt="Installable on iOS and Android"
+            />
+            <p>Choose from 12 settings to shape your adventure’s narrative.</p>
+          </div>
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/database.svg"
+              alt="Integrates with Media Kit API"
+            />
+            <p>Explore a database of gameplay history shared by all users.</p>
+          </div>
+          <div class="feature-item">
+            <img
+              class="feature-icon"
+              src="./assets/icons/mobile-check.svg"
+              alt="Integrates with Media Kit API"
+            />
+            <p>
+              Enjoy a seamless experience on both mobile and desktop devices.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="section" id="expertise">
       <h2 id="expertise-title">Crafting Human-Centric Tech</h2>
       <div class="expertise-container">
@@ -289,81 +618,8 @@
           />
           <h3>C++</h3>
         </div>
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="c-icon"
-            src="language-c.svg"
-            alt="C"
-          />
-          <h3>C</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="php-icon"
-            src="language-php.svg"
-            alt="PHP"
-          />
-          <h3>PHP</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="git-icon"
-            src="git.svg"
-            alt="Git"
-          />
-          <h3>Git</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="aws-icon"
-            src="aws.svg"
-            alt="AWS"
-          />
-          <h3>AWS</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="vite-icon"
-            src="vite.svg"
-            alt="vite"
-          />
-          <h3>Vite</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="sql-icon"
-            src="mysql.svg"
-            alt="MySQL"
-          />
-          <h3>MySQL</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="bash-icon"
-            src="language-bash.svg"
-            alt="Bash"
-          />
-          <h3>Bash</h3>
-        </div> -->
-        <!-- <div class="language-item">
-          <img
-            class="technologies-icon"
-            id="adobe-icon"
-            src="creativecloud.webp"
-            alt="Adobe"
-          />
-          <h3>Adobe</h3>
-        </div> -->
       </div>
     </section>
-
     <button class="close-button" aria-label="Close Full Story">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -380,6 +636,7 @@
         <path d="M6 6l12 12"></path>
       </svg>
     </button>
+
     <div class="full-story">
       <div class="story-content">
         <h2>Corey's Unique Journey</h2>
@@ -438,7 +695,6 @@
         </p>
       </div>
     </div>
-
     <section class="section journey" id="about">
       <div class="journey-content">
         <div>
@@ -480,275 +736,11 @@
       </div>
     </section>
 
-    <section class="section" id="projects">
-      <h2 id="project-title">From Concept to Code</h2>
-
-      <div class="projects">
-        <a
-          class="card-link"
-          href="https://github.com/CoreyMLawrence/Comfort-Airlines"
-          target="_blank"
-        >
-          <div class="project-card">
-            <img
-              class="project-image"
-              src="./assets/images/comfort-airlines.webp"
-              alt="Comfort Airlines Aircraft Simulator"
-            />
-            <h3>Comfort Airlines: Aircraft Simulator</h3>
-            <p>
-              Reimagining airline management as an immersive, hands-on
-              experience, this simulator lets users navigate ticketing,
-              scheduling, and financial operations effortlessly. Built with
-              accessibility at its core, it allows users to explore the nuances
-              of running an airline—all through a single, intuitive interface.
-              It’s more than a tool; it’s an engaging way to understand
-              real-world aviation logistics.
-            </p>
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/python.svg"
-                alt="Python"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/javascript-plain.svg"
-                alt="JavaScript"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-            </div>
-          </div>
-        </a>
-
-        <a
-          class="card-link"
-          href="https://github.com/CoreyMLawrence/DevolveAI"
-          target="_blank"
-          id="devolve-link"
-        >
-          <div class="project-card">
-            <img
-              class="project-image"
-              src="./assets/images/devolveAI.webp"
-              alt="DevolveAI Project"
-            />
-            <h3>DevolveAI: AI-Powered Decompiler</h3>
-            <p>
-              DevolveAI makes reverse engineering easy, allowing anyone curious
-              about software development to decompile code. This AI-powered tool
-              turns executables into readable source code, enabling users to
-              explore code analysis effortlessly. With a clean interface, it
-              blends technical depth with intuitive design, helping users of all
-              skill levels learn and customize code with ease.
-            </p>
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/ai.svg"
-                style="width: 50px; margin: -12px"
-                alt="Artificial Intelligence"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/javascript-plain.svg"
-                alt="JavaScript"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/bash.svg"
-                alt="Bash"
-              />
-            </div>
-          </div>
-        </a>
-
-        <a
-          class="card-link"
-          href="https://adventureai.duckdns.org/"
-          target="_blank"
-        >
-          <div class="project-card" id="adventureAI">
-            <img
-              class="project-image"
-              src="./assets/images/adventureAI.webp"
-              alt="AdventureAI Game"
-            />
-            <h3>AdventureAI: Interactive Storytelling</h3>
-            <p>
-              AdventureAI transforms storytelling by combining humor, choice,
-              and AI to create unique, personalized adventures. With each
-              playthrough, AdventureAI crafts a new story based on user choices,
-              guiding players through unexpected twists and lively characters.
-              It’s an endlessly replayable journey, blending AI and narrative
-              for a truly interactive experience.
-            </p>
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/ai.svg"
-                style="width: 50px; margin: -12px"
-                alt="Artificial Intelligence"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/javascript-plain.svg"
-                alt="JavaScript"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/SQL.svg"
-                alt="SQL"
-                style="width: 50px; margin: -12px -6px"
-              />
-            </div>
-          </div>
-        </a>
-        <a
-          class="card-link"
-          href="https://phonelo.com/university"
-          target="_blank"
-          id="phonelo-link"
-        >
-          <div class="project-card">
-            <img
-              class="project-image"
-              src="./assets/images/phonelo.webp"
-              alt="Phonelo Project"
-            />
-            <h3>Phonelo: University Solutions Product Page</h3>
-            <p>
-              The Phonelo site exemplifies my commitment to human-centric design
-              and compelling visual storytelling. Through iteration and user
-              testing, I crafted a responsive web experience that embodies the
-              brand’s innovation and reliability. I used GSAP for advanced
-              animations and created a collapsible custom audio player. These
-              features boost user engagement and conversion rates.
-            </p>
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/css.svg"
-                alt="CSS"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/javascript-plain.svg"
-                alt="JavaScript"
-              />
-            </div>
-          </div>
-        </a>
-        <a
-          class="card-link"
-          href="https://coreylawrencemusic.duckdns.org"
-          target="_blank"
-          id="music-player-link"
-        >
-          <div class="project-card">
-            <img
-              class="project-image"
-              src="./assets/images/CoreyLawrenceMusic.webp"
-              alt="Personal Music Player Project"
-            />
-            <h3>Personal Music Player: Progressive Web App</h3>
-            <p>
-              The music player PWA is optimized for iPhone and iPad, showcasing
-              a responsive design and efficient audio playback. Utilizing
-              advanced JavaScript, it offers dynamic song management and
-              intelligently preloads audio files based on connectivity.
-              Additionally, it supports media session actions for seamless
-              playback control directly from the device’s media interfaces,
-              including lock screens and control centers.
-            </p>
-
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/css.svg"
-                alt="CSS"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/javascript-plain.svg"
-                alt="JavaScript"
-              />
-            </div>
-          </div>
-        </a>
-        <a class="card-link">
-          <div class="project-card" id="audioWaveComponent">
-            <img
-              class="project-image"
-              src="./assets/images/phonelo-dashboard.webp"
-              alt="Audio Speech Detector Project"
-            />
-            <h3>Audio Wave Speech Player: React Component</h3>
-            <p>
-              The Audio Speech Detector is an innovative React component that
-              analyzes audio for speech activity, utilizing the Web Audio API
-              for advanced audio processing. It features a responsive design
-              with engaging visual feedback, including animated icons that react
-              to speech detection. The component implements dynamic audio
-              filtering, noise gating, and energy smoothing to ensure accurate
-              speech recognition.
-            </p>
-
-            <div class="languages">
-              <img
-                class="language-icon"
-                src="./assets/icons/typescript.svg"
-                alt="TypeScript"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/react.svg"
-                alt="React"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/html.svg"
-                alt="HTML"
-              />
-              <img
-                class="language-icon"
-                src="./assets/icons/css.svg"
-                alt="CSS"
-              />
-            </div>
-          </div>
-        </a>
-      </div>
-    </section>
-    <h2 id="threeD-title-mobile">Immersive WebGL Creations</h2>
+    <!-- <h2 id="threeD-title-mobile">Immersive WebGL Creations</h2>
     <section id="threeD" class="section">
       <h2 id="threeD-title">Immersive WebGL Creations</h2>
       <div class="app"></div>
-    </section>
+    </section> -->
     <section class="section cta-section" id="contact">
       <div class="cta-content">
         <h2>Ready to bring your vision to life?</h2>
@@ -763,7 +755,7 @@
           href="https://linkedin.com/in/corey-lawrence-85621386"
           target="_blank"
         >
-          <img src="./assets/icons/linkedin.svg" alt="LinkedIn" />
+          <img src="./assets/icons/linkedin.svg" alt="LinkedIn icon" />
           <div>LinkedIn</div>
         </a>
         <a
@@ -784,12 +776,12 @@
           href="https://github.com/CoreyMLawrence"
           target="_blank"
         >
-          <img src="./assets/icons/github.svg" alt="GitHub" />
+          <img src="./assets/icons/github.svg" alt="GitHub icon" />
           <div>GitHub</div>
         </a>
       </div>
     </section>
-    <script defer type="importmap">
+    <!-- <script defer type="importmap">
       {
         "imports": {
           "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
@@ -797,6 +789,7 @@
         }
       }
     </script>
-    <script defer type="module" src="./scripts/three.js"></script>
+    <script defer type="module" src="./scripts/three.js"></script> -->
+    <script defer src="./scripts/projects.js"></script>
   </body>
 </html>

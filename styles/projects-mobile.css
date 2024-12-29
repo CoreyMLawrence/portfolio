@@ -1,0 +1,629 @@
+@media screen and (max-width: 979px) {
+  #projects span {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  video {
+    clip-path: inset(10px 10px) !important;
+    z-index: -1;
+  }
+
+  #projects {
+    background-color: #f5f5f7;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5rem 0 !important;
+    gap: 8rem;
+  }
+
+  .project {
+    padding: 0 5rem !important;
+  }
+
+  .title-area {
+    margin: 0;
+    padding: 0 5% !important;
+  }
+
+  #projects-title-area {
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #project-title {
+    flex-wrap: wrap;
+    gap: 0.1rem;
+    justify-content: center;
+  }
+
+  #projects-title-area * {
+    text-align: center;
+  }
+
+  #project-title div {
+    font-size: 3.5rem;
+  }
+
+  #word1 {
+    width: 100%;
+  }
+
+  #projects-description {
+    max-width: 650px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: black;
+  }
+
+  #projects-title-area * {
+    text-align: center;
+  }
+
+  #projects-description {
+    max-width: 90%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: black;
+  }
+
+  #comfort-mockup {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    overflow: hidden;
+    background-color: #f5f5f7;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #comfort-mockup video {
+    width: 105%;
+    height: auto;
+    object-fit: cover; /* Ensures the video covers the entire container */
+    border: 20px solid #f5f5f7; /* Add border around the video */
+  }
+
+  #cover-border {
+    border: solid #f5f5f7 5px;
+    box-sizing: border-box;
+    position: relative; /* Ensure cover-border is positioned relative */
+    top: -5px; /* Move cover-border up to cover the top edge of comfort-mockup */
+    width: calc(100% - 5px);
+  }
+
+  .project {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  #projects h2 {
+    margin-bottom: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #projects h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    padding: 0 !important;
+  }
+
+  #comfort-title-area {
+    width: 100%;
+  }
+
+  #comfort-gradient {
+    background: linear-gradient(
+      135deg,
+      #947dff,
+      #7637ea
+    ); /* Apply gradient color */
+    -webkit-background-clip: text; /* Ensure the gradient is clipped to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+  }
+
+  .description {
+    max-width: 850px;
+    margin: 0;
+    padding: 0 5% !important;
+  }
+
+  .description p {
+    padding: 0 !important;
+  }
+
+  .features {
+    padding: 0 5% !important;
+  }
+
+  #comfort-description {
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between; /* Ensure equal spacing between elements */
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%; /* Ensure the container takes full width */
+  }
+
+  #comfort-description p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6e6e73;
+  }
+
+  #comfort-description > * {
+    flex: 0 0 100%; /* 30% width */
+  }
+
+  #comfort-description .language-icon {
+    filter: brightness(0) saturate(100%) invert(24%) sepia(67%) saturate(7458%)
+      hue-rotate(259deg) brightness(98%) contrast(87%);
+  }
+
+  .project-languages {
+    width: 100%;
+    justify-content: space-around !important;
+  }
+
+  #comfort-languages {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 10px;
+    width: 95%;
+  }
+
+  #comfort-languages .language-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  #comfort-languages .language-item h3 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  #music-title-area {
+    width: 100%;
+  }
+
+  #music-gradient {
+    background: linear-gradient(
+      135deg,
+      #163264,
+      #0a1934
+    ); /* Apply gradient color */
+    -webkit-background-clip: text; /* Ensure the gradient is clipped to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+    filter: brightness(1.5);
+  }
+
+  #music-description {
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between; /* Ensure equal spacing between elements */
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 1.5rem;
+  }
+
+  #music-description p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6e6e73;
+  }
+
+  #music-description > * {
+    flex: 0 0 100%; /* 30% width */
+  }
+
+  #music-description .language-icon {
+    filter: brightness(0) saturate(100%) invert(21%) sepia(93%) saturate(1273%)
+      hue-rotate(199deg) brightness(87%) contrast(89%);
+  }
+
+  #music-languages {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 10px;
+  }
+
+  #music-languages .language-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  #music-languages .language-item h3 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  #music-title-area h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  #music-features {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 20px;
+    max-width: 900px;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 25px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    max-width: none;
+    min-width: 200px;
+  }
+
+  .feature-icon {
+    width: 65px;
+    height: 65px;
+  }
+
+  .feature-item p {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #6e6e73;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* DevolveAI */
+  #devolve {
+    max-width: 100% !important;
+  }
+  #devolve-mockup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    padding: 0;
+    border: 20px solid #f5f5f7; /* Border applied around the container */
+    box-sizing: border-box;
+    overflow: hidden; /* Hide the overflowing video edges */
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.1rem;
+    perspective: 1500px;
+  }
+
+  #video1 {
+    flex-direction: column-reverse;
+    margin-left: 0;
+  }
+
+  #video2 {
+    flex-direction: column;
+    margin-right: 0;
+  }
+  .video-container {
+    outline-offset: -10px;
+    border: 0px solid #f5f5f7; /* Add border around the video */
+    box-sizing: border-box;
+  }
+  .video-container video {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the video covers the space */
+    outline-offset: none;
+  }
+
+  .video-container p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #6e6e73;
+    text-align: left;
+    line-height: 1.2;
+    max-width: 300px;
+  }
+
+  #devolve-title-area {
+    width: 100vw;
+  }
+
+  #devolve-gradient {
+    background: linear-gradient(
+      135deg,
+      #ffbaa1,
+      #fe49b2
+    ); /* Apply gradient color */
+    -webkit-background-clip: text; /* Ensure the gradient is clipped to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  #devolve-description {
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between; /* Ensure equal spacing between elements */
+    align-items: flex-start;
+    flex-direction: column;
+    max-width: 800px;
+    gap: 2rem;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 1.5rem;
+  }
+
+  #devolve-description p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6e6e73;
+    margin: 0 !important;
+  }
+
+  #devolve-description > * {
+    flex: 0 0 100%; /* 30% width */
+  }
+
+  #devolve-description .language-icon {
+    filter: brightness(0) saturate(100%) invert(69%) sepia(13%) saturate(6394%)
+      hue-rotate(298deg) brightness(94%) contrast(99%);
+  }
+
+  #devolve-languages {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 10px;
+  }
+
+  #devolve-languages .language-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  #devolve-languages .language-item h3 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  #devolve-title-area h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  #devolve-features {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 20px;
+    max-width: 850px;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 25px;
+  }
+
+  /* AdventureAI */
+
+  #adventureai-mockup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    width: 100vw;
+    max-width: 1000px;
+    padding: 0 5% !important;
+  }
+
+  #adventureai-cover {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+    height: auto;
+  }
+
+  #adventureai-full {
+    width: 86%;
+    height: auto;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  #adventureai-mobile {
+    width: 32%;
+    margin-right: -20%;
+    margin-bottom: -1%;
+    z-index: 2;
+  }
+
+  #adventureai-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .setting-screenshot {
+    width: 90%;
+    height: auto;
+    margin: -0.5rem;
+  }
+
+  #adventureai-title-area {
+    width: 100vw;
+  }
+
+  #adventureai-gradient {
+    background: linear-gradient(
+      135deg,
+      #590d30,
+      #17536a
+    ); /* Rosewood and Coral Charm */
+
+    -webkit-background-clip: text; /* Ensure the gradient is clipped to the text */
+    -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+    filter: brightness(1.5) contrast(1.1);
+  }
+
+  #adventureai-description {
+    margin-top: 20px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between; /* Ensure equal spacing between elements */
+    align-items: flex-start;
+    flex-direction: column;
+    max-width: 850px;
+    gap: 2rem;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 1.5rem;
+  }
+
+  #adventureai-description p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6e6e73;
+  }
+
+  #adventureai-description > * {
+    flex: 0 0 100%; /* 30% width */
+  }
+
+  .language-icon {
+    padding: 0 !important;
+    width: 45px !important;
+  }
+
+  #adventureai-description .language-icon {
+    filter: brightness(0) saturate(100%) invert(10%) sepia(58%) saturate(5827%)
+      hue-rotate(319deg) brightness(82%) contrast(95%);
+  }
+
+  #adventureai-title-area h3 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  #adventureai-features {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%; /* Ensure the container takes full width */
+    padding-bottom: 25px;
+  }
+
+  #adventureai-features .feature-item {
+    min-width: 250px !important;
+    max-width: 300px !important;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #adventureai-features .feature-item p {
+    font-weight: 600;
+    font-size: 1rem !important;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  /* Music */
+  #music-mockup {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    background-color: #f5f5f7;
+    padding: 3rem 50vw; /* Adjust padding to ensure even spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    scroll-snap-type: x mandatory; /* Snap to each element horizontally */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  #music-mockup::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+
+  #music-mockup img {
+    width: 80vw;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    scroll-snap-align: center; /* Center each image when snapping */
+  }
+
+  #music-first {
+    margin-left: 200vw;
+  }
+
+  #music-mockup::before,
+  #music-mockup::after {
+    content: '';
+    flex: 0 0 100vw; /* Ensure the first and last images can be centered */
+  }
+}
