@@ -100,7 +100,6 @@ video {
 #comfort-title-area {
   width: 100%;
   max-width: 1000px;
-  padding: 0 5%;
 }
 
 #comfort-gradient {
@@ -191,7 +190,7 @@ video {
 
 #music-mockup img {
   width: 18vw;
-  max-width: 500px;
+  max-width: 300px;
   min-width: 250px;
   height: auto;
   object-fit: cover;
@@ -199,8 +198,7 @@ video {
 
 #music-title-area {
   width: 100%;
-  max-width: 1000px;
-  padding: 0 5%;
+  max-width: 950px;
 }
 
 #music-gradient {
@@ -378,7 +376,7 @@ video {
 
 #devolve-title-area {
   width: 100%;
-  max-width: 1000px;
+  max-width: 950px;
 }
 
 #devolve-gradient {
@@ -472,7 +470,7 @@ video {
 /* AdventureAI */
 
 #adventureai-title-area {
-  max-width: clamp(80%, 100%, 1000px) !important;
+  max-width: clamp(300px, 100%, 950px) !important;
 }
 
 #adventureai-mockup {
@@ -524,7 +522,7 @@ video {
 
 #adventureai-title-area {
   width: 100vw;
-  max-width: 1000px;
+  max-width: 950px;
   margin: 0 5%;
 }
 
