@@ -143,8 +143,11 @@ nav {
   color: #333;
   text-decoration: none;
   font-weight: 900;
-  width: 9.5em;
   text-wrap: nowrap;
+}
+
+.logo div {
+  width: 8.5em;
 }
 
 nav ul {
@@ -179,7 +182,12 @@ nav ul li a:hover {
   transition: background-color 0.3s, transform 0.3s;
   font-size: 1rem; /* Adjust font size for mobile */
   text-align: center;
-  text-wrap: nowrap;
+  text-wrap: nowrap !important;
+  min-width: 6rem;
+}
+
+.cta-mobile a {
+  text-wrap: nowrap !important;
 }
 
 .cta-mobile:hover {
