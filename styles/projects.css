@@ -6,7 +6,7 @@ video {
 }
 
 #projects {
-  background-color: #f5f5f7;
+  background-color: var(--light-gray);
   min-height: 200vh;
   display: flex;
   align-items: flex-start;
@@ -14,6 +14,7 @@ video {
   flex-direction: column;
   padding: 10rem 5vw;
   gap: 10rem;
+  margin-top: 0;
 }
 
 #projects-title-area {

@@ -20,7 +20,7 @@
 }
 
 body {
-  background: var(--light-gray);
+  background: var(--background);
   color: var(--text);
   overflow-x: hidden;
 }
@@ -221,7 +221,7 @@ nav ul li a:hover {
 }
 
 .hero {
-  background: white;
+  background: var(--light-gray);
   flex-direction: column;
   justify-content: center;
   text-align: center;
@@ -537,7 +537,7 @@ nav ul li a:hover {
 }
 
 .journey {
-  background: var(--light-gray);
+  background: var(--background);
 }
 
 .journey-content {
