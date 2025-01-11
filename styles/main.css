@@ -415,7 +415,7 @@ nav ul li a:hover {
 #expertise {
   display: flex;
   flex-direction: column !important;
-  padding: 6em 1em 8em;
+  padding: 7.5em 1em 8em;
   background-color: #ffffff;
 }
 
