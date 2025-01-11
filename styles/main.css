@@ -552,7 +552,7 @@ nav ul li a:hover {
   gap: 4rem;
   align-items: center;
   max-width: 1500px;
-  margin-top: 3rem;
+  margin-top: 0;
 }
 
 .full-story {
@@ -645,6 +645,7 @@ nav ul li a:hover {
   color: var(--gray);
   overflow: hidden;
   margin-bottom: 5em;
+  margin-top: -4rem;
 }
 
 @media screen and (max-width: 768px) {
