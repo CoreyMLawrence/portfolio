@@ -228,6 +228,12 @@ nav ul li a:hover {
   gap: 1rem;
 }
 
+@media screen and (max-width: 768px) {
+  .hero .cta {
+    margin-bottom: 0.75em;
+  }
+}
+
 .headline,
 .headline-line2,
 .subheadline,
@@ -546,6 +552,7 @@ nav ul li a:hover {
   gap: 4rem;
   align-items: center;
   max-width: 1500px;
+  margin-top: 3rem;
 }
 
 .full-story {
@@ -638,6 +645,13 @@ nav ul li a:hover {
   color: var(--gray);
   overflow: hidden;
   margin-bottom: 5em;
+}
+
+@media screen and (max-width: 768px) {
+  .headshot {
+    margin-bottom: 4em;
+    margin-top: -3rem;
+  }
 }
 
 .cta {
