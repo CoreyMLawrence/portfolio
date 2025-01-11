@@ -415,7 +415,7 @@ nav ul li a:hover {
 #expertise {
   display: flex;
   flex-direction: column !important;
-  padding: 8em 1em 8em;
+  padding: 6em 1em 8em;
   background-color: #ffffff;
 }
 
@@ -649,7 +649,7 @@ nav ul li a:hover {
 
 @media screen and (max-width: 768px) {
   .headshot {
-    margin-bottom: 4em;
+    margin-bottom: 6em;
     margin-top: -3rem;
   }
 }
