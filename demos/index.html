@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Landing Page Videos" />
+    <meta name="author" content="Corey Lawrence" />
+    <link
+      rel="canonical"
+      href="https://coreylawrence.me/blog/js-interview-questions/videos.html"
+    />
+    <script src="../scripts/menu.js"></script>
+    <title>Landing Page Videos</title>
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/blog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
+    ></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-20RDYXR05Q"
+    ></script>
+    <link rel="icon" type="image/png" href="../../favicon.png" sizes="32x32" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="../../favicon-16x16.png"
+      sizes="16x16"
+    />
+  </head>
+  <body>
+    <header id="desktop-menu">
+      <nav>
+        <div class="logo">
+          <a href="./">Corey Lawrence</a>
+        </div>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#projects">Projects</a></li>
+          <li><a href="/#expertise">Expertise</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li style="border: none"><a href="../">Blog</a></li>
+        </ul>
+        <div class="email-button-container">
+          <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+            >Email Me</a
+          >
+        </div>
+      </nav>
+    </header>
+    <header id="mobile-menu">
+      <nav>
+        <div id="menu-visible">
+          <div class="logo">
+            <a style="cursor: default">Corey Lawrence</a>
+          </div>
+          <div class="menu-actions">
+            <img
+              id="menu-indicator-down"
+              src="../../assets/icons/down.svg"
+              alt="Open Menu"
+            />
+            <img
+              id="menu-indicator-up"
+              src="../../assets/icons/up.svg"
+              alt="Close Menu"
+              style="display: none"
+            />
+            <div class="email-button-container">
+              <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+                >Email Me</a
+              >
+            </div>
+          </div>
+        </div>
+        <div id="menu-hidden">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/#expertise">Expertise</a></li>
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li style="border: none">
+              <a style="color: #007aff !important" href="../">Blog</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="video-page">
+      <section class="video-section">
+        <h2 style="padding-top: 4rem">Apartments Landing Page</h2>
+        <video style="border-radius: 0.5rem" controls>
+          <source
+            src="../assets/videos/Apartments Landing Page.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </section>
+      <section class="video-section">
+        <h2>Multi-Industry Landing Page</h2>
+        <video style="border-radius: 0.5rem" controls>
+          <source
+            src="../assets/videos/Multi-Industry Landing Page.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </section>
+    </main>
+
+    <style>
+      .video-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        padding: 2rem;
+      }
+      .video-section {
+        width: 100%;
+        max-width: 800px;
+      }
+      .video-section h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .video-section video {
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </body>
+</html>
