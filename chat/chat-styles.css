@@ -35,6 +35,8 @@
 }
 
 body {
+  display: flex;
+  align-items: center;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--background-app);
   color: var(--text-primary);
@@ -49,11 +51,13 @@ body {
   display: flex;
   height: calc(100vh - (2 * var(--space-lg)));
   width: calc(100% - (2 * var(--space-lg)));
+  max-width: 1920px;
+  max-height: 1080px;
   background: transparent; /* outer app area no longer a single box */
   position: relative;
   padding: 0;
   gap: 1rem; /* requested spacing between containers */
-  margin: var(--space-lg);
+  margin: auto auto;
 }
 
 /* Left outer chat container */
