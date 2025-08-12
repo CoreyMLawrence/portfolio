@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const sendButton = document.getElementById('send-button');
-  const suggestionChips = document.querySelectorAll('.suggestion-chip');
+  // Suggestion chips live inside chat-messages and can be replaced; use event delegation
+  chatMessages.addEventListener('click', (e) => {
+    const chip = e.target.closest('.suggestion-chip');
+    if (!chip || !chatMessages.contains(chip)) return;
+    const text = chip.textContent;
+    chatInput.value = text;
+    autoResizeTextarea();
+    handleSendMessage();
+  });
   const navItems = document.querySelectorAll('.nav-item');
 
   // Chat integration (migrated to /chat)
@@ -46,15 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Handle suggestion chips
-  suggestionChips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const text = chip.textContent;
-      chatInput.value = text;
-      autoResizeTextarea();
-      handleSendMessage();
-    });
-  });
+  // No direct binds needed; delegation above covers all current/future chips
 
   // Handle navigation
   navItems.forEach((item) => {
@@ -178,12 +178,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       const aiDiv = addMessage('ai', '');
       const contentEl = aiDiv.querySelector('.message-content');
       let buffer = '';
-      for await (const chunk of stream.stream) {
-        const t = chunk?.text?.() || '';
-        if (!t) continue;
-        buffer += t;
-        contentEl.innerHTML = markdownToHtml(buffer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Per-message auto-scroll with user-cancel behavior (only on manual input)
+      let shouldAutoScroll = true;
+      const nearBottom = () =>
+        chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight <= 8;
+      const cancelIfUserMoves = () => {
+        if (!nearBottom()) shouldAutoScroll = false;
+      };
+      // Listen to manual interactions only
+      chatMessages.addEventListener('wheel', cancelIfUserMoves, { passive: true });
+      chatMessages.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
+      chatMessages.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+      try {
+        for await (const chunk of stream.stream) {
+          const t = chunk?.text?.() || '';
+          if (!t) continue;
+          buffer += t;
+          contentEl.innerHTML = markdownToHtml(buffer);
+          if (shouldAutoScroll) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+        }
+      } finally {
+        chatMessages.removeEventListener('wheel', cancelIfUserMoves);
+        chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
+        chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
       }
 
       const final = await stream.response;
@@ -196,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch {}
       answer = (answer || 'No answer produced.').trim();
 
-      // Auto-continue streaming if truncated
+  // Auto-continue streaming if truncated (preserve per-message cancel state)
       let continueCount = 0;
       while (truncated && continueCount < 2) {
         continueCount++;
@@ -240,12 +260,25 @@ document.addEventListener('DOMContentLoaded', async () => {
           ],
         });
 
-        for await (const chunk of contStream.stream) {
-          const t = chunk?.text?.() || '';
-          if (!t) continue;
-          answer += t;
-          contentEl.innerHTML = markdownToHtml(answer);
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Re-attach manual input listeners during continuation
+        shouldAutoScroll = shouldAutoScroll && nearBottom();
+        chatMessages.addEventListener('wheel', cancelIfUserMoves, { passive: true });
+        chatMessages.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
+        chatMessages.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+        try {
+          for await (const chunk of contStream.stream) {
+            const t = chunk?.text?.() || '';
+            if (!t) continue;
+            answer += t;
+            contentEl.innerHTML = markdownToHtml(answer);
+            if (shouldAutoScroll) {
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+          }
+        } finally {
+          chatMessages.removeEventListener('wheel', cancelIfUserMoves);
+          chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
+          chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
         }
         const contFinal = await contStream.response;
         let fr2 = '';
@@ -417,10 +450,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Re-add welcome message if needed
       if (!chatMessages.querySelector('.welcome-message')) {
-        location.reload(); // Simple way to reset to initial state
+        // Recreate minimal welcome without reloading (session-cache clears itself on click)
+        const wrap = document.createElement('div');
+        wrap.className = 'welcome-message';
+        wrap.innerHTML = `
+          <h3>Ask me anything about Corey</h3>
+          <p>I have access to his complete resume and can provide detailed information about his experience, projects, and skills.</p>
+          <div class="suggestion-chips">
+            <button class="suggestion-chip">Tell me about his projects</button>
+            <button class="suggestion-chip">What technologies does he use?</button>
+            <button class="suggestion-chip">What's his background?</button>
+          </div>`;
+        chatMessages.appendChild(wrap);
+        chatMessages.scrollTop = 0;
+        // Reset in-memory history
+        history = [];
+  // Delegated listener covers newly created chips automatically
       }
     });
   }
+
+  // Hydrate in-memory history when session-cache restores a previous session
+  document.addEventListener('chat:session-restored', (e) => {
+    const restored = Array.isArray(e?.detail?.history) ? e.detail.history : [];
+    if (restored.length) {
+      history = restored;
+      // Remove welcome message if present, since we have history
+      const welcome = chatMessages.querySelector('.welcome-message');
+      if (welcome) welcome.remove();
+      // Ensure scroll is at bottom after hydration
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  // Delegated listener covers chips after restore as well
+  });
 });
 
 // --- Markdown rendering via snarkdown with basic sanitization ---

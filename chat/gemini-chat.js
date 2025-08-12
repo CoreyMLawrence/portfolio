@@ -165,12 +165,30 @@ async function generate(question) {
 
     await ensureMarkdown();
     window.__snarkdown = snarkdown;
-    for await (const chunk of streamResult.stream) {
-      const chunkText = chunk?.text?.() || '';
-      if (!chunkText) continue;
-      buffer += chunkText;
-      bubble.innerHTML = markdownToHtml(buffer);
-      el.log.scrollTop = el.log.scrollHeight;
+    // Per-message auto-scroll with user-cancel behavior (only on manual input)
+    let shouldAutoScroll = true;
+    const nearBottom = () =>
+      el.log.scrollHeight - el.log.scrollTop - el.log.clientHeight <= 8;
+    const cancelIfUserMoves = () => {
+      if (!nearBottom()) shouldAutoScroll = false;
+    };
+    el.log.addEventListener('wheel', cancelIfUserMoves, { passive: true });
+    el.log.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
+    el.log.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+    try {
+      for await (const chunk of streamResult.stream) {
+        const chunkText = chunk?.text?.() || '';
+        if (!chunkText) continue;
+        buffer += chunkText;
+        bubble.innerHTML = markdownToHtml(buffer);
+        if (shouldAutoScroll) {
+          el.log.scrollTop = el.log.scrollHeight;
+        }
+      }
+    } finally {
+      el.log.removeEventListener('wheel', cancelIfUserMoves);
+      el.log.removeEventListener('touchmove', cancelIfUserMoves);
+      el.log.removeEventListener('touchstart', cancelIfUserMoves);
     }
 
     // Ensure final response is captured for history
@@ -228,12 +246,24 @@ async function generate(question) {
         ],
       });
 
-      for await (const chunk of contStream.stream) {
-        const t = chunk?.text?.() || '';
-        if (!t) continue;
-        answer += t;
-        bubble.innerHTML = markdownToHtml(answer);
-        el.log.scrollTop = el.log.scrollHeight;
+      // Maintain the same auto-scroll behavior within this continued message
+      el.log.addEventListener('wheel', cancelIfUserMoves, { passive: true });
+      el.log.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
+      el.log.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+      try {
+        for await (const chunk of contStream.stream) {
+          const t = chunk?.text?.() || '';
+          if (!t) continue;
+          answer += t;
+          bubble.innerHTML = markdownToHtml(answer);
+          if (shouldAutoScroll) {
+            el.log.scrollTop = el.log.scrollHeight;
+          }
+        }
+      } finally {
+        el.log.removeEventListener('wheel', cancelIfUserMoves);
+        el.log.removeEventListener('touchmove', cancelIfUserMoves);
+        el.log.removeEventListener('touchstart', cancelIfUserMoves);
       }
       const contFinal = await contStream.response;
       let fr2 = '';
