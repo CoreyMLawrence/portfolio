@@ -197,61 +197,82 @@
 
       // Use html2canvas to capture the content
       const canvas = await html2canvas(pdfContent, {
-        scale: 2, // Higher scale for better quality
+        scale: 2,
         useCORS: true,
         logging: false,
         backgroundColor: '#FFFFFF',
       });
 
-      // Add the canvas to the PDF
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      // Replace the previous single-image + broken multipage block with reliable slicing
+      // Page metrics and margins
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
+      const margins = { top: 15, right: 15, bottom: 15, left: 15 };
 
-      // Calculate scaling to fit page width
-      const scale = pageWidth / canvasWidth;
-      const scaledHeight = canvasHeight * scale;
+      // Header is already drawn; reserve extra top space on page 1 so content starts below it
+      const firstPageContentTop = 30; // matches header layout
+      const contentWidthMm = pageWidth - margins.left - margins.right;
 
-      // Add first page content
-      doc.addImage(imgData, 'JPEG', 0, 30, pageWidth, scaledHeight);
+      // Canvas dimensions (px)
+      const srcWidthPx = canvas.width;
+      const srcHeightPx = canvas.height;
 
-      // Handle multiple pages if content is too long
-      if (scaledHeight > pageHeight - 40) {
-        // 40mm accounts for margins and header
-        let remainingHeight = scaledHeight;
-        let currentPosition = pageHeight - 40;
+      // Convert px <-> mm for consistent scaling
+      const mmPerPx = contentWidthMm / srcWidthPx;
 
-        while (remainingHeight > 0) {
-          // Add a new page
-          doc.addPage();
+      // Compute how many source pixels fit on a page
+      const firstPageContentHeightMm =
+        pageHeight - firstPageContentTop - margins.bottom;
+      const nextPageContentHeightMm = pageHeight - margins.top - margins.bottom;
 
-          // Calculate how much to render on this page
-          const renderHeight = Math.min(remainingHeight, pageHeight - 20); // 20mm for margins
+      const firstSliceHeightPx = Math.floor(firstPageContentHeightMm / mmPerPx);
+      const sliceHeightPx = Math.floor(nextPageContentHeightMm / mmPerPx);
 
-          // Add header to new page
-          addHeaderToDocument(doc);
+      // Helper: add a slice of the big canvas as an image to the PDF
+      function addSliceToPdf(srcCanvas, srcY, slicePxHeight, isFirstPage) {
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = srcCanvas.width;
+        sliceCanvas.height = slicePxHeight;
+        const ctx = sliceCanvas.getContext('2d');
+        ctx.drawImage(
+          srcCanvas,
+          0,
+          srcY,
+          srcCanvas.width,
+          slicePxHeight, // src crop
+          0,
+          0,
+          sliceCanvas.width,
+          sliceCanvas.height // dst
+        );
+        const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
 
-          // Calculate portion of the image to render
-          const sourceY = currentPosition / scale;
-          doc.addImage(
-            imgData,
-            'JPEG',
-            0,
-            30, // x, y position on page
-            pageWidth,
-            renderHeight, // width, height on page
-            0,
-            sourceY, // sx, sy (source x, y)
-            canvasWidth,
-            renderHeight / scale // sWidth, sHeight (source dimensions)
-          );
+        const drawYmm = isFirstPage ? firstPageContentTop : margins.top;
+        const sliceHeightMm = slicePxHeight * mmPerPx;
 
-          // Update for next page
-          remainingHeight -= renderHeight;
-          currentPosition += renderHeight;
-        }
+        doc.addImage(
+          imgData,
+          'JPEG',
+          margins.left,
+          drawYmm,
+          contentWidthMm,
+          sliceHeightMm
+        );
+      }
+
+      // Add first page content slice
+      let offsetPx = 0;
+      const firstHeight = Math.min(firstSliceHeightPx, srcHeightPx);
+      addSliceToPdf(canvas, offsetPx, firstHeight, true);
+      offsetPx += firstHeight;
+
+      // Remaining pages
+      while (offsetPx < srcHeightPx) {
+        doc.addPage();
+        const remainingPx = srcHeightPx - offsetPx;
+        const thisSlicePx = Math.min(sliceHeightPx, remainingPx);
+        addSliceToPdf(canvas, offsetPx, thisSlicePx, false);
+        offsetPx += thisSlicePx;
       }
 
       // Generate filename with current date
@@ -393,7 +414,8 @@
       emailHref && emailHref.startsWith('mailto:')
         ? emailHref.replace('mailto:', '')
         : '';
-    const linkedinHref = document.getElementById('profile-linkedin')?.href || '';
+    const linkedinHref =
+      document.getElementById('profile-linkedin')?.href || '';
     const githubHref = document.getElementById('profile-github')?.href || '';
     const portfolioHref =
       document.querySelector('link[rel="canonical"]')?.href ||
@@ -406,7 +428,9 @@
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(17);
     doc.setTextColor(0, 0, 0);
-    doc.text('Chat with Corey Lawrence', pageWidth / 2, 14, { align: 'center' });
+    doc.text('Chat with Corey Lawrence', pageWidth / 2, 14, {
+      align: 'center',
+    });
 
     // Contact links (slightly larger font)
     doc.setFont('helvetica', 'normal');
@@ -429,8 +453,7 @@
       (sum, it) => sum + doc.getTextWidth(it.text),
       0
     );
-    const totalWidth =
-      linksWidth + Math.max(0, items.length - 1) * sepWidth;
+    const totalWidth = linksWidth + Math.max(0, items.length - 1) * sepWidth;
 
     // Draw centered at y
     const y = 24;
