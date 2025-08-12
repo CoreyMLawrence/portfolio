@@ -441,8 +441,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const tagList = document.getElementById('profile-skills');
       const so = data?.skills_overview || {};
       if (tagList) {
-        const maxTags = 5;
-        const minTags = 4;
+        const maxTags = 4;
+        const minTags = 2;
         const all = [
           ...(so.web_development || []),
           ...(so.marketing || []),
@@ -452,19 +452,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         ];
         const have = new Set(all);
         // Preference order for broad appeal; will only include those present
-        const prefs = [
-          'JavaScript',
-          'React.js',
-          'HTML5',
-          'CSS3',
-          'Node.js',
-          'SEO Strategy',
-          'Figma',
-        ];
+        const prefs = [];
         const picks = [];
         for (const p of prefs) {
           if (have.has(p)) picks.push(p);
-          if (picks.length >= maxTags) break; // limit to 5
+          if (picks.length >= maxTags) break;
         }
         // Fallback: ensure at least 4 by taking from web_development
         if (picks.length < minTags && Array.isArray(so.web_development)) {
