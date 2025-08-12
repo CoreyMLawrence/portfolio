@@ -14,6 +14,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     handleSendMessage();
   });
   const navItems = document.querySelectorAll('.nav-item');
+  const appContainer = document.querySelector('.app-container');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarEl = document.querySelector('.sidebar');
+
+  // Mobile sidebar toggle
+  if (sidebarToggle && appContainer) {
+    sidebarToggle.addEventListener('click', () => {
+      appContainer.classList.toggle('menu-open');
+    });
+  }
+
+  // Close the menu when clicking a nav item (mobile)
+  navItems.forEach((item) =>
+    item.addEventListener('click', () => {
+      if (appContainer && appContainer.classList.contains('menu-open')) {
+        appContainer.classList.remove('menu-open');
+      }
+    })
+  );
+
+  // Close when clicking outside the sidebar while open (mobile)
+  document.addEventListener('click', (e) => {
+    const open = appContainer && appContainer.classList.contains('menu-open');
+    if (!open) return;
+    const withinSidebar = sidebarEl && sidebarEl.contains(e.target);
+    const isToggle = sidebarToggle && sidebarToggle.contains(e.target);
+    if (!withinSidebar && !isToggle) {
+      appContainer.classList.remove('menu-open');
+    }
+  });
 
   // Chat integration (migrated to /chat)
   let resumeData = null;

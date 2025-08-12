@@ -349,6 +349,25 @@ body {
   height: 30px; /* Fixed header height */
 }
 
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-right: var(--space-sm);
+}
+
+.hamburger-btn:hover {
+  background: var(--background-app);
+  color: var(--cl-accent);
+}
+
 .chat-header-info h1 {
   font-size: 18px;
   font-weight: 600;
@@ -585,6 +604,11 @@ body {
   animation-delay: 0.4s;
 }
 
+.chat-input-container {
+  padding: 0;
+  max-height: 45px;
+}
+
 @keyframes typingPulse {
   0%,
   80%,
@@ -701,29 +725,72 @@ body {
     margin: var(--space-sm);
   }
 
-  .sidebar {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    flex-shrink: 0;
-  }
-
+  /* Off-canvas layout */
   .profile-shell {
     display: none; /* Hide profile panel on small screens */
   }
 
-  .sidebar-nav {
-    display: flex;
-    overflow-x: auto;
-    padding: var(--space-sm) var(--space-md);
-    gap: var(--space-xs);
+  .chat-shell {
+    position: relative;
+    padding: var(--space-sm);
+    overflow: hidden;
+    max-height: calc(100svh - 1rem);
+    /* container should not transform to avoid affecting fixed sidebar positioning */
   }
 
-  .nav-item {
-    min-width: fit-content;
-    margin-right: 0;
-    margin-bottom: 0;
-    white-space: nowrap;
+  .chat-input-container {
+    margin-bottom: 0.5rem !important;
+  }
+
+  #chat-input {
+    font-size: 16px;
+  }
+
+  .message.ai .message-content {
+    max-width: 98%;
+    padding: 0.25rem;
+  }
+
+  .hamburger-btn {
+    display: inline-flex; /* show hamburger on small screens */
+  }
+
+  /* Sidebar becomes off-canvas panel */
+  .sidebar {
+    position: fixed;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    bottom: var(--space-sm);
+    width: min(78vw, 320px);
+    height: auto;
+    margin: 0;
+    transform: translateX(-110%);
+    transition: transform 0.3s ease;
+    z-index: 1100; /* above chat content while open */
+  }
+
+  /* When app is toggled open, slide sidebar in and shift chat */
+  .app-container.menu-open .sidebar {
+    transform: translateX(0);
+  }
+
+  /* Shift the chat-shell left to reveal more space */
+  /* smoothly slide only the chat content */
+  .chat-main {
+    transition: transform 0.3s ease;
+    padding: 0.25rem 0 !important;
+  }
+
+  .chat-header {
+    padding: 1rem 0 1.25rem;
+  }
+
+  .chat-header p,
+  .chat-header i {
+    font-size: 14px !important;
+  }
+  .app-container.menu-open .chat-main {
+    transform: translateX(calc(min(78vw, 320px)));
   }
 
   .chat-main {
@@ -735,6 +802,10 @@ body {
 
   .message {
     padding: 0 var(--space-xs);
+  }
+
+  .chat-messages {
+    padding: 0;
   }
 }
 
