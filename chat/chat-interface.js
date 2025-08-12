@@ -202,8 +202,48 @@ document.addEventListener('DOMContentLoaded', async () => {
           chatMessages.scrollTop -
           chatMessages.clientHeight <=
         8;
+      // Smooth auto-scroll animation (slower than default)
+      const scroller = (() => {
+        let raf = 0;
+        let active = false;
+        const step = () => {
+          if (!active) return;
+          const target = chatMessages.scrollHeight - chatMessages.clientHeight;
+          const diff = target - chatMessages.scrollTop;
+          // Stop when close enough
+          if (Math.abs(diff) < 1) {
+            chatMessages.scrollTop = target;
+            active = false;
+            raf = 0;
+            return;
+          }
+          // Ease toward target (smaller factor = slower)
+          chatMessages.scrollTop += diff * 0.15;
+          raf = requestAnimationFrame(step);
+        };
+        return {
+          start() {
+            if (!active) {
+              active = true;
+              step();
+            }
+          },
+          cancel() {
+            active = false;
+            if (raf) cancelAnimationFrame(raf);
+            raf = 0;
+          },
+          isActive() {
+            return active;
+          },
+        };
+      })();
       const cancelIfUserMoves = () => {
-        if (!nearBottom()) shouldAutoScroll = false;
+        if (!nearBottom()) {
+          shouldAutoScroll = false;
+          // Also cancel any in-flight smooth scrolling
+          scroller.cancel();
+        }
       };
       // Listen to manual interactions only
       chatMessages.addEventListener('wheel', cancelIfUserMoves, {
@@ -222,10 +262,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           buffer += t;
           contentEl.innerHTML = markdownToHtml(buffer);
           if (shouldAutoScroll) {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            scroller.start();
+          } else {
+            scroller.cancel();
           }
         }
       } finally {
+        // Stop any ongoing smooth scroll between phases
+        scroller.cancel();
         chatMessages.removeEventListener('wheel', cancelIfUserMoves);
         chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
         chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
@@ -303,10 +347,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             answer += t;
             contentEl.innerHTML = markdownToHtml(answer);
             if (shouldAutoScroll) {
-              chatMessages.scrollTop = chatMessages.scrollHeight;
+              scroller.start();
+            } else {
+              scroller.cancel();
             }
           }
         } finally {
+          // Ensure smooth scrolling stops after this phase as well
+          scroller.cancel();
           chatMessages.removeEventListener('wheel', cancelIfUserMoves);
           chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
           chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
@@ -321,6 +369,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       contentEl.innerHTML = markdownToHtml(answer);
+      // Final snap to bottom if user hasn't taken over scrolling
+      if (shouldAutoScroll) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
       history.push({ role: 'user', text: question });
       history.push({ role: 'model', text: answer });
     } catch (err) {
