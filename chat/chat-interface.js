@@ -530,6 +530,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Download PDF functionality moved to export-pdf.js
+
   // Hydrate in-memory history when session-cache restores a previous session
   document.addEventListener('chat:session-restored', (e) => {
     const restored = Array.isArray(e?.detail?.history) ? e.detail.history : [];

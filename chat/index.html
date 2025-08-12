@@ -21,6 +21,26 @@
     />
 
     <link rel="stylesheet" href="chat-styles.css" />
+    <style>
+      /* Ensure fonts/styles apply in the print container too */
+      #print-transcript,
+      #print-transcript * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #1d1d1f; /* ensure dark text in PDF */
+      }
+      /* Improve readability for user bubbles in PDF export */
+      #print-transcript .message.user .message-content {
+        background: #e9f2ff !important;
+        color: #0f172a !important;
+      }
+      #print-transcript .message.ai .message-content {
+        color: #111827 !important;
+      }
+      #print-transcript a {
+        color: #0b5dd7 !important;
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
     <div class="app-container">
@@ -72,8 +92,12 @@
               <button class="action-btn" title="Clear Chat">
                 <i class="fas fa-trash-alt"></i>
               </button>
-              <button class="action-btn" title="Settings">
-                <i class="fas fa-cog"></i>
+              <button
+                class="action-btn"
+                id="download-pdf-btn"
+                title="Download PDF"
+              >
+                <i class="fas fa-file-arrow-down"></i>
               </button>
             </div>
           </div>
@@ -200,6 +224,12 @@
       </aside>
     </div>
 
+    <!-- Lightweight client-side HTML -> PDF -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="export-pdf.js"></script>
     <script src="chat-interface.js"></script>
     <script src="session-cache.js"></script>
   </body>
