@@ -1,105 +1,165 @@
 {
-  "persona": {
-    "full_name": "Corey Lawrence",
-    "headline": "Front-End Engineer • UX-Minded Web Developer",
-    "summary": "12+ years blending front-end engineering, UX design, and growth-driven web strategy. Comfortable in start-ups or enterprise, remote or on-site, and open to relocate worldwide.",
-    "current_city": "Winston-Salem, NC (willing to relocate or work remote)",
-    "contact": {
-      "email": "cmlawrence445@gmail.com",
-      "phone": "(828) 773-2391",
-      "linkedin": "linkedin.com/in/corey-m-lawrence",
-      "github": "github.com/CoreyMLawrence"
-    },
-    "education": {
-      "degree": "B.S. Computer Science",
-      "school": "High Point University"
-    }
+  "name": "Corey Lawrence",
+  "contact": {
+    "linkedin": "https://www.linkedin.com/in/corey-lawrence-85621386/",
+    "github": "https://github.com/CoreyMLawrence/",
+    "portfolio": "https://coreylawrence.me/",
+    "email": "cmlawrence445@gmail.com",
+    "phone": "(828) 773-2391"
   },
-  "skills": {
-    "front_end": [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "JavaScript",
+  "education": [
+    {
+      "degree": "Bachelor of Science",
+      "major": "Computer Science",
+      "institution": "High Point University",
+      "location": "High Point, NC",
+      "years_attended": "Graduated prior to 2012"
+    }
+  ],
+  "career": [
+    {
+      "title": "Marketing Specialist",
+      "company": "Highland International, LLC",
+      "location": "Boone, NC",
+      "start_date": "2012-10",
+      "end_date": "2020-05",
+      "summary": "Blended marketing, web management, and content creation to grow brand visibility and lead generation.",
+      "key_responsibilities": [
+        "Rebuilt and managed corporate website, transitioning from HTTP to HTTPS and tripling organic traffic through SEO and UX improvements.",
+        "Created and managed site content via WordPress, including keyword research, metadata optimization, and blog updates.",
+        "Designed landing pages, marketing emails, and print/digital collateral to support lead generation.",
+        "Ran targeted Google Ads campaigns, doubling qualified leads through analytics-driven optimization.",
+        "Performed professional product photography for use in marketing campaigns.",
+        "Collaborated with cross-functional teams to ensure alignment between marketing strategies and business objectives."
+      ],
+      "skills_used": [
+        "WordPress CMS",
+        "SEO",
+        "Google Analytics",
+        "Content Strategy",
+        "Adobe Creative Suite",
+        "Photography",
+        "Copywriting",
+        "Campaign Management"
+      ]
+    },
+    {
+      "title": "UI/UX Engineer",
+      "company": "Phonelo AI",
+      "location": "Remote",
+      "start_date": "2024-05",
+      "end_date": "2025-01",
+      "summary": "Focused on front-end architecture, accessibility, and user experience for AI-powered transcription tools.",
+      "key_responsibilities": [
+        "Developed a responsive React-based UI for an AI transcription tool, integrating real-time audio syncing and transcript playback.",
+        "Implemented accessibility standards (WCAG) to ensure usability across devices and audiences.",
+        "Created interactive transitions, animations, and real-time state management across components.",
+        "Worked with product, backend, and design teams to translate business requirements into user-friendly features.",
+        "Optimized performance and responsiveness for mobile and desktop."
+      ],
+      "skills_used": [
+        "React.js",
+        "JavaScript",
+        "TypeScript",
+        "WCAG Accessibility",
+        "Responsive Design",
+        "UI Animation",
+        "Cross-functional Collaboration"
+      ]
+    },
+    {
+      "title": "Founder | Independent Consultant",
+      "company": "Catalon Consulting",
+      "location": "Winston-Salem, NC",
+      "start_date": "2025-01",
+      "end_date": "Present",
+      "summary": "Provides AI consulting and custom web solutions to help businesses streamline operations and enhance digital presence.",
+      "key_responsibilities": [
+        "Developed tailored AI-powered solutions to automate workflows, cut costs, and improve efficiency for small to mid-sized businesses.",
+        "Designed and deployed custom websites with integrated content management systems.",
+        "Worked directly with business owners to translate operational needs into functional, easy-to-use digital tools."
+      ],
+      "skills_used": [
+        "AI Tools Integration",
+        "Custom CMS Development",
+        "JavaScript",
+        "Client Consulting",
+        "Business Process Automation"
+      ]
+    },
+    {
+      "title": "Full-Stack Developer",
+      "company": "Inceed (Contract)",
+      "location": "Remote",
+      "start_date": "2025-03",
+      "end_date": "Present",
+      "summary": "Leads the full rebuild and deployment of a real estate development company’s web platform, from architecture to front-end experience.",
+      "key_responsibilities": [
+        "Rebuilt Ashton Gray’s website from scratch using Eleventy, Sanity CMS, and modular design principles.",
+        "Hand-coded responsive front-end with HTML, CSS, JavaScript, and GSAP animations.",
+        "Connected Sanity CMS content to dynamic Nunjucks templates for maintainable rendering.",
+        "Developed Node-based scripts for CMS data fetching, image caching, and automated build triggers.",
+        "Set up GitHub Actions for CI/CD deployment tied to content updates.",
+        "Optimized SEO, caching, and image handling to improve page speed and search rankings.",
+        "Collaborated with stakeholders to ensure tools and features align with business goals."
+      ],
+      "skills_used": [
+        "Eleventy",
+        "Sanity CMS",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "GSAP",
+        "Nunjucks",
+        "Node.js",
+        "GitHub Actions",
+        "SEO Optimization"
+      ]
+    }
+  ],
+  "skills_overview": {
+    "web_development": [
       "HTML5",
       "CSS3",
-      "GSAP"
+      "JavaScript",
+      "React.js",
+      "GSAP",
+      "Node.js",
+      "Eleventy",
+      "Nunjucks"
     ],
-    "design_ux": [
-      "Responsive & accessible layouts (WCAG)",
+    "cms_platforms": ["WordPress", "Sanity", "ContentStack"],
+    "design_tools": [
       "Figma",
-      "Adobe Creative Suite"
+      "Sketch",
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "InDesign",
+      "InVision"
     ],
-    "devops_web_admin": [
-      "WordPress & custom CMS",
-      "Site performance tuning",
-      "Backup & security audits"
-    ],
-    "marketing_growth": [
-      "SEO & analytics",
+    "marketing": [
+      "SEO Strategy",
+      "Content Marketing",
+      "Email Campaigns",
       "Google Ads",
-      "Email/lifecycle campaigns"
-    ],
-    "ai_automation": [
-      "OpenAI API integrations",
-      "Zapier / low-code workflow tools"
-    ],
-    "product_process": [
-      "Agile / Scrum",
-      "Backlog grooming",
-      "Cross-functional collaboration"
+      "Conversion Rate Optimization",
+      "Analytics Tracking"
     ],
     "soft_skills": [
-      "Clear communicator",
-      "Mentor mindset",
-      "Problem-solver",
-      "High ownership"
+      "Cross-Functional Collaboration",
+      "Clear Communication",
+      "Problem-Solving",
+      "Stakeholder Alignment",
+      "Project Management"
     ]
   },
-  "experience_highlights": [
-    {
-      "title": "Full-Stack Developer (Contract)",
-      "company": "Inceed",
-      "dates": "Mar 2025 – Present",
-      "key_points": [
-        "Built custom CMS with content-friendly workflows for a real-estate platform",
-        "Focused on speed, scalability, and intuitive admin UX"
-      ]
-    },
-    {
-      "title": "Frontend / UI Engineer",
-      "company": "Phonelo AI",
-      "dates": "May 2024 – Jan 2025",
-      "key_points": [
-        "Redesigned React interface, boosting user engagement 25%",
-        "Implemented GSAP-powered interactions while meeting WCAG guidelines"
-      ]
-    },
-    {
-      "title": "Marketing & Web Specialist",
-      "company": "Highland International",
-      "dates": "Oct 2012 – May 2020",
-      "key_points": [
-        "Led full site overhaul, tripling traffic and lifting conversions 25%",
-        "Grew organic search traffic 300% with data-driven SEO"
-      ]
-    }
-  ],
-  "notable_projects": [
-    "Phonelo University – scroll-based storytelling site (GSAP, React)",
-    "Comfort Airlines simulator – web app for ticketing & ops (JS, Python)",
-    "Progressive-Web Music Player – offline-first audio PWA"
-  ],
-  "relocation_preferences": {
-    "open_to": ["Remote", "Hybrid", "On-site"],
-    "willing_to_relocate": true,
-    "travel_flexibility": "Up to 25% travel if required"
-  },
-  "communication_style": {
-    "tone": "Down-to-earth, avoids buzzwords",
-    "strengths": [
-      "Explains tech in plain language",
-      "Adapts to varied audiences"
-    ]
+  "professional_traits": {
+    "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as if it were his own brand. He is detail-oriented but understands how to prioritize and deliver on time in fast-paced environments.",
+    "collaboration_style": "Easy to work with, receptive to feedback, and proactive in offering solutions. Known for building trust with colleagues by combining clear communication with follow-through.",
+    "problem_solving": "Thrives in identifying root causes quickly, whether in technical systems or process workflows, and implementing practical, sustainable solutions.",
+    "adaptability": "Comfortable stepping into ongoing projects, rapidly learning existing systems, and improving them without disrupting momentum.",
+    "innovation": "Regularly introduces new tools, methods, and design improvements that enhance efficiency and elevate user experience.",
+    "mission_alignment": "Values-driven professional who seeks out work that makes a tangible, positive impact, ensuring projects align with both user needs and organizational goals.",
+    "reputation": "Respected for being steady under pressure, delivering high-quality work, and fostering an environment of trust, clarity, and mutual respect."
   }
 }

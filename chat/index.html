@@ -23,96 +23,169 @@
   </head>
   <body>
     <div class="app-container">
-      <!-- Left Sidebar Menu -->
-      <aside class="sidebar">
-        <div class="sidebar-header">
-          <h2 class="sidebar-title">Portfolio Chat</h2>
-          <p class="sidebar-subtitle">Ask about Corey</p>
-        </div>
-
-        <nav class="sidebar-nav">
-          <a href="#about" class="nav-item active" data-section="about">
-            <i class="fas fa-user"></i>
-            <span>About</span>
-          </a>
-          <a href="#projects" class="nav-item" data-section="projects">
-            <i class="fas fa-folder-open"></i>
-            <span>Projects</span>
-          </a>
-          <a href="#expertise" class="nav-item" data-section="expertise">
-            <i class="fas fa-cogs"></i>
-            <span>Expertise</span>
-          </a>
-          <a href="#contact" class="nav-item" data-section="contact">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
-          </a>
-        </nav>
-
-        <div class="sidebar-footer">
-          <a href="index.html" class="back-link">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back to Portfolio</span>
-          </a>
-        </div>
-      </aside>
-
-      <!-- Main Chat Interface -->
-      <main class="chat-main">
-        <div class="chat-header">
-          <div class="chat-header-info">
-            <h1 class="chat-title">Corey Lawrence</h1>
-            <p class="chat-status">
-              <span class="status-dot"></span>
-              AI Assistant Ready
-            </p>
+      <div class="chat-shell">
+        <!-- Left Sidebar Menu -->
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <h2 class="sidebar-title">Portfolio Chat</h2>
+            <p class="sidebar-subtitle">Ask about Corey</p>
           </div>
-          <div class="chat-actions">
-            <button class="action-btn" title="Clear Chat">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button class="action-btn" title="Settings">
-              <i class="fas fa-cog"></i>
-            </button>
-          </div>
-        </div>
 
-        <div class="chat-container">
-          <div class="chat-messages" id="chat-messages">
-            <div class="welcome-message">
-              <h3>Ask me anything about Corey</h3>
-              <p>
-                I have access to his complete résumé and can provide detailed
-                information about his experience, projects, and skills.
+          <nav class="sidebar-nav">
+            <a href="#about" class="nav-item active" data-section="about">
+              <i class="fas fa-user"></i>
+              <span>About</span>
+            </a>
+            <a href="#projects" class="nav-item" data-section="projects">
+              <i class="fas fa-folder-open"></i>
+              <span>Projects</span>
+            </a>
+            <a href="#expertise" class="nav-item" data-section="expertise">
+              <i class="fas fa-cogs"></i>
+              <span>Expertise</span>
+            </a>
+            <a href="#contact" class="nav-item" data-section="contact">
+              <i class="fas fa-envelope"></i>
+              <span>Contact</span>
+            </a>
+          </nav>
+
+          <div class="sidebar-footer">
+            <a href="index.html" class="back-link">
+              <i class="fas fa-arrow-left"></i>
+              <span>Back to Portfolio</span>
+            </a>
+          </div>
+        </aside>
+
+        <!-- Main Chat Interface -->
+        <main class="chat-main">
+          <div class="chat-header">
+            <div class="chat-header-info">
+              <h1 class="chat-title">Corey Lawrence</h1>
+              <p class="chat-status">
+                <span class="status-dot"></span>
+                AI Assistant Ready
               </p>
-              <div class="suggestion-chips">
-                <button class="suggestion-chip">
-                  Tell me about his projects
-                </button>
-                <button class="suggestion-chip">
-                  What technologies does he use?
-                </button>
-                <button class="suggestion-chip">What's his background?</button>
-              </div>
+            </div>
+            <div class="chat-actions">
+              <button class="action-btn" title="Clear Chat">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button class="action-btn" title="Settings">
+                <i class="fas fa-cog"></i>
+              </button>
             </div>
           </div>
 
-          <div class="chat-input-container">
-            <form class="chat-form" id="chat-form">
-              <div class="input-wrapper">
-                <textarea
-                  id="chat-input"
-                  placeholder="Ask about Corey's experience, skills, projects..."
-                  rows="1"
-                ></textarea>
-                <button type="submit" class="send-button" id="send-button">
-                  <i class="fas fa-paper-plane"></i>
-                </button>
+          <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+              <div class="welcome-message">
+                <h3>Ask me anything about Corey</h3>
+                <p>
+                  I have access to his complete resume and can provide detailed
+                  information about his experience, projects, and skills.
+                </p>
+                <div class="suggestion-chips">
+                  <button class="suggestion-chip">
+                    Tell me about his projects
+                  </button>
+                  <button class="suggestion-chip">
+                    What technologies does he use?
+                  </button>
+                  <button class="suggestion-chip">
+                    What's his background?
+                  </button>
+                </div>
               </div>
-            </form>
+            </div>
+
+            <div class="chat-input-container">
+              <form class="chat-form" id="chat-form">
+                <div class="input-wrapper">
+                  <textarea
+                    id="chat-input"
+                    placeholder="Ask about Corey's experience, skills, projects..."
+                    rows="1"
+                  ></textarea>
+                  <button type="submit" class="send-button" id="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
+        </main>
+      </div>
+
+      <!-- Right Profile Container as separate outer box (content directly inside) -->
+      <aside class="profile-shell" aria-label="Corey profile">
+        <div class="profile-header">
+          <div class="avatar">
+            <img
+              src="../assets/images/CoreyLawrence.webp"
+              alt="Corey Lawrence"
+              loading="lazy"
+            />
+          </div>
+          <h2 class="name">Corey Lawrence</h2>
+          <p class="role">Technologist + Marketer</p>
+          <p class="headline">Front-End Engineer • UX-Minded Web Developer</p>
         </div>
-      </main>
+
+        <a
+          class="resume-download"
+          href="../Corey%20Lawrence%20-%20Product%20Manager.pdf"
+          download
+          target="_blank"
+          rel="noopener"
+          title="Download resume"
+        >
+          <i class="fa-solid fa-file-arrow-down"></i>
+          <span>Download resume</span>
+        </a>
+
+        <div class="card-section">
+          <h3 class="section-title">
+            <i class="fa-solid fa-address-card"></i>
+            Contact
+          </h3>
+          <ul class="contact-list">
+            <li>
+              <i class="fa-solid fa-envelope"></i>
+              <a id="profile-email" href="#" target="_blank">Email</a>
+            </li>
+            <li>
+              <i class="fa-solid fa-phone"></i>
+              <a id="profile-phone" href="#">Phone</a>
+            </li>
+            <li>
+              <i class="fa-brands fa-linkedin"></i>
+              <a id="profile-linkedin" href="#" target="_blank" rel="noopener"
+                >LinkedIn</a
+              >
+            </li>
+            <li>
+              <i class="fa-brands fa-github"></i>
+              <a id="profile-github" href="#" target="_blank" rel="noopener"
+                >GitHub</a
+              >
+            </li>
+            <li>
+              <i class="fa-solid fa-location-dot"></i>
+              <span id="profile-location">Location</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-section">
+          <h3 class="section-title">
+            <i class="fa-solid fa-toolbox"></i>
+            Top skills
+          </h3>
+          <ul class="tag-list" id="profile-skills"></ul>
+        </div>
+      </aside>
     </div>
 
     <script src="chat-interface.js"></script>

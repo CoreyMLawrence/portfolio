@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load resume data
   try {
-    const res = await fetch('personal-chat/resume.json');
+    const res = await fetch('chat/resume.json');
     resumeData = await res.json();
     console.log('Resume data loaded successfully');
   } catch (e) {
@@ -62,10 +62,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   function updateChatContext(section) {
-    const contextMessage = getContextualResponse(section);
-    if (contextMessage) {
-      addMessage('ai', contextMessage);
-    }
+    // Build a targeted prompt per section and stream a concise summary via Gemini
+    const prompts = {
+      about:
+  "Provide a concise 'About Corey' summary for hiring managers. Focus on roles, years of experience, domains, leadership, and impact. Include 4–7 short bullets. Third person. Use only facts from the résumé JSON. Do not mention unknowns; simply omit any details that aren't present.",
+      projects:
+  "Summarize Corey's flagship projects. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Do not mention unknowns; simply omit any details that aren't present.",
+      expertise:
+  "Summarize Corey's technical skills and expertise. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Do not mention unknowns; simply omit any details that aren't present.",
+      contact:
+  "Provide Corey's contact and availability details suitable for a hiring manager. Include email, LinkedIn, portfolio URL, location, time zone, and preferred contact. Keep to 3–6 bullets. Use only data present in the résumé JSON. Do not mention unknowns; simply omit any details that aren't present.",
+    };
+
+    const prompt =
+      prompts[section] ||
+      'Give a concise overview of Corey for a hiring manager. Use short bullets and only facts from the résumé JSON.';
+
+    showTypingIndicator();
+    generateGeminiResponse(prompt);
   }
 
   function handleSendMessage() {
@@ -99,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const model = genAI.getGenerativeModel({
         model: MODEL_ID,
         systemInstruction:
-          "You are 'Corey Portfolio Assistant' — a concise, professional guide for hiring managers. Speak in third person about Corey (he/him). Use only factual details from the provided resume JSON or prior messages. If information is missing, say it's not available. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.",
+          "You are 'Corey Portfolio Assistant' — a concise, professional guide for hiring managers. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user asks a direct, specific question for information that isn't in the context, say briefly that it isn't available in the résumé and, when helpful, pivot to related known facts. Otherwise, do not mention unknowns—simply omit details you cannot verify. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.",
       });
 
       const buildUserPrompt = (q) => {
@@ -107,7 +121,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           resumeData,
           null,
           2
-        )}\n\nUser question: ${q}\n\nAnswer clearly, in third person, using only facts from the context (say if unknown). Prefer concise bullets.`;
+        )}\n\nUser question: ${q}\n\nInstructions:\n- Answer clearly in third person.\n- Use only facts from the context; never invent details.\n- If the question asks for a specific detail that is missing, reply briefly that it isn't available in the résumé and, when helpful, add closely related known facts.\n- Otherwise, omit unknown details instead of calling them out.\n- Prefer concise bullets.`;
       };
 
       const userPrompt = buildUserPrompt(question);

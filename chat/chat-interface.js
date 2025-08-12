@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch('./resume.json');
     resumeData = await res.json();
     console.log('Resume data loaded successfully');
+    hydrateProfilePanel(resumeData);
   } catch (e) {
     console.error('Failed to load resume data:', e);
   }
@@ -73,10 +74,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   function updateChatContext(section) {
-    const contextMessage = getContextualResponse(section);
-    if (contextMessage) {
-      addMessage('ai', contextMessage);
-    }
+    // Generate a concise section summary using Gemini and résumé context
+    const prompts = {
+      about:
+  "Provide a concise 'About Corey' summary for hiring managers. Emphasize strengths and how Corey adds value. Focus on roles, years of experience, domains, leadership, and impact. Include 4–7 short bullets. Third person. Use only facts from the résumé JSON. Omit unknowns.",
+      projects:
+  "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns.",
+      expertise:
+  "Summarize Corey's technical skills and expertise, highlighting strengths that matter to hiring managers. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Omit unknowns.",
+      contact:
+  "Provide Corey's contact and availability details suitable for a hiring manager. Include email, LinkedIn, portfolio URL, location, time zone, and preferred contact. Keep to 3–6 bullets. Use only data present in the résumé JSON. Omit unknowns.",
+    };
+
+    const prompt =
+      prompts[section] ||
+      'Give a concise overview of Corey for a hiring manager. Use short bullets and only facts from the résumé JSON.';
+
+    showTypingIndicator();
+    generateGeminiResponse(prompt);
   }
 
   function handleSendMessage() {
@@ -110,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const model = genAI.getGenerativeModel({
         model: MODEL_ID,
         systemInstruction:
-          "You are 'Corey Portfolio Assistant' — a concise, professional guide for hiring managers. Speak in third person about Corey (he/him). Use only factual details from the provided resume JSON or prior messages. If information is missing, say it's not available. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.",
+          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.",
       });
 
       const buildUserPrompt = (q) => {
@@ -118,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           resumeData,
           null,
           2
-        )}\n\nUser question: ${q}\n\nAnswer clearly, in third person, using only facts from the context (say if unknown). Prefer concise bullets.`;
+        )}\n\nUser message (may include a job description): ${q}\n\nInstructions:\n- Answer clearly in third person.\n- Use only facts from the context; never invent details.\n- Act as an advocate: emphasize Corey's fit and value for the user's needs.\n- If the message includes a job description or role text, structure the answer as:\n  1) Fit overview (2–3 lines).\n  2) Requirement → Corey evidence mapping (bullets).\n  3) Relevant achievements with outcomes/metrics.\n  4) Tech/skills coverage relevant to the role.\n  5) Suggested next steps/CTA (e.g., share demo, references, 30/60/90).\n- Focus on strengths; do not volunteer gaps or negatives unless directly asked.\n- If a direct, specific detail is missing, say briefly it's not in the résumé and, when helpful, add closely related known facts.\n- Otherwise, omit unknown details instead of calling them out.\n- Prefer concise bullets.`;
       };
 
       const userPrompt = buildUserPrompt(question);
@@ -300,6 +315,72 @@ document.addEventListener('DOMContentLoaded', async () => {
     const typingMessage = chatMessages.querySelector('.typing-message');
     if (typingMessage) {
       typingMessage.remove();
+    }
+  }
+
+  // Populate right profile panel from resume data
+  function hydrateProfilePanel(data) {
+    try {
+      const p = data?.persona || {};
+      const contact = p.contact || {};
+      // Basic text
+      const nameEl = document.querySelector('.profile-header .name');
+      const roleEl = document.querySelector('.profile-header .role');
+      const headlineEl = document.querySelector('.profile-header .headline');
+      if (nameEl && p.full_name) nameEl.textContent = p.full_name;
+      if (roleEl) roleEl.textContent = 'Technologist + Marketer';
+      if (headlineEl && p.headline) headlineEl.textContent = p.headline;
+
+      // Contact links
+      const emailEl = document.getElementById('profile-email');
+      const phoneEl = document.getElementById('profile-phone');
+      const liEl = document.getElementById('profile-linkedin');
+      const ghEl = document.getElementById('profile-github');
+      const locEl = document.getElementById('profile-location');
+      if (emailEl && contact.email) {
+        emailEl.textContent = contact.email;
+        emailEl.href = `mailto:${contact.email}`;
+      }
+      if (phoneEl && contact.phone) {
+        const tel = contact.phone.replace(/[^\d+]/g, '');
+        phoneEl.textContent = contact.phone;
+        phoneEl.href = `tel:${tel}`;
+      }
+      if (liEl && contact.linkedin) {
+        const href = contact.linkedin.startsWith('http')
+          ? contact.linkedin
+          : `https://${contact.linkedin}`;
+        liEl.textContent = 'LinkedIn';
+        liEl.href = href;
+      }
+      if (ghEl && contact.github) {
+        const href = contact.github.startsWith('http')
+          ? contact.github
+          : `https://${contact.github}`;
+        ghEl.textContent = 'GitHub';
+        ghEl.href = href;
+      }
+      if (locEl && p.current_city) {
+        locEl.textContent = p.current_city;
+      }
+
+      // Top skills (pick a few representative from skills.front_end + design_ux + ai_automation)
+      const tagList = document.getElementById('profile-skills');
+      if (tagList && data.skills) {
+        const picks = [
+          ...(data.skills.front_end || []).slice(0, 3),
+          ...(data.skills.design_ux || []).slice(0, 2),
+          ...(data.skills.ai_automation || []).slice(0, 2),
+        ].filter(Boolean);
+        tagList.innerHTML = '';
+        picks.forEach((s) => {
+          const li = document.createElement('li');
+          li.textContent = s;
+          tagList.appendChild(li);
+        });
+      }
+    } catch (err) {
+      console.error('Failed to hydrate profile panel:', err);
     }
   }
 
