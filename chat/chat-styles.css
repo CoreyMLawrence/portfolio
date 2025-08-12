@@ -716,10 +716,11 @@ body {
 @media (max-width: 768px) {
   body {
     padding: 0;
+    height: 100svh; /* prevent jump when keyboard opens */
   }
 
   .app-container {
-    height: calc(100vh - (2 * var(--space-sm)));
+    height: calc(100svh - (2 * var(--space-sm)));
     width: calc(100% - (2 * var(--space-sm)));
     flex-direction: column;
     margin: var(--space-sm);
@@ -734,7 +735,7 @@ body {
     position: relative;
     padding: var(--space-sm);
     overflow: hidden;
-    max-height: calc(100svh - 1rem);
+    max-height: calc(100lvh - 1rem);
     /* container should not transform to avoid affecting fixed sidebar positioning */
   }
 
@@ -798,6 +799,7 @@ body {
     flex: 1;
     overflow: hidden;
     min-height: 0;
+    max-height: 100svh; /* cap at large viewport height */
   }
 
   .message {
@@ -806,6 +808,9 @@ body {
 
   .chat-messages {
     padding: 0;
+    max-height: calc(
+      100svh - 140px
+    ); /* leave room for header + input on mobile */
   }
 }
 
