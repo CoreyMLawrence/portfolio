@@ -624,9 +624,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           <h3>Ask me anything about Corey</h3>
           <p>I have access to his complete resume and can provide detailed information about his experience, projects, and skills.</p>
           <div class="suggestion-chips">
-            <button class="suggestion-chip">Tell me about his projects</button>
-            <button class="suggestion-chip">What technologies does he use?</button>
-            <button class="suggestion-chip">What's his background?</button>
+            <button class="suggestion-chip">Tell me about Corey's projects</button>
+            <button class="suggestion-chip">What technologies does Corey use?</button>
+            <button class="suggestion-chip">What is Corey's background?</button>
           </div>`;
         chatMessages.appendChild(wrap);
         chatMessages.scrollTop = 0;
