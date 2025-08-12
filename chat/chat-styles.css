@@ -282,18 +282,38 @@ body {
 }
 
 .contact-list li {
+  display: block;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-list .contact-row {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  font-size: 14px;
-}
-
-.contact-list a {
+  width: 100%;
   color: var(--text-primary);
   text-decoration: none;
+  transition: color 0.2s ease;
+  border-radius: 8px;
+  padding: 8px 0;
 }
 
-.contact-list a:hover {
+.contact-list .contact-row i {
+  width: 18px; /* fixed icon column for alignment */
+  text-align: center;
+  flex: 0 0 18px;
+}
+
+.contact-list li:hover a,
+.contact-list li:hover i,
+.contact-list li:hover span,
+.contact-list li:focus-within a,
+.contact-list li:focus-within i,
+.contact-list li:focus-within span,
+.contact-list li:hover .contact-row,
+.contact-list li:focus-within .contact-row {
   color: var(--cl-accent);
 }
 
@@ -305,12 +325,16 @@ body {
 
 .tag-list li {
   list-style: none;
-  background: var(--background-app);
-  border: 1px solid var(--border-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cl-accent);
+  border: 1px solid transparent;
   border-radius: 999px;
   padding: 6px 10px;
-  font-size: 12px;
-  color: var(--text-primary);
+  font-size: 11px; /* slightly smaller */
+  color: #ffffff;
+  white-space: nowrap; /* size to text */
 }
 
 .chat-header {
@@ -320,9 +344,8 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-light);
-  margin-bottom: var(--space-lg);
   flex-shrink: 0;
-  height: 60px; /* Fixed header height */
+  height: 30px; /* Fixed header height */
 }
 
 .chat-header-info h1 {
@@ -383,11 +406,11 @@ body {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+  overflow-x: visible;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   padding: 0 var(--space-sm) var(--space-md);
-  margin: 0;
   min-height: 0; /* Allows flex shrinking */
 }
 
@@ -398,7 +421,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: var(--space-xl);
+  padding: 10% var(--space-sm) var(--space-xl);
   margin: 0;
   min-height: 200px; /* Minimum space for welcome message */
 }
@@ -464,7 +487,10 @@ body {
   padding: var(--space-sm) var(--space-md);
   font-size: 15px;
   line-height: 1.75; /* Improved readability */
-  word-wrap: break-word;
+  /* Robust wrapping to avoid horizontal scroll */
+  word-wrap: break-word; /* legacy */
+  overflow-wrap: anywhere; /* modern */
+  word-break: break-word;
   margin: 0;
 }
 
@@ -479,7 +505,7 @@ body {
   background: transparent;
   color: var(--text-primary);
   border-radius: 0;
-  padding-left: calc(var(--space-md) + 4px); /* slight inset from edge */
+  max-width: 90%;
 }
 
 /* Markdown spacing and indentation inside AI messages */
@@ -502,6 +528,20 @@ body {
   background: var(--background-app);
   padding: 0 0.25em;
   border-radius: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Wrap code blocks and long inline content */
+.message-content pre {
+  white-space: pre-wrap; /* wrap long lines in code blocks */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.message-content a {
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Typing Indicator - Properly positioned */
@@ -572,11 +612,12 @@ body {
   justify-content: center;
   gap: var(--space-sm);
   padding: 0 var(--space-md);
-  margin-bottom: var(--space-sm);
+  margin: 0 auto var(--space-sm);
   background: var(--background-app);
   border-radius: 1.5rem;
   transition: all 0.2s ease;
   min-height: 44px;
+  max-width: 800px;
 }
 
 .input-wrapper:focus-within {
@@ -712,16 +753,7 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Remove any default margins that could cause spacing issues */
-.chat-messages > *:first-child {
-  margin-top: 0;
-}
-
-.chat-messages > *:last-child {
-  margin-bottom: 0;
-}
-
 /* Ensure proper spacing when welcome message is removed */
 .chat-messages:not(:has(.welcome-message)) {
-  padding-top: var(--space-sm);
+  padding-top: var(--space-lg);
 }

@@ -67,28 +67,44 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Add active class to clicked item
       item.classList.add('active');
 
-      // Update chat context based on selection
+      // Update chat context based on selection and show the tab label as a user message
       const section = item.dataset.section;
-      updateChatContext(section);
+      const label = (
+        item.querySelector('span')?.textContent ||
+        item.textContent ||
+        section ||
+        ''
+      ).trim();
+      updateChatContext(section, label);
     });
   });
 
-  function updateChatContext(section) {
+  function updateChatContext(section, label) {
     // Generate a concise section summary using Gemini and résumé context
     const prompts = {
       about:
-  "Provide a concise 'About Corey' summary for hiring managers. Emphasize strengths and how Corey adds value. Focus on roles, years of experience, domains, leadership, and impact. Include 4–7 short bullets. Third person. Use only facts from the résumé JSON. Omit unknowns.",
+        "Provide a concise 'About Corey' summary for hiring managers. Emphasize strengths and how Corey adds value. Focus on roles, years of experience, domains, leadership, and impact. Include 4–7 short bullets. Third person. Use only facts from the résumé JSON. Omit unknowns.",
       projects:
-  "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns.",
+        "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns.",
       expertise:
-  "Summarize Corey's technical skills and expertise, highlighting strengths that matter to hiring managers. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Omit unknowns.",
+        "Summarize Corey's technical skills and expertise, highlighting strengths that matter to hiring managers. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Omit unknowns.",
       contact:
-  "Provide Corey's contact and availability details suitable for a hiring manager. Include email, LinkedIn, portfolio URL, location, time zone, and preferred contact. Keep to 3–6 bullets. Use only data present in the résumé JSON. Omit unknowns.",
+        "Provide Corey's contact and availability for a hiring manager. Include only fields present in the résumé JSON: email, LinkedIn, portfolio URL, location, time zone, and preferred contact. Use 3–6 concise bullets. Link formatting rules:\n- Use Markdown links.\n- Email: display the address (e.g., c@example.com); link as mailto:c@example.com. Do not show the word 'mailto'.\n- Web links: display a clean label without protocol, without 'www.', and without a trailing slash (e.g., coreylawrence.me or linkedin.com/in/handle); the href must be the full HTTPS URL from the résumé JSON.\n- Do not invent or guess missing fields; omit anything not in the résumé JSON.\n- Do not show raw URLs; always use Markdown link text with the correct href.\n- Treat links as external by ensuring hrefs begin with https:// (except for mailto).",
     };
 
     const prompt =
       prompts[section] ||
       'Give a concise overview of Corey for a hiring manager. Use short bullets and only facts from the résumé JSON.';
+
+    // Post the tab title as the user's message for context/reference
+    const sectionLabelMap = {
+      about: 'About',
+      projects: 'Projects',
+      expertise: 'Expertise',
+      contact: 'Contact',
+    };
+    const display = (label || sectionLabelMap[section] || 'About').trim();
+    if (display) addMessage('user', display);
 
     showTypingIndicator();
     generateGeminiResponse(prompt);
@@ -182,14 +198,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Per-message auto-scroll with user-cancel behavior (only on manual input)
       let shouldAutoScroll = true;
       const nearBottom = () =>
-        chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight <= 8;
+        chatMessages.scrollHeight -
+          chatMessages.scrollTop -
+          chatMessages.clientHeight <=
+        8;
       const cancelIfUserMoves = () => {
         if (!nearBottom()) shouldAutoScroll = false;
       };
       // Listen to manual interactions only
-      chatMessages.addEventListener('wheel', cancelIfUserMoves, { passive: true });
-      chatMessages.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
-      chatMessages.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+      chatMessages.addEventListener('wheel', cancelIfUserMoves, {
+        passive: true,
+      });
+      chatMessages.addEventListener('touchmove', cancelIfUserMoves, {
+        passive: true,
+      });
+      chatMessages.addEventListener('touchstart', cancelIfUserMoves, {
+        passive: true,
+      });
       try {
         for await (const chunk of stream.stream) {
           const t = chunk?.text?.() || '';
@@ -216,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch {}
       answer = (answer || 'No answer produced.').trim();
 
-  // Auto-continue streaming if truncated (preserve per-message cancel state)
+      // Auto-continue streaming if truncated (preserve per-message cancel state)
       let continueCount = 0;
       while (truncated && continueCount < 2) {
         continueCount++;
@@ -262,9 +287,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Re-attach manual input listeners during continuation
         shouldAutoScroll = shouldAutoScroll && nearBottom();
-        chatMessages.addEventListener('wheel', cancelIfUserMoves, { passive: true });
-        chatMessages.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
-        chatMessages.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+        chatMessages.addEventListener('wheel', cancelIfUserMoves, {
+          passive: true,
+        });
+        chatMessages.addEventListener('touchmove', cancelIfUserMoves, {
+          passive: true,
+        });
+        chatMessages.addEventListener('touchstart', cancelIfUserMoves, {
+          passive: true,
+        });
         try {
           for await (const chunk of contStream.stream) {
             const t = chunk?.text?.() || '';
@@ -354,26 +385,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Populate right profile panel from resume data
   function hydrateProfilePanel(data) {
     try {
-      const p = data?.persona || {};
-      const contact = p.contact || {};
+      const persona = data?.persona || {};
+      // Support both shapes: data.persona.contact and data.contact
+      const contact = (persona && persona.contact) || data?.contact || {};
       // Basic text
       const nameEl = document.querySelector('.profile-header .name');
       const roleEl = document.querySelector('.profile-header .role');
       const headlineEl = document.querySelector('.profile-header .headline');
-      if (nameEl && p.full_name) nameEl.textContent = p.full_name;
+      // Prefer persona.full_name, else top-level name
+      if (nameEl && (persona.full_name || data?.name)) {
+        nameEl.textContent = persona.full_name || data.name;
+      }
       if (roleEl) roleEl.textContent = 'Technologist + Marketer';
-      if (headlineEl && p.headline) headlineEl.textContent = p.headline;
+      if (headlineEl && persona.headline)
+        headlineEl.textContent = persona.headline;
 
-      // Contact links
+      // Contact links (anchors include icon + inner span label)
       const emailEl = document.getElementById('profile-email');
       const phoneEl = document.getElementById('profile-phone');
       const liEl = document.getElementById('profile-linkedin');
       const ghEl = document.getElementById('profile-github');
       const locEl = document.getElementById('profile-location');
       if (emailEl && contact.email) {
-        emailEl.textContent = contact.email;
+        const label = emailEl.querySelector('span');
+        if (label) label.textContent = contact.email;
         emailEl.href = `mailto:${contact.email}`;
       }
+      // Phone link intentionally omitted in UI; guard remains harmless if present
       if (phoneEl && contact.phone) {
         const tel = contact.phone.replace(/[^\d+]/g, '');
         phoneEl.textContent = contact.phone;
@@ -383,30 +421,60 @@ document.addEventListener('DOMContentLoaded', async () => {
         const href = contact.linkedin.startsWith('http')
           ? contact.linkedin
           : `https://${contact.linkedin}`;
-        liEl.textContent = 'LinkedIn';
+        const label = liEl.querySelector('span');
+        if (label) label.textContent = 'LinkedIn';
         liEl.href = href;
       }
       if (ghEl && contact.github) {
         const href = contact.github.startsWith('http')
           ? contact.github
           : `https://${contact.github}`;
-        ghEl.textContent = 'GitHub';
+        const label = ghEl.querySelector('span');
+        if (label) label.textContent = 'GitHub';
         ghEl.href = href;
       }
-      if (locEl && p.current_city) {
-        locEl.textContent = p.current_city;
+      if (locEl && persona.current_city) {
+        locEl.textContent = persona.current_city;
       }
 
-      // Top skills (pick a few representative from skills.front_end + design_ux + ai_automation)
+      // Top skills: pick up to 5 broad, widely appealing skills from skills_overview
       const tagList = document.getElementById('profile-skills');
-      if (tagList && data.skills) {
-        const picks = [
-          ...(data.skills.front_end || []).slice(0, 3),
-          ...(data.skills.design_ux || []).slice(0, 2),
-          ...(data.skills.ai_automation || []).slice(0, 2),
-        ].filter(Boolean);
+      const so = data?.skills_overview || {};
+      if (tagList) {
+        const maxTags = 5;
+        const minTags = 4;
+        const all = [
+          ...(so.web_development || []),
+          ...(so.marketing || []),
+          ...(so.cms_platforms || []),
+          ...(so.design_tools || []),
+          ...(so.soft_skills || []),
+        ];
+        const have = new Set(all);
+        // Preference order for broad appeal; will only include those present
+        const prefs = [
+          'JavaScript',
+          'React.js',
+          'HTML5',
+          'CSS3',
+          'Node.js',
+          'SEO Strategy',
+          'Figma',
+        ];
+        const picks = [];
+        for (const p of prefs) {
+          if (have.has(p)) picks.push(p);
+          if (picks.length >= maxTags) break; // limit to 5
+        }
+        // Fallback: ensure at least 4 by taking from web_development
+        if (picks.length < minTags && Array.isArray(so.web_development)) {
+          for (const s of so.web_development) {
+            if (!picks.includes(s)) picks.push(s);
+            if (picks.length >= maxTags) break;
+          }
+        }
         tagList.innerHTML = '';
-        picks.forEach((s) => {
+        picks.slice(0, maxTags).forEach((s) => {
           const li = document.createElement('li');
           li.textContent = s;
           tagList.appendChild(li);
@@ -465,7 +533,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         chatMessages.scrollTop = 0;
         // Reset in-memory history
         history = [];
-  // Delegated listener covers newly created chips automatically
+        // Delegated listener covers newly created chips automatically
       }
     });
   }
@@ -481,7 +549,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Ensure scroll is at bottom after hydration
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-  // Delegated listener covers chips after restore as well
+    // Delegated listener covers chips after restore as well
   });
 });
 

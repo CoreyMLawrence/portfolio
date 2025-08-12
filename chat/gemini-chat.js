@@ -30,7 +30,7 @@ async function ensureModel() {
   model = genAI.getGenerativeModel({
     model: MODEL_ID,
     systemInstruction:
-  "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the resume JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant. Use Markdown formatting (lists, short headings) when helpful.",
+      "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the resume JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant. Use Markdown formatting (lists, short headings) when helpful.",
   });
   return model;
 }
@@ -248,8 +248,12 @@ async function generate(question) {
 
       // Maintain the same auto-scroll behavior within this continued message
       el.log.addEventListener('wheel', cancelIfUserMoves, { passive: true });
-      el.log.addEventListener('touchmove', cancelIfUserMoves, { passive: true });
-      el.log.addEventListener('touchstart', cancelIfUserMoves, { passive: true });
+      el.log.addEventListener('touchmove', cancelIfUserMoves, {
+        passive: true,
+      });
+      el.log.addEventListener('touchstart', cancelIfUserMoves, {
+        passive: true,
+      });
       try {
         for await (const chunk of contStream.stream) {
           const t = chunk?.text?.() || '';
