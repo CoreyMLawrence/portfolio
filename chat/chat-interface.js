@@ -236,6 +236,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       const scroller = (() => {
         let raf = 0;
         let active = false;
+        const isDesktopWidth = () =>
+          (window.innerWidth || document.documentElement.clientWidth || 1080) >=
+          1024;
+        // Compute easing factor based on viewport width.
+        // Wider screens scroll slower; 1080px is the slowest.
+        // Clamp between [minW, maxW] for stability.
+        function getScrollEaseFactor() {
+          const w =
+            window.innerWidth || document.documentElement.clientWidth || 1080;
+          const minW = 320; // narrowest phones
+          const maxW = 1080; // desktop baseline (slowest)
+          const slowFactor = 0.15; // works well on 1080px (slowest)
+          const fastFactor = 0.30; // faster on mobile; keep < 0.5 to avoid overshoot
+          if (w >= maxW) return slowFactor;
+          if (w <= minW) return fastFactor;
+          const t = (maxW - w) / (maxW - minW); // 0 at 1080 -> 1 at 320
+          return slowFactor + t * (fastFactor - slowFactor);
+        }
         const step = () => {
           if (!active) return;
           const target = chatMessages.scrollHeight - chatMessages.clientHeight;
@@ -247,12 +265,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             raf = 0;
             return;
           }
-          // Ease toward target (smaller factor = slower)
-          chatMessages.scrollTop += diff * 0.15;
+          // Ease toward target; factor scales with screen width.
+          chatMessages.scrollTop += diff * getScrollEaseFactor();
           raf = requestAnimationFrame(step);
         };
         return {
           start() {
+            // Disable smooth animation on mobile/tablet; snap instead
+            if (!isDesktopWidth()) {
+              const target =
+                chatMessages.scrollHeight - chatMessages.clientHeight;
+              chatMessages.scrollTop = target;
+              return;
+            }
             if (!active) {
               active = true;
               step();
