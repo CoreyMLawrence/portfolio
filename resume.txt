@@ -1,0 +1,58 @@
+persona:
+  full_name: "Corey Lawrence"
+  headline: "Front-End Engineer • UX-Minded Web Developer"
+  summary: |
+    12+ years blending front-end engineering, UX design, and growth-driven web strategy.
+    Comfortable in start-ups or enterprise, remote or on-site, and open to relocate worldwide.
+  current_city: "Winston-Salem, NC (willing to relocate or work remote)"
+  contact:
+    email: "cmlawrence445@gmail.com"      # :contentReference[oaicite:19]{index=19}
+    phone: "(828) 773-2391"               # :contentReference[oaicite:20]{index=20}
+    linkedin: "linkedin.com/in/corey-m-lawrence"  # :contentReference[oaicite:21]{index=21}
+    github: "github.com/CoreyMLawrence"            # :contentReference[oaicite:22]{index=22}
+  education:
+    degree: "B.S. Computer Science"
+    school: "High Point University"       # :contentReference[oaicite:23]{index=23}
+
+skills:
+  front_end: ["React", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "GSAP"]      # :contentReference[oaicite:24]{index=24}
+  design_ux: ["Responsive & accessible layouts (WCAG)", "Figma", "Adobe Creative Suite"]    # :contentReference[oaicite:25]{index=25}
+  devops_web_admin: ["WordPress & custom CMS", "Site performance tuning", "Backup & security audits"]  # :contentReference[oaicite:26]{index=26}
+  marketing_growth: ["SEO & analytics", "Google Ads", "Email/lifecycle campaigns"]          # :contentReference[oaicite:27]{index=27}
+  ai_automation: ["OpenAI API integrations", "Zapier / low-code workflow tools"]            # :contentReference[oaicite:28]{index=28}
+  product_process: ["Agile / Scrum", "Backlog grooming", "Cross-functional collaboration"]  # :contentReference[oaicite:29]{index=29}
+  soft_skills: ["Clear communicator", "Mentor mindset", "Problem-solver", "High ownership"]
+
+experience_highlights:
+  - title: "Full-Stack Developer (Contract)"
+    company: "Inceed"
+    dates: "Mar 2025 – Present"
+    key_points:
+      - "Built custom CMS with content-friendly workflows for a real-estate platform"       # :contentReference[oaicite:30]{index=30}
+      - "Focused on speed, scalability, and intuitive admin UX"
+  - title: "Frontend / UI Engineer"
+    company: "Phonelo AI"
+    dates: "May 2024 – Jan 2025"
+    key_points:
+      - "Redesigned React interface, boosting user engagement 25 %"                         # :contentReference[oaicite:31]{index=31}
+      - "Implemented GSAP-powered interactions while meeting WCAG guidelines"
+  - title: "Marketing & Web Specialist"
+    company: "Highland International"
+    dates: "Oct 2012 – May 2020"
+    key_points:
+      - "Led full site overhaul, tripling traffic and lifting conversions 25 %"              # :contentReference[oaicite:32]{index=32}
+      - "Grew organic search traffic 300 % with data-driven SEO"                             # :contentReference[oaicite:33]{index=33}
+
+notable_projects:
+  - "Phonelo University – scroll-based storytelling site (GSAP, React)"                     # :contentReference[oaicite:34]{index=34}
+  - "Comfort Airlines simulator – web app for ticketing & ops (JS, Python)"                 # :contentReference[oaicite:35]{index=35}
+  - "Progressive-Web Music Player – offline-first audio PWA"                                # :contentReference[oaicite:36]{index=36}
+
+relocation_preferences:
+  open_to: ["Remote", "Hybrid", "On-site"]
+  willing_to_relocate: true
+  travel_flexibility: "Up to 25 % travel if required"
+
+communication_style:
+  tone: "Down-to-earth, avoids buzzwords"
+  strengths: ["Explains tech in plain language", "Adapts to varied audiences"]

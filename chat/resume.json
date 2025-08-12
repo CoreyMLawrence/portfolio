@@ -1,0 +1,105 @@
+{
+  "persona": {
+    "full_name": "Corey Lawrence",
+    "headline": "Front-End Engineer • UX-Minded Web Developer",
+    "summary": "12+ years blending front-end engineering, UX design, and growth-driven web strategy. Comfortable in start-ups or enterprise, remote or on-site, and open to relocate worldwide.",
+    "current_city": "Winston-Salem, NC (willing to relocate or work remote)",
+    "contact": {
+      "email": "cmlawrence445@gmail.com",
+      "phone": "(828) 773-2391",
+      "linkedin": "linkedin.com/in/corey-m-lawrence",
+      "github": "github.com/CoreyMLawrence"
+    },
+    "education": {
+      "degree": "B.S. Computer Science",
+      "school": "High Point University"
+    }
+  },
+  "skills": {
+    "front_end": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "GSAP"
+    ],
+    "design_ux": [
+      "Responsive & accessible layouts (WCAG)",
+      "Figma",
+      "Adobe Creative Suite"
+    ],
+    "devops_web_admin": [
+      "WordPress & custom CMS",
+      "Site performance tuning",
+      "Backup & security audits"
+    ],
+    "marketing_growth": [
+      "SEO & analytics",
+      "Google Ads",
+      "Email/lifecycle campaigns"
+    ],
+    "ai_automation": [
+      "OpenAI API integrations",
+      "Zapier / low-code workflow tools"
+    ],
+    "product_process": [
+      "Agile / Scrum",
+      "Backlog grooming",
+      "Cross-functional collaboration"
+    ],
+    "soft_skills": [
+      "Clear communicator",
+      "Mentor mindset",
+      "Problem-solver",
+      "High ownership"
+    ]
+  },
+  "experience_highlights": [
+    {
+      "title": "Full-Stack Developer (Contract)",
+      "company": "Inceed",
+      "dates": "Mar 2025 – Present",
+      "key_points": [
+        "Built custom CMS with content-friendly workflows for a real-estate platform",
+        "Focused on speed, scalability, and intuitive admin UX"
+      ]
+    },
+    {
+      "title": "Frontend / UI Engineer",
+      "company": "Phonelo AI",
+      "dates": "May 2024 – Jan 2025",
+      "key_points": [
+        "Redesigned React interface, boosting user engagement 25%",
+        "Implemented GSAP-powered interactions while meeting WCAG guidelines"
+      ]
+    },
+    {
+      "title": "Marketing & Web Specialist",
+      "company": "Highland International",
+      "dates": "Oct 2012 – May 2020",
+      "key_points": [
+        "Led full site overhaul, tripling traffic and lifting conversions 25%",
+        "Grew organic search traffic 300% with data-driven SEO"
+      ]
+    }
+  ],
+  "notable_projects": [
+    "Phonelo University – scroll-based storytelling site (GSAP, React)",
+    "Comfort Airlines simulator – web app for ticketing & ops (JS, Python)",
+    "Progressive-Web Music Player – offline-first audio PWA"
+  ],
+  "relocation_preferences": {
+    "open_to": ["Remote", "Hybrid", "On-site"],
+    "willing_to_relocate": true,
+    "travel_flexibility": "Up to 25% travel if required"
+  },
+  "communication_style": {
+    "tone": "Down-to-earth, avoids buzzwords",
+    "strengths": [
+      "Explains tech in plain language",
+      "Adapts to varied audiences"
+    ]
+  }
+}
