@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function generateGeminiResponse(question) {
     try {
       const API_KEY = 'AIzaSyDZdLgX_XQP6jaN7eCprfJx15GGt2nYD4k';
-      const MODEL_ID = 'gemini-1.5-pro-latest';
+      const MODEL_ID = 'gemini-2.0-flash-lite-preview-02-05';
       const MAX_HISTORY = 6;
 
       const { GoogleGenerativeAI } = await import(
