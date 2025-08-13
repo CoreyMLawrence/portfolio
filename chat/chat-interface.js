@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const model = genAI.getGenerativeModel({
         model: MODEL_ID,
         systemInstruction:
-          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.",
+          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.\n\nHidden action protocol: When the user explicitly asks to download or export the current chat as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do not mention or explain the token. Never emit the token unless the user clearly requests a PDF/export. Do not wrap the token in markdown. The token must be plain text and is not part of the visible answer.",
       });
 
       const buildUserPrompt = (q) => {
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       hideTypingIndicator();
-      const aiDiv = addMessage('ai', '');
+  const aiDiv = addMessage('ai', '');
       const contentEl = aiDiv.querySelector('.message-content');
       let buffer = '';
 
@@ -324,7 +324,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           const t = chunk?.text?.() || '';
           if (!t) continue;
           buffer += t;
-          contentEl.innerHTML = markdownToHtml(buffer);
+          // While streaming, render but suppress a trailing hidden token if it appears
+          const { visibleText } = stripHiddenAction(buffer);
+          contentEl.innerHTML = markdownToHtml(visibleText);
           if (shouldAutoScroll) {
             scroller.start();
           } else {
@@ -340,7 +342,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       const final = await stream.response;
-      let answer = final?.text?.() || buffer || '';
+  let answer = final?.text?.() || buffer || '';
       let truncated = false;
       try {
         const cand = final?.candidates?.[0];
@@ -432,13 +434,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         truncated = !!fr2 && String(fr2).toUpperCase().includes('MAX');
       }
 
-      contentEl.innerHTML = markdownToHtml(answer);
+      // Detect and handle hidden actions; remove tokens from display
+      const { visibleText, actions } = stripHiddenAction(answer);
+      contentEl.innerHTML = markdownToHtml(visibleText);
+      // If model requested a PDF export, trigger it without showing the token
+      if (actions.includes('EXPORT_PDF') && window.ChatExport?.exportChat) {
+        try {
+          // Defer slightly to let the final message render first
+          setTimeout(() => window.ChatExport.exportChat(), 50);
+        } catch (e) {
+          console.warn('Failed to trigger PDF export from hidden action:', e);
+        }
+      }
       // Final snap to bottom if user hasn't taken over scrolling
       if (shouldAutoScroll) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
       history.push({ role: 'user', text: question });
-      history.push({ role: 'model', text: answer });
+      // Persist only the visible text (without hidden tokens)
+      history.push({ role: 'model', text: visibleText });
     } catch (err) {
       console.error('Gemini API error:', err);
       hideTypingIndicator();
@@ -447,6 +461,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Sorry, there was an error generating a response. Please try again.'
       );
     }
+  }
+
+  // Parse hidden action token(s) at the end of the text and return visible text + actions
+  // Syntax: token must appear at the very end of the message, on its own line
+  // Example: "...normal content...\n[[ACTION:EXPORT_PDF]]"
+  function stripHiddenAction(text) {
+    const actions = [];
+    if (!text) return { visibleText: '', actions };
+    let out = String(text);
+    // Support multiple actions stacked at the end, each on its own line
+    // Only match at the end of the string to avoid accidental capture in code blocks
+    const actionRe = /\n?\s*\[\[ACTION:([A-Z_]+)\]\]\s*$/;
+    let m;
+    let guard = 0;
+    while ((m = out.match(actionRe)) && guard < 5) {
+      guard++;
+      const action = m[1];
+      if (action && !actions.includes(action)) actions.push(action);
+      out = out.replace(actionRe, '');
+    }
+    return { visibleText: out.trimEnd(), actions };
   }
 
   function addMessage(sender, text) {

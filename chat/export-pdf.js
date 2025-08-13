@@ -9,24 +9,35 @@
   // Track if export is in progress to prevent multiple simultaneous exports
   let exportInProgress = false;
   let librariesLoaded = false;
+  // Status flags for reachability and source selection
+  const status = {
+    jspdf: { loaded: false, source: null, url: null, error: null },
+    html2canvas: { loaded: false, source: null, url: null, error: null },
+    cdn: { tested: false, reachable: null, lastUrl: null, error: null },
+  };
 
   // Load required libraries dynamically
-  async function loadLibraries(forceCdn = false) {
-    if (librariesLoaded && !forceCdn) return true;
+  async function loadLibraries(options = {}) {
+    const { preferCdn = false, reload = false } = options || {};
+    if (librariesLoaded && !reload) return true;
 
     try {
-      // Check if libraries are already loaded when not forcing CDN
-      if (!forceCdn) {
+      // Check if libraries are already loaded when not reloading
+      if (!reload) {
         if (
           typeof jspdf !== 'undefined' &&
           typeof html2canvas !== 'undefined'
         ) {
           librariesLoaded = true;
+          status.jspdf.loaded = true;
+          status.html2canvas.loaded = true;
+          status.jspdf.source = status.jspdf.source || 'preloaded';
+          status.html2canvas.source = status.html2canvas.source || 'preloaded';
           return true;
         }
       }
 
-  console.log('Loading PDF export libraries...');
+      console.log('Loading PDF export libraries...');
 
       // Function to load a script
       const loadScript = (src) => {
@@ -34,6 +45,7 @@
           const script = document.createElement('script');
           script.src = src;
           script.async = true;
+          script.crossOrigin = 'anonymous';
           script.onload = () => resolve();
           script.onerror = () => reject(new Error(`Failed to load: ${src}`));
           document.head.appendChild(script);
@@ -51,23 +63,42 @@
         'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
       ];
 
-      // Try local first (unless forcing CDN), otherwise load from CDN
-      let urls = forceCdn ? cdnCandidates : localCandidates;
-      // Attempt load; if it fails, try CDN as a fallback once
-      try {
+      async function tryLoadFrom(urls, sourceLabel) {
         const toLoad = urls.filter(
           (src) => !document.querySelector(`script[src="${src}"]`)
         );
         if (toLoad.length) {
           await Promise.all(toLoad.map((u) => loadScript(u)));
         }
+        // Update sources if libs are now present
+        if (typeof jspdf !== 'undefined') {
+          status.jspdf.loaded = true;
+          status.jspdf.source = sourceLabel;
+          status.jspdf.url = urls.find((u) => /jspdf/i.test(u)) || null;
+        }
+        if (typeof html2canvas !== 'undefined') {
+          status.html2canvas.loaded = true;
+          status.html2canvas.source = sourceLabel;
+          status.html2canvas.url = urls.find((u) => /html2canvas/i.test(u)) || null;
+        }
+      }
+
+      // Loading strategy: local first (default) then CDN; or CDN first if preferCdn=true
+      const first = preferCdn ? cdnCandidates : localCandidates;
+      const second = preferCdn ? localCandidates : cdnCandidates;
+      let loadedFrom = null;
+      try {
+        await tryLoadFrom(first, preferCdn ? 'cdn' : 'local');
+        loadedFrom = preferCdn ? 'cdn' : 'local';
       } catch (e1) {
-        console.warn('Local script load failed; trying CDN...', e1);
-        const toLoadCdn = cdnCandidates.filter(
-          (src) => !document.querySelector(`script[src="${src}"]`)
-        );
-        if (toLoadCdn.length) {
-          await Promise.all(toLoadCdn.map((u) => loadScript(u)));
+        // Record and try the other source
+        if (preferCdn) status.cdn.error = e1;
+        try {
+          await tryLoadFrom(second, preferCdn ? 'local' : 'cdn');
+          loadedFrom = preferCdn ? 'local' : 'cdn';
+        } catch (e2) {
+          // If both failed, bubble up the first error
+          throw e1 || e2;
         }
       }
 
@@ -77,10 +108,12 @@
       }
 
       librariesLoaded = true;
-      console.log('PDF libraries loaded successfully');
+      console.log('PDF libraries loaded successfully from', loadedFrom);
       return true;
     } catch (error) {
       console.error('Failed to load PDF libraries:', error);
+      status.jspdf.error = status.jspdf.error || error;
+      status.html2canvas.error = status.html2canvas.error || error;
       return false;
     }
   }
@@ -140,8 +173,12 @@
     showExportTypingIndicator();
 
     try {
-      // Load the libraries via CDN for consistent behavior across environments
-      const loaded = await loadLibraries(true);
+      // Load libraries with local-first, then CDN fallback
+      let loaded = await loadLibraries({ preferCdn: false, reload: false });
+      if (!loaded) {
+        console.warn('Local libraries unavailable; trying CDN...');
+        loaded = await loadLibraries({ preferCdn: true, reload: true });
+      }
       if (!loaded) {
         throw new Error(
           'Required libraries (jsPDF or html2canvas) could not be loaded'
@@ -282,7 +319,26 @@
         canvas = await attemptRenderCanvas(secondScale, 18000);
       }
 
-      // If rendering failed or timed out after retries, fallback to text-only transcript
+      // If rendering failed or timed out after retries, attempt a CDN-powered retry before transcript
+      if (!canvas) {
+        try {
+          const needCdnReload =
+            status.jspdf.source !== 'cdn' || status.html2canvas.source !== 'cdn';
+          if (needCdnReload) {
+            console.warn('Render failed; reloading libraries from CDN and retrying...');
+            await loadLibraries({ preferCdn: true, reload: true });
+            // Slight delay to ensure parse/ready
+            await new Promise((r) => setTimeout(r, 150));
+            // Reflow prior to retry
+            void pdfContent.offsetHeight;
+            canvas = await attemptRenderCanvas(1.05, 16000);
+          }
+        } catch (retryErr) {
+          console.warn('CDN retry failed:', retryErr);
+        }
+      }
+
+      // If still no canvas, fallback to text-only transcript
       if (!canvas) {
         addTranscriptToPdf(doc, messageTexts);
       } else {
@@ -658,6 +714,14 @@
     newButton.addEventListener('click', exportChat);
     console.log('PDF export initialized with jsPDF implementation');
   }
+
+  // Expose a tiny global API so other scripts (chat-interface) can trigger export
+  try {
+    window.ChatExport = Object.assign({}, window.ChatExport, {
+      exportChat,
+      isExporting: () => !!exportInProgress,
+    });
+  } catch {}
 
   // Run initialization when DOM is ready
   if (document.readyState === 'loading') {
