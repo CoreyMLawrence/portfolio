@@ -167,9 +167,6 @@
         throw new Error('Chat messages container not found');
       }
 
-      // Prepare for PDF export by creating a clone of the messages
-      notification.textContent = 'Capturing chat content...';
-
       // Prevent horizontal scroll/shift while we add an offscreen render node
       const htmlEl = document.documentElement;
       const bodyEl = document.body;
@@ -227,7 +224,7 @@
       document.body.appendChild(pdfContent);
 
       // Convert to canvas
-      notification.textContent = 'Converting to PDF...';
+      notification.textContent = 'Preparing PDF...';
 
       // Wait a moment for rendering and fonts
       await new Promise((resolve) => setTimeout(resolve, 300));

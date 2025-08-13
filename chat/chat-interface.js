@@ -114,10 +114,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const prompts = {
       about:
         "Provide a concise 'About Corey' summary for hiring managers. Emphasize strengths and how Corey adds value. Focus on roles, years of experience, domains, leadership, and impact. Include 4–7 short bullets. Third person. Use only facts from the résumé JSON. Omit unknowns.",
+      experience:
+        "Summarize Corey's professional experience timeline for recruiters. List roles in reverse chronological order with title, company, dates (start–end), and a 1–2 line impact statement. Highlight leadership, ownership, and measurable outcomes when present. Use 4–7 concise bullets. Facts only from the résumé JSON; omit unknowns. Utilize markdown formatting and focus on fantastic readability for this section.",
       projects:
         "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns.",
       expertise:
         "Summarize Corey's technical skills and expertise, highlighting strengths that matter to hiring managers. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Omit unknowns.",
+      education:
+        "Summarize Corey's education. Include degree, major, institution, location, and timing exactly as provided in the résumé JSON. Keep it to 2–4 bullets. Do not infer GPA or honors.",
+      achievements:
+        "List Corey's notable achievements and impact highlights relevant to hiring managers. Focus on measurable outcomes, rebuilds, launches, CI/CD, SEO/page speed gains, accessibility, or automation. Derive only from the résumé JSON (career.key_responsibilities, summaries). Use 4–7 crisp bullets.",
       contact:
         "Provide Corey's contact and availability for a hiring manager. Include only fields present in the résumé JSON: email, LinkedIn, portfolio URL, location, time zone, and preferred contact. Use 3–6 concise bullets. Link formatting rules:\n- Use Markdown links.\n- Email: display the address (e.g., c@example.com); link as mailto:c@example.com. Do not show the word 'mailto'.\n- Web links: display a clean label without protocol, without 'www.', and without a trailing slash (e.g., coreylawrence.me or linkedin.com/in/handle); the href must be the full HTTPS URL from the résumé JSON.\n- Do not invent or guess missing fields; omit anything not in the résumé JSON.\n- Do not show raw URLs; always use Markdown link text with the correct href.\n- Treat links as external by ensuring hrefs begin with https:// (except for mailto).",
     };
@@ -129,8 +135,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Post the tab title as the user's message for context/reference
     const sectionLabelMap = {
       about: 'About',
+      experience: 'Experience',
       projects: 'Projects',
       expertise: 'Expertise',
+      education: 'Education',
+      achievements: 'Achievements',
       contact: 'Contact',
     };
     const display = (label || sectionLabelMap[section] || 'About').trim();
