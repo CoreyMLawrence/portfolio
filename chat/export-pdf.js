@@ -59,57 +59,48 @@
     }
   }
 
-  // Format contact URLs for display
-  function formatUrl(url) {
-    if (!url) return '';
-    try {
-      const u = new URL(url.startsWith('http') ? url : `https://${url}`);
-      return (
-        u.host.replace(/^www\./, '') + (u.pathname === '/' ? '' : u.pathname)
-      );
-    } catch {
-      return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
-    }
+  // (notification formatting helper removed; not needed for inline messages)
+
+  // Inline chat helpers for export status
+  function showExportTypingIndicator() {
+    const chat = document.getElementById('chat-messages');
+    if (!chat) return;
+    // Avoid duplicates
+    if (chat.querySelector('.typing-message.export-typing')) return;
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message ai typing-message export-typing';
+    typingDiv.innerHTML = `
+      <div class="typing-indicator">
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    `;
+    chat.appendChild(typingDiv);
+    chat.scrollTop = chat.scrollHeight;
   }
 
-  // Create a styled notification element that shows export progress
-  function createNotification(text, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = 'pdf-export-notification';
-    notification.textContent = text;
+  function hideExportTypingIndicator() {
+    try {
+      const chat = document.getElementById('chat-messages');
+      const typing = chat && chat.querySelector('.typing-message.export-typing');
+      if (typing) typing.remove();
+    } catch {}
+  }
 
-    // Style the notification
-    const style = {
-      position: 'fixed',
-      top: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      padding: '10px 20px',
-      borderRadius: '4px',
-      zIndex: '9999',
-      color: '#fff',
-      fontSize: '14px',
-      fontWeight: '500',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-      transition: 'all 0.3s ease',
-    };
-
-    // Set background color based on type
-    if (type === 'error') {
-      style.backgroundColor = '#dc3545';
-    } else if (type === 'success') {
-      style.backgroundColor = '#28a745';
-    } else {
-      style.backgroundColor = '#007bff';
-    }
-
-    // Apply styles
-    Object.assign(notification.style, style);
-
-    // Add to document
-    document.body.appendChild(notification);
-
-    return notification;
+  function appendChatMessage(html) {
+    const chat = document.getElementById('chat-messages');
+    if (!chat) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'message ai';
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.innerHTML = html;
+    wrap.appendChild(content);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
   }
 
   // Main export function that generates a PDF from the chat content
@@ -118,23 +109,8 @@
     if (exportInProgress) return;
     exportInProgress = true;
 
-    // Create initial notification
-    const notification = createNotification('Preparing PDF export...');
-
-    // Detect platform for Safari-specific handling
-    const ua = navigator.userAgent || navigator.vendor || '';
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const isSafari = /safari/i.test(ua) && !/chrome|crios|fxios|android/i.test(ua);
-    // For auto-open UX on iOS/Safari, pre-open a tab with an interstitial to preserve user gesture
-    let preOpenedWin = null;
-    try {
-      if (isIOS || isSafari) {
-        preOpenedWin = window.open('about:blank', '_blank');
-        if (preOpenedWin && !preOpenedWin.closed) {
-          try { preOpenedWin.document.title = 'Preparing PDF…'; } catch {}
-        }
-      }
-    } catch {}
+  // Show typing dots in the chat area
+  showExportTypingIndicator();
 
     try {
       // First load the libraries
@@ -226,8 +202,7 @@
       // Add to document temporarily
       document.body.appendChild(pdfContent);
 
-      // Convert to canvas
-      notification.textContent = 'Preparing PDF...';
+  // Convert to canvas
 
       // Wait a moment for rendering and fonts, but never hang
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -336,70 +311,42 @@
         }
       }
 
-      // Save/Open the PDF (handle iOS Safari quirks)
+      // Create a Blob URL and post a chat message with a text download link (desktop + mobile)
       const date = new Date().toISOString().slice(0, 10);
       const filename = `Chat-Corey-Lawrence-${date}.pdf`;
       try {
-        if (isIOS || isSafari) {
-          // iOS/Safari: navigate the pre-opened tab to the blob URL (auto-open when ready)
-          const blob = doc.output('blob');
-          const url = URL.createObjectURL(blob);
-          if (preOpenedWin && !preOpenedWin.closed) {
-            // Use replace to avoid showing a back entry
-            try { preOpenedWin.location.replace(url); }
-            catch { preOpenedWin.location.href = url; }
-            // Clean up the blob URL later
-            setTimeout(() => URL.revokeObjectURL(url), 60_000);
-            notification.textContent = 'PDF opened in a new tab.';
-            notification.style.backgroundColor = '#28a745';
-          } else {
-            // Popup was blocked; attempt direct open now
-            const win = window.open(url, '_blank');
-            if (!win) {
-              // Provide a one-tap link as a last resort
-              notification.innerHTML = '';
-              notification.style.backgroundColor = '#007bff';
-              const text = document.createElement('span');
-              text.textContent = 'PDF is ready: ';
-              const openBtn = document.createElement('a');
-              openBtn.textContent = 'Open PDF';
-              openBtn.href = url;
-              openBtn.target = '_blank';
-              openBtn.rel = 'noopener';
-              openBtn.style.color = '#fff';
-              openBtn.style.textDecoration = 'underline';
-              openBtn.addEventListener('click', () => {
-                setTimeout(() => URL.revokeObjectURL(url), 60_000);
-              });
-              notification.appendChild(text);
-              notification.appendChild(openBtn);
-            } else {
-              setTimeout(() => URL.revokeObjectURL(url), 60_000);
-              notification.textContent = 'PDF opened in a new tab.';
-              notification.style.backgroundColor = '#28a745';
-            }
-          }
-        } else {
-          // Non-Safari: use save (respects filename)
-          doc.save(filename);
-        }
-      } catch (e) {
-        // Final fallback
-        const blobUrl = doc.output('bloburl');
-        window.open(blobUrl, '_blank');
-      }
+        const blob = doc.output('blob');
+        const url = URL.createObjectURL(blob);
 
-      // Show success notification
-      if (!(isIOS || isSafari)) {
-        notification.textContent = 'PDF saved successfully!';
-        notification.style.backgroundColor = '#28a745';
+        // Hide typing dots
+        hideExportTypingIndicator();
+
+        // Add inline AI message with a plain text download link
+        const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}">Download PDF</a>`;
+        appendChatMessage(linkHtml);
+
+        // Revoke URL shortly after the user clicks; also set a long-timeout safeguard
+        const chat = document.getElementById('chat-messages');
+        if (chat) {
+          const lastLink = chat.querySelector('.message.ai:last-child .message-content a[href^="blob:"]');
+          if (lastLink) {
+            lastLink.addEventListener('click', () => {
+              setTimeout(() => URL.revokeObjectURL(url), 60_000);
+            }, { once: true });
+          }
+        }
+        setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+      } catch (e) {
+        // Final fallback: show error in chat
+        hideExportTypingIndicator();
+        appendChatMessage('PDF export failed. Please try again.');
       }
 
       console.log('PDF export completed successfully');
     } catch (error) {
       console.error('PDF export failed:', error);
-      notification.textContent = 'PDF export failed. Please try again.';
-      notification.style.backgroundColor = '#dc3545';
+      hideExportTypingIndicator();
+      appendChatMessage('PDF export failed. Please try again.');
     } finally {
       // Always clean up the offscreen node and any temporary style changes
       try {
@@ -414,13 +361,7 @@
           document.body.style.overflowX = prevBodyOverflowX;
         }
       } catch {}
-      // Remove notification after delay
-      setTimeout(() => {
-        if (notification && notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-        exportInProgress = false;
-      }, 3000);
+      exportInProgress = false;
     }
   }
 
