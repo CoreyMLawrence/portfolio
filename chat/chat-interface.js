@@ -673,6 +673,14 @@ function sanitizeHtml(html) {
       if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
     });
   });
+  // Ensure chat links open safely in a new tab
+  div.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href') || '';
+    const isSafe = /^(https?:|mailto:|tel:|#|\/)/i.test(href);
+    if (!isSafe) a.setAttribute('href', '#');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
+  });
   return div.innerHTML;
 }
 
