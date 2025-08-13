@@ -11,14 +11,16 @@
   let librariesLoaded = false;
 
   // Load required libraries dynamically
-  async function loadLibraries() {
-    if (librariesLoaded) return true;
+  async function loadLibraries(forceCdn = false) {
+    if (librariesLoaded && !forceCdn) return true;
 
     try {
-      // Check if libraries are already loaded
-      if (typeof jspdf !== 'undefined' && typeof html2canvas !== 'undefined') {
-        librariesLoaded = true;
-        return true;
+      // Check if libraries are already loaded when not forcing CDN
+      if (!forceCdn) {
+        if (typeof jspdf !== 'undefined' && typeof html2canvas !== 'undefined') {
+          librariesLoaded = true;
+          return true;
+        }
       }
 
       console.log('Loading PDF export libraries...');
@@ -35,18 +37,19 @@
         });
       };
 
-      // Load both libraries
-      await Promise.all([
-        loadScript(
-          'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
-        ),
-        loadScript(
-          'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'
-        ),
-      ]);
+      // Load both libraries from CDN (always for forceCdn)
+      const urls = [
+        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+      ];
+      // Avoid duplicate script tags when forceCdn=true and scripts already exist
+      const toLoad = urls.filter((src) => !document.querySelector(`script[src="${src}"]`));
+      if (toLoad.length) {
+        await Promise.all(toLoad.map((u) => loadScript(u)));
+      }
 
       // Verify libraries loaded correctly
-      if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
+  if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
         throw new Error('Libraries not available after loading');
       }
 
@@ -109,12 +112,17 @@
     if (exportInProgress) return;
     exportInProgress = true;
 
-  // Show typing dots in the chat area
+    // Show typing dots in the chat area
   showExportTypingIndicator();
 
+    // Robust iOS detection (iPadOS may identify as Mac)
+    const ua = navigator.userAgent || navigator.vendor || '';
+    const isIOS = /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
     try {
-      // First load the libraries
-      const loaded = await loadLibraries();
+  // First load the libraries; on iOS, force CDN URLs instead of relying on bundled modules
+  const loaded = await loadLibraries(isIOS);
       if (!loaded) {
         throw new Error(
           'Required libraries (jsPDF or html2canvas) could not be loaded'
