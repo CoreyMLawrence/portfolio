@@ -128,15 +128,8 @@
       "Eleventy",
       "Nunjucks"
     ],
-    "cms_platforms": ["WordPress", "Sanity", "ContentStack"],
-    "design_tools": [
-      "Figma",
-      "Sketch",
-      "Adobe Photoshop",
-      "Adobe Illustrator",
-      "InDesign",
-      "InVision"
-    ],
+    "cms_platforms": ["WordPress", "Sanity"],
+    "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
     "marketing": [
       "SEO Strategy",
       "Content Marketing",

@@ -581,7 +581,8 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-md);
+  /* slightly larger container */
+  padding: var(--space-md) var(--space-md);
   background: var(--background-app);
   border-radius: 18px 18px 18px 4px;
   max-width: fit-content;
@@ -590,12 +591,14 @@ body {
 
 .typing-dots {
   display: flex;
-  gap: 3px;
+  /* a bit more space between dots */
+  gap: 5px;
 }
 
 .typing-dot {
-  width: 4px;
-  height: 4px;
+  /* slightly larger dots */
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--text-secondary);
   animation: typingPulse 1.4s infinite ease-in-out;
@@ -610,7 +613,8 @@ body {
 
 .chat-input-container {
   padding: 0;
-  max-height: 45px;
+  /* allow growth: floor, not ceiling */
+  min-height: 45px;
 }
 
 @keyframes typingPulse {
@@ -657,17 +661,20 @@ body {
   justify-content: center;
   gap: var(--space-sm);
   padding: 0 var(--space-md);
-  margin: 0 auto var(--space-sm);
+  margin: 0 auto;
   background: var(--background-app);
   border-radius: 1.5rem;
   transition: all 0.2s ease;
   min-height: 44px;
   max-width: 800px;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .input-wrapper:focus-within {
   background: white;
-  box-shadow: 0 0 0 2px var(--cl-accent);
+  /* use inset ring on all sizes to avoid clipping */
+  box-shadow: inset 0 0 0 2px var(--cl-accent);
 }
 
 #chat-input {
@@ -680,7 +687,7 @@ body {
   color: var(--text-primary);
   resize: none;
   line-height: 1.5;
-  min-height: 20px;
+  min-height: 50px;
   max-height: 200px; /* ~4 lines at 20px line height */
   overflow-y: auto;
   padding: var(--space-sm) 4px;
@@ -694,6 +701,7 @@ body {
 .send-button {
   width: 28px;
   height: 28px;
+  margin-bottom: 11px;
   border: none;
   border-radius: 50%;
   background: var(--cl-accent);
@@ -724,8 +732,8 @@ body {
   }
 
   .app-container {
-    height: calc(100svh - (2 * var(--space-sm)));
-    width: calc(100% - (2 * var(--space-sm)));
+    height: calc(100svh - var(--space-sm));
+    width: calc(100vw + var(--space-sm));
     flex-direction: column;
     margin: var(--space-sm);
   }
@@ -740,11 +748,14 @@ body {
     padding: var(--space-sm);
     overflow: hidden;
     max-height: calc(100lvh - 1rem);
+    /* ensure some bottom space so focus ring and layout have room */
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
     /* container should not transform to avoid affecting fixed sidebar positioning */
   }
 
   .chat-input-container {
-    margin-bottom: 0.5rem;
+    /* keep anchored at the very bottom without extra gap to prevent drift */
+    margin-bottom: 0;
   }
 
   #chat-input {
@@ -778,6 +789,8 @@ body {
   .app-container.menu-open .sidebar {
     transform: translateX(0);
   }
+
+  /* removed empty .input-wrapper ruleset */
 
   /* Shift the chat-shell left to reveal more space */
   /* smoothly slide only the chat content */
@@ -822,7 +835,11 @@ body {
     max-height: calc(
       100svh - 140px
     ); /* leave room for header + input on mobile */
+    /* prevent smooth scrolling/anchor from nudging layout during textarea resize */
+    scroll-behavior: auto;
+    overflow-anchor: none;
   }
+  /* removed mobile-only focus ring override; now global */
 }
 
 /* Scrollbar Styling - Clean and minimal */
