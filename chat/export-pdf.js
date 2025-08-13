@@ -203,6 +203,14 @@
           !el.classList.contains('welcome-message')
       );
 
+      // Prepare a text-only transcript fallback in case rendering fails or times out
+      const messageTexts = messages.map((m) => {
+        const isUser = m.classList.contains('user');
+        const contentEl = m.querySelector('.message-content');
+        const text = contentEl ? (contentEl.innerText || contentEl.textContent || '').trim() : '';
+        return { role: isUser ? 'You' : 'Assistant', text };
+      });
+
       if (messages.length === 0) {
         pdfContent.innerHTML =
           '<p style="text-align:center;color:#666;padding:20px;">No messages to export.</p>';
@@ -221,24 +229,41 @@
       // Convert to canvas
       notification.textContent = 'Preparing PDF...';
 
-      // Wait a moment for rendering and fonts
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      if (document.fonts && typeof document.fonts.ready?.then === 'function') {
-        await document.fonts.ready;
+      // Wait a moment for rendering and fonts, but never hang
+      const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+      await delay(300);
+      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        // Race with timeout to avoid Safari hanging on fonts.ready
+        await Promise.race([
+          document.fonts.ready,
+          delay(1200),
+        ]);
       }
       // Force a reflow to ensure layout is committed
       void pdfContent.offsetHeight;
 
       // Use html2canvas to capture the content
-      const exportScale = (window.innerWidth || 0) <= 480 ? 1.25 : 2;
-      const canvas = await html2canvas(pdfContent, {
+      const exportScale = (window.innerWidth || 0) <= 480 ? 1.1 : 1.6;
+      const renderPromise = html2canvas(pdfContent, {
         scale: exportScale,
         useCORS: true,
         logging: false,
         backgroundColor: '#FFFFFF',
       });
 
-      // Replace the previous single-image + broken multipage block with reliable slicing
+      // Timeout html2canvas to avoid infinite spinner on Safari
+      const canvas = await Promise.race([
+        renderPromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('render-timeout')), 12000)),
+      ]).catch((e) => {
+        return null; // we'll fallback to text-only PDF
+      });
+
+      // If rendering failed or timed out, fallback to a text-only transcript PDF
+      if (!canvas) {
+        addTranscriptToPdf(doc, messageTexts);
+      } else {
+        // Replace the previous single-image + broken multipage block with reliable slicing
       // Page metrics and margins
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
@@ -295,19 +320,20 @@
         );
       }
 
-      // Add first page content slice
-      let offsetPx = 0;
-      const firstHeight = Math.min(firstSliceHeightPx, srcHeightPx);
-      addSliceToPdf(canvas, offsetPx, firstHeight, true);
-      offsetPx += firstHeight;
+        // Add first page content slice
+        let offsetPx = 0;
+        const firstHeight = Math.min(firstSliceHeightPx, srcHeightPx);
+        addSliceToPdf(canvas, offsetPx, firstHeight, true);
+        offsetPx += firstHeight;
 
-      // Remaining pages
-      while (offsetPx < srcHeightPx) {
-        doc.addPage();
-        const remainingPx = srcHeightPx - offsetPx;
-        const thisSlicePx = Math.min(sliceHeightPx, remainingPx);
-        addSliceToPdf(canvas, offsetPx, thisSlicePx, false);
-        offsetPx += thisSlicePx;
+        // Remaining pages
+        while (offsetPx < srcHeightPx) {
+          doc.addPage();
+          const remainingPx = srcHeightPx - offsetPx;
+          const thisSlicePx = Math.min(sliceHeightPx, remainingPx);
+          addSliceToPdf(canvas, offsetPx, thisSlicePx, false);
+          offsetPx += thisSlicePx;
+        }
       }
 
       // Save/Open the PDF (handle iOS Safari quirks)
@@ -396,6 +422,48 @@
         exportInProgress = false;
       }, 3000);
     }
+  }
+
+  // Fallback: write a simple transcript into the PDF to guarantee an output
+  function addTranscriptToPdf(doc) {
+    const args = arguments;
+    // Support previous signature addTranscriptToPdf(doc, messageTexts)
+    const messageTexts = args[1] || [];
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 15;
+    const maxWidth = pageWidth - margin * 2;
+    const lineHeight = 6; // in mm
+    let cursorY = 30; // below header line
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+
+    const drawLines = (text, isUser) => {
+      doc.setFont('helvetica', isUser ? 'bold' : 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(isUser ? 10 : 30, isUser ? 102 : 30, isUser ? 194 : 30);
+      const lines = doc.splitTextToSize(text, maxWidth);
+      lines.forEach((ln) => {
+        if (cursorY + lineHeight > pageHeight - margin) {
+          doc.addPage();
+          // redraw header separator
+          doc.setDrawColor(200, 200, 200);
+          doc.line(15, 28, pageWidth - 15, 28);
+          cursorY = 30;
+        }
+        doc.text(ln, margin, cursorY);
+        cursorY += lineHeight;
+      });
+      // spacing between messages
+      cursorY += 2;
+    };
+
+    messageTexts.forEach((m) => {
+      const prefix = m.role === 'You' ? 'You: ' : 'Assistant: ';
+      drawLines(prefix + (m.text || ''), m.role === 'You');
+    });
   }
 
   // Create a styled message element for the PDF that matches the chat window appearance
