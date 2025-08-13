@@ -154,13 +154,13 @@
       htmlEl.style.overflowX = 'hidden';
       bodyEl.style.overflowX = 'hidden';
 
-      // Create a container for the cloned content with chat-like styling
-      const pdfContent = document.createElement('div');
-      pdfContent.id = 'pdf-export-content';
-      // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
-      // A4 width ~ 8.27in at 96dpi ≈ 794px; add padding similar to ~15mm (~57px)
-      pdfContent.style.width = '794px';
-      pdfContent.style.padding = '57px';
+  // Create a container for the cloned content with chat-like styling
+  const pdfContent = document.createElement('div');
+  pdfContent.id = 'pdf-export-content';
+  // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
+  // Optimize width & padding to reduce render surface (performance on mobile Safari)
+  pdfContent.style.width = '760px';
+  pdfContent.style.padding = '40px';
       pdfContent.style.backgroundColor = '#fff';
       // Keep it offscreen and invisible, but still renderable for html2canvas
       // Avoid visibility:hidden (html2canvas skips it). Use opacity:0 and off-canvas position.
@@ -210,7 +210,28 @@
       // Add to document temporarily
       document.body.appendChild(pdfContent);
 
-  // Convert to canvas
+      // Helper to attempt rendering the entire cloned chat to a canvas with a timeout
+      async function attemptRenderCanvas(scale, timeoutMs) {
+        try {
+          const renderPromise = html2canvas(pdfContent, {
+            scale,
+            useCORS: true,
+            backgroundColor: '#FFFFFF',
+            logging: false,
+            // Trim large shadow/overflow computations for speed
+            removeContainer: true,
+          });
+          const canvas = await Promise.race([
+            renderPromise,
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('render-timeout')), timeoutMs)
+            ),
+          ]);
+          return canvas || null;
+        } catch (e) {
+          return null;
+        }
+      }
 
       // Wait a moment for rendering and fonts, but never hang
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -225,24 +246,21 @@
       // Force a reflow to ensure layout is committed
       void pdfContent.offsetHeight;
 
-      // Use html2canvas to capture the content
-      const exportScale = (window.innerWidth || 0) <= 480 ? 1.1 : 1.6;
-      const renderPromise = html2canvas(pdfContent, {
-        scale: exportScale,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#FFFFFF',
-      });
+      // Strategy: High-quality first attempt; if it fails/timeouts, retry with lower scale.
+      const viewportWidth = window.innerWidth || 0;
+      const firstScale = viewportWidth <= 480 ? 1.05 : 1.3; // lower than before
+      const secondScale = viewportWidth <= 480 ? 0.95 : 1.05; // fallback smaller scale
+      let canvas = await attemptRenderCanvas(firstScale, 14000);
+      if (!canvas) {
+        // Reduce padding & width further for retry to shrink surface area
+        pdfContent.style.padding = '32px';
+        pdfContent.style.width = '700px';
+        // Force reflow before second attempt
+        void pdfContent.offsetHeight;
+        canvas = await attemptRenderCanvas(secondScale, 18000);
+      }
 
-      // Timeout html2canvas to avoid infinite spinner on Safari
-      const canvas = await Promise.race([
-        renderPromise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('render-timeout')), 12000)),
-      ]).catch((e) => {
-        return null; // we'll fallback to text-only PDF
-      });
-
-      // If rendering failed or timed out, fallback to a text-only transcript PDF
+      // If rendering failed or timed out after retries, fallback to text-only transcript
       if (!canvas) {
         addTranscriptToPdf(doc, messageTexts);
       } else {
