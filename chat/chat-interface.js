@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       hideTypingIndicator();
-  const aiDiv = addMessage('ai', '');
+      const aiDiv = addMessage('ai', '');
       const contentEl = aiDiv.querySelector('.message-content');
       let buffer = '';
 
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       const final = await stream.response;
-  let answer = final?.text?.() || buffer || '';
+      let answer = final?.text?.() || buffer || '';
       let truncated = false;
       try {
         const cand = final?.candidates?.[0];

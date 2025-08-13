@@ -79,7 +79,8 @@
         if (typeof html2canvas !== 'undefined') {
           status.html2canvas.loaded = true;
           status.html2canvas.source = sourceLabel;
-          status.html2canvas.url = urls.find((u) => /html2canvas/i.test(u)) || null;
+          status.html2canvas.url =
+            urls.find((u) => /html2canvas/i.test(u)) || null;
         }
       }
 
@@ -173,8 +174,20 @@
     showExportTypingIndicator();
 
     try {
-      // Load libraries with local-first, then CDN fallback
-      let loaded = await loadLibraries({ preferCdn: false, reload: false });
+      // Decide default source: CDN on production (no node_modules on live), local on localhost
+      const host = (window.location && window.location.hostname) || '';
+      const isLocalHost =
+        host === 'localhost' ||
+        host === '127.0.0.1' ||
+        host === '[::1]' ||
+        (window.location && window.location.protocol === 'file:');
+      const preferCdnDefault = !isLocalHost;
+
+      // Load libraries with environment-aware preference, then fallback
+      let loaded = await loadLibraries({
+        preferCdn: preferCdnDefault,
+        reload: false,
+      });
       if (!loaded) {
         console.warn('Local libraries unavailable; trying CDN...');
         loaded = await loadLibraries({ preferCdn: true, reload: true });
@@ -323,9 +336,12 @@
       if (!canvas) {
         try {
           const needCdnReload =
-            status.jspdf.source !== 'cdn' || status.html2canvas.source !== 'cdn';
+            status.jspdf.source !== 'cdn' ||
+            status.html2canvas.source !== 'cdn';
           if (needCdnReload) {
-            console.warn('Render failed; reloading libraries from CDN and retrying...');
+            console.warn(
+              'Render failed; reloading libraries from CDN and retrying...'
+            );
             await loadLibraries({ preferCdn: true, reload: true });
             // Slight delay to ensure parse/ready
             await new Promise((r) => setTimeout(r, 150));
