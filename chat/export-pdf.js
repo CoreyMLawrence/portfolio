@@ -179,14 +179,14 @@
     showExportTypingIndicator();
 
     try {
-      // Decide default source: CDN on production (no node_modules on live), local on localhost
-      const host = (window.location && window.location.hostname) || '';
-      const isLocalHost =
-        host === 'localhost' ||
-        host === '127.0.0.1' ||
-        host === '[::1]' ||
-        (window.location && window.location.protocol === 'file:');
-      const preferCdnDefault = !isLocalHost;
+      // Decide default source: prefer vendored files by default; allow global override via window.ChatExport.preferSource
+      const forced = (window.ChatExport && window.ChatExport.preferSource) || '';
+      let preferCdnDefault = false; // vendor/local first by default
+      if (typeof forced === 'string' && forced) {
+        const f = forced.toLowerCase();
+        if (f === 'cdn') preferCdnDefault = true;
+        else preferCdnDefault = false; // 'vendor' or 'local' -> non-CDN path first
+      }
 
       // Load libraries with environment-aware preference, then fallback
       let loaded = await loadLibraries({
@@ -741,6 +741,17 @@
     window.ChatExport = Object.assign({}, window.ChatExport, {
       exportChat,
       isExporting: () => !!exportInProgress,
+      // Allow overriding source preference at runtime: 'cdn' | 'vendor' | 'local'
+      get preferSource() {
+        try { return window.ChatExport && window.ChatExport._preferSource; } catch { return ''; }
+      },
+      set preferSource(val) {
+        try { window.ChatExport._preferSource = String(val || '').toLowerCase(); } catch {}
+      },
+      setPreferSource: (val) => { try { window.ChatExport._preferSource = String(val || '').toLowerCase(); } catch {} },
+      getStatus: () => {
+        try { return JSON.parse(JSON.stringify(status)); } catch { return { error: 'unavailable' }; }
+      },
     });
   } catch {}
 
