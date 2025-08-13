@@ -112,17 +112,12 @@
     if (exportInProgress) return;
     exportInProgress = true;
 
-    // Show typing dots in the chat area
+  // Show typing dots in the chat area
   showExportTypingIndicator();
 
-    // Robust iOS detection (iPadOS may identify as Mac)
-    const ua = navigator.userAgent || navigator.vendor || '';
-    const isIOS = /iPad|iPhone|iPod/.test(ua) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
     try {
-  // First load the libraries; on iOS, force CDN URLs instead of relying on bundled modules
-  const loaded = await loadLibraries(isIOS);
+  // Load the libraries via CDN for consistent behavior across environments
+  const loaded = await loadLibraries(true);
       if (!loaded) {
         throw new Error(
           'Required libraries (jsPDF or html2canvas) could not be loaded'
