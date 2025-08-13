@@ -683,7 +683,7 @@ body {
   min-height: 20px;
   max-height: 200px; /* ~4 lines at 20px line height */
   overflow-y: auto;
-  padding: var(--space-sm) 0;
+  padding: var(--space-sm) 4px;
   margin: 0;
 }
 
@@ -790,10 +790,17 @@ body {
     padding: 1rem 0 1.25rem;
   }
 
-  .chat-header p,
-  .chat-header i {
+  .chat-header p {
     font-size: 14px !important;
   }
+
+  .chat-header i {
+    font-size: 18px !important;
+  }
+  #sidebar-toggle {
+    margin-left: 4px;
+  }
+
   .app-container.menu-open .chat-main {
     transform: translateX(calc(min(78vw, 320px)));
   }

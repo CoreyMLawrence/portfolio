@@ -156,9 +156,11 @@
       pdfContent.style.width = '210mm';
       pdfContent.style.padding = '15mm';
       pdfContent.style.backgroundColor = '#fff';
-      pdfContent.style.position = 'absolute';
-      pdfContent.style.left = '-9999px';
+      // Place in viewport but behind everything to avoid offscreen capture issues on mobile
+      pdfContent.style.position = 'fixed';
+      pdfContent.style.left = '0';
       pdfContent.style.top = '0';
+      pdfContent.style.zIndex = '-1';
       pdfContent.style.fontFamily =
         'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
       pdfContent.style.fontSize = '14px';
@@ -192,12 +194,18 @@
       // Convert to canvas
       notification.textContent = 'Converting to PDF...';
 
-      // Wait a moment for rendering
+      // Wait a moment for rendering and fonts
       await new Promise((resolve) => setTimeout(resolve, 300));
+      if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+        await document.fonts.ready;
+      }
+      // Force a reflow to ensure layout is committed
+      void pdfContent.offsetHeight;
 
       // Use html2canvas to capture the content
+      const exportScale = (window.innerWidth || 0) <= 480 ? 1.25 : 2;
       const canvas = await html2canvas(pdfContent, {
-        scale: 2,
+        scale: exportScale,
         useCORS: true,
         logging: false,
         backgroundColor: '#FFFFFF',
@@ -275,12 +283,16 @@
         offsetPx += thisSlicePx;
       }
 
-      // Generate filename with current date
+      // Save the PDF
       const date = new Date().toISOString().slice(0, 10);
       const filename = `Chat-Corey-Lawrence-${date}.pdf`;
-
-      // Save the PDF
-      doc.save(filename);
+      try {
+        doc.save(filename);
+      } catch (e) {
+        // Fallback for contexts that block downloads: open in a new tab
+        const blobUrl = doc.output('bloburl');
+        window.open(blobUrl, '_blank');
+      }
 
       // Show success notification
       notification.textContent = 'PDF saved successfully!';
