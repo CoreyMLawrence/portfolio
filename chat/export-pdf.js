@@ -123,20 +123,15 @@
 
     // Detect platform for Safari-specific handling
     const ua = navigator.userAgent || navigator.vendor || '';
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-    const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const isSafari = /safari/i.test(ua) && !/chrome|crios|fxios|android/i.test(ua);
     // For auto-open UX on iOS/Safari, pre-open a tab with an interstitial to preserve user gesture
     let preOpenedWin = null;
     try {
       if (isIOS || isSafari) {
-        preOpenedWin = window.open('', '_blank');
+        preOpenedWin = window.open('about:blank', '_blank');
         if (preOpenedWin && !preOpenedWin.closed) {
-          const doc = preOpenedWin.document;
-          doc.open();
-          doc.write(
-            `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Preparing PDF…</title><style>html,body{height:100%;margin:0;font-family: -apple-system, system-ui, \"Segoe UI\", Roboto, Arial, sans-serif; color:#111;background:#fff;} .wrap{display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:8px;} .spinner{width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style></head><body><div class="wrap"><div class="spinner"></div><div>Preparing PDF…</div></div></body></html>`
-          );
-          doc.close();
+          try { preOpenedWin.document.title = 'Preparing PDF…'; } catch {}
         }
       }
     } catch {}
@@ -324,7 +319,9 @@
           const blob = doc.output('blob');
           const url = URL.createObjectURL(blob);
           if (preOpenedWin && !preOpenedWin.closed) {
-            preOpenedWin.location.href = url;
+            // Use replace to avoid showing a back entry
+            try { preOpenedWin.location.replace(url); }
+            catch { preOpenedWin.location.href = url; }
             // Clean up the blob URL later
             setTimeout(() => URL.revokeObjectURL(url), 60_000);
             notification.textContent = 'PDF opened in a new tab.';
