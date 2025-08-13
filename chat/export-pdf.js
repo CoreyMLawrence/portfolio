@@ -26,7 +26,7 @@
         }
       }
 
-      console.log('Loading PDF export libraries...');
+  console.log('Loading PDF export libraries...');
 
       // Function to load a script
       const loadScript = (src) => {
@@ -40,17 +40,35 @@
         });
       };
 
-      // Load both libraries from CDN (always for forceCdn)
-      const urls = [
+      // Prefer local UMD bundles checked into repo; fallback to CDN
+      const base = './node_modules'; // relative to /chat
+      const localCandidates = [
+        `${base}/jspdf/dist/jspdf.umd.min.js`,
+        `${base}/html2canvas/dist/html2canvas.min.js`,
+      ];
+      const cdnCandidates = [
         'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
       ];
-      // Avoid duplicate script tags when forceCdn=true and scripts already exist
-      const toLoad = urls.filter(
-        (src) => !document.querySelector(`script[src="${src}"]`)
-      );
-      if (toLoad.length) {
-        await Promise.all(toLoad.map((u) => loadScript(u)));
+
+      // Try local first (unless forcing CDN), otherwise load from CDN
+      let urls = forceCdn ? cdnCandidates : localCandidates;
+      // Attempt load; if it fails, try CDN as a fallback once
+      try {
+        const toLoad = urls.filter(
+          (src) => !document.querySelector(`script[src="${src}"]`)
+        );
+        if (toLoad.length) {
+          await Promise.all(toLoad.map((u) => loadScript(u)));
+        }
+      } catch (e1) {
+        console.warn('Local script load failed; trying CDN...', e1);
+        const toLoadCdn = cdnCandidates.filter(
+          (src) => !document.querySelector(`script[src="${src}"]`)
+        );
+        if (toLoadCdn.length) {
+          await Promise.all(toLoadCdn.map((u) => loadScript(u)));
+        }
       }
 
       // Verify libraries loaded correctly
