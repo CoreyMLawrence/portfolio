@@ -121,6 +121,26 @@
     // Create initial notification
     const notification = createNotification('Preparing PDF export...');
 
+    // Detect platform for Safari-specific handling
+    const ua = navigator.userAgent || navigator.vendor || '';
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+    // For auto-open UX on iOS/Safari, pre-open a tab with an interstitial to preserve user gesture
+    let preOpenedWin = null;
+    try {
+      if (isIOS || isSafari) {
+        preOpenedWin = window.open('', '_blank');
+        if (preOpenedWin && !preOpenedWin.closed) {
+          const doc = preOpenedWin.document;
+          doc.open();
+          doc.write(
+            `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Preparing PDF…</title><style>html,body{height:100%;margin:0;font-family: -apple-system, system-ui, \"Segoe UI\", Roboto, Arial, sans-serif; color:#111;background:#fff;} .wrap{display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;gap:8px;} .spinner{width:28px;height:28px;border:3px solid #e5e7eb;border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style></head><body><div class="wrap"><div class="spinner"></div><div>Preparing PDF…</div></div></body></html>`
+          );
+          doc.close();
+        }
+      }
+    } catch {}
+
     try {
       // First load the libraries
       const loaded = await loadLibraries();
@@ -150,17 +170,32 @@
       // Prepare for PDF export by creating a clone of the messages
       notification.textContent = 'Capturing chat content...';
 
+      // Prevent horizontal scroll/shift while we add an offscreen render node
+      const htmlEl = document.documentElement;
+      const bodyEl = document.body;
+      const prevHtmlOverflowX = htmlEl.style.overflowX;
+      const prevBodyOverflowX = bodyEl.style.overflowX;
+      htmlEl.style.overflowX = 'hidden';
+      bodyEl.style.overflowX = 'hidden';
+
       // Create a container for the cloned content with chat-like styling
       const pdfContent = document.createElement('div');
       pdfContent.id = 'pdf-export-content';
-      pdfContent.style.width = '210mm';
-      pdfContent.style.padding = '15mm';
+      // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
+      // A4 width ~ 8.27in at 96dpi ≈ 794px; add padding similar to ~15mm (~57px)
+      pdfContent.style.width = '794px';
+      pdfContent.style.padding = '57px';
       pdfContent.style.backgroundColor = '#fff';
-      // Place in viewport but behind everything to avoid offscreen capture issues on mobile
-      pdfContent.style.position = 'fixed';
-      pdfContent.style.left = '0';
+      // Keep it offscreen and invisible, but still renderable for html2canvas
+      // Avoid visibility:hidden (html2canvas skips it). Use opacity:0 and off-canvas position.
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-10000px';
       pdfContent.style.top = '0';
-      pdfContent.style.zIndex = '-1';
+      pdfContent.style.pointerEvents = 'none';
+      pdfContent.style.overflow = 'hidden';
+      pdfContent.style.contain = 'content';
+      pdfContent.style.willChange = 'transform';
+      pdfContent.style.transform = 'translateZ(0)';
       pdfContent.style.fontFamily =
         'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
       pdfContent.style.fontSize = '14px';
@@ -283,24 +318,61 @@
         offsetPx += thisSlicePx;
       }
 
-      // Save the PDF
+      // Save/Open the PDF (handle iOS Safari quirks)
       const date = new Date().toISOString().slice(0, 10);
       const filename = `Chat-Corey-Lawrence-${date}.pdf`;
       try {
-        doc.save(filename);
+        if (isIOS || isSafari) {
+          // iOS/Safari: navigate the pre-opened tab to the blob URL (auto-open when ready)
+          const blob = doc.output('blob');
+          const url = URL.createObjectURL(blob);
+          if (preOpenedWin && !preOpenedWin.closed) {
+            preOpenedWin.location.href = url;
+            // Clean up the blob URL later
+            setTimeout(() => URL.revokeObjectURL(url), 60_000);
+            notification.textContent = 'PDF opened in a new tab.';
+            notification.style.backgroundColor = '#28a745';
+          } else {
+            // Popup was blocked; attempt direct open now
+            const win = window.open(url, '_blank');
+            if (!win) {
+              // Provide a one-tap link as a last resort
+              notification.innerHTML = '';
+              notification.style.backgroundColor = '#007bff';
+              const text = document.createElement('span');
+              text.textContent = 'PDF is ready: ';
+              const openBtn = document.createElement('a');
+              openBtn.textContent = 'Open PDF';
+              openBtn.href = url;
+              openBtn.target = '_blank';
+              openBtn.rel = 'noopener';
+              openBtn.style.color = '#fff';
+              openBtn.style.textDecoration = 'underline';
+              openBtn.addEventListener('click', () => {
+                setTimeout(() => URL.revokeObjectURL(url), 60_000);
+              });
+              notification.appendChild(text);
+              notification.appendChild(openBtn);
+            } else {
+              setTimeout(() => URL.revokeObjectURL(url), 60_000);
+              notification.textContent = 'PDF opened in a new tab.';
+              notification.style.backgroundColor = '#28a745';
+            }
+          }
+        } else {
+          // Non-Safari: use save (respects filename)
+          doc.save(filename);
+        }
       } catch (e) {
-        // Fallback for contexts that block downloads: open in a new tab
+        // Final fallback
         const blobUrl = doc.output('bloburl');
         window.open(blobUrl, '_blank');
       }
 
       // Show success notification
-      notification.textContent = 'PDF saved successfully!';
-      notification.style.backgroundColor = '#28a745';
-
-      // Clean up
-      if (pdfContent && pdfContent.parentNode) {
-        pdfContent.parentNode.removeChild(pdfContent);
+      if (!(isIOS || isSafari)) {
+        notification.textContent = 'PDF saved successfully!';
+        notification.style.backgroundColor = '#28a745';
       }
 
       console.log('PDF export completed successfully');
@@ -309,6 +381,19 @@
       notification.textContent = 'PDF export failed. Please try again.';
       notification.style.backgroundColor = '#dc3545';
     } finally {
+      // Always clean up the offscreen node and any temporary style changes
+      try {
+        const temp = document.getElementById('pdf-export-content');
+        if (temp && temp.parentNode) temp.parentNode.removeChild(temp);
+      } catch {}
+      try {
+        if (typeof prevHtmlOverflowX !== 'undefined') {
+          document.documentElement.style.overflowX = prevHtmlOverflowX;
+        }
+        if (typeof prevBodyOverflowX !== 'undefined') {
+          document.body.style.overflowX = prevBodyOverflowX;
+        }
+      } catch {}
       // Remove notification after delay
       setTimeout(() => {
         if (notification && notification.parentNode) {
