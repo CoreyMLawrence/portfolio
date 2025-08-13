@@ -52,7 +52,11 @@
         });
       };
 
-      // Prefer local UMD bundles checked into repo; fallback to CDN
+      // Prefer vendored UMD bundles in repo; fallback to local node_modules, then CDN
+      const vendorCandidates = [
+        './vendor/jspdf.umd.min.js',
+        './vendor/html2canvas.min.js',
+      ];
       const base = './node_modules'; // relative to /chat
       const localCandidates = [
         `${base}/jspdf/dist/jspdf.umd.min.js`,
@@ -84,24 +88,25 @@
         }
       }
 
-      // Loading strategy: local first (default) then CDN; or CDN first if preferCdn=true
-      const first = preferCdn ? cdnCandidates : localCandidates;
-      const second = preferCdn ? localCandidates : cdnCandidates;
+      // Loading strategy: prefer vendor first (checked-in), then node_modules, then CDN
+      // If preferCdn=true, try CDN first, then vendor, then node_modules
+      const order = preferCdn
+        ? [cdnCandidates, vendorCandidates, localCandidates]
+        : [vendorCandidates, localCandidates, cdnCandidates];
       let loadedFrom = null;
-      try {
-        await tryLoadFrom(first, preferCdn ? 'cdn' : 'local');
-        loadedFrom = preferCdn ? 'cdn' : 'local';
-      } catch (e1) {
-        // Record and try the other source
-        if (preferCdn) status.cdn.error = e1;
+      let lastErr = null;
+      for (const [idx, urls] of order.entries()) {
+        const label = urls === cdnCandidates ? 'cdn' : urls === localCandidates ? 'local' : 'vendor';
         try {
-          await tryLoadFrom(second, preferCdn ? 'local' : 'cdn');
-          loadedFrom = preferCdn ? 'local' : 'cdn';
-        } catch (e2) {
-          // If both failed, bubble up the first error
-          throw e1 || e2;
+          await tryLoadFrom(urls, label);
+          loadedFrom = label;
+          break;
+        } catch (err) {
+          lastErr = err;
+          if (label === 'cdn') status.cdn.error = status.cdn.error || err;
         }
       }
+      if (!loadedFrom) throw lastErr || new Error('No library source succeeded');
 
       // Verify libraries loaded correctly
       if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
@@ -109,7 +114,7 @@
       }
 
       librariesLoaded = true;
-      console.log('PDF libraries loaded successfully from', loadedFrom);
+  console.log('PDF libraries loaded successfully from', loadedFrom);
       return true;
     } catch (error) {
       console.error('Failed to load PDF libraries:', error);
