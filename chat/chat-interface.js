@@ -667,10 +667,49 @@ function sanitizeHtml(html) {
   return div.innerHTML;
 }
 
+// Normalize Markdown to improve list rendering in simple parsers like snarkdown
+// - Ensures a blank line before list blocks
+// - Normalizes excessive spaces after list markers
+// - Converts common unicode bullets to standard dashes
+function normalizeMarkdown(md) {
+  if (!md) return '';
+  let s = String(md).replace(/\r\n?/g, '\n');
+  // Normalize tabs to two spaces to avoid unpredictable indent width
+  s = s.replace(/\t/g, '  ');
+
+  // Insert a blank line before the first list item when it follows a non-list line.
+  // Avoid adding blank lines between adjacent list items.
+  s = s.replace(
+    /^(?![ \t]*(?:[*+-]|\d+[.)])\s)(.*\S.*)\n(?=^[ \t]*(?:[*+-]|\d+[.)])\s)/gm,
+    '$1\n\n'
+  );
+
+  // Normalize multiple spaces after bullet/number to a single space
+  s = s.replace(/^([ \t]*[*+-])\s{2,}/gm, '$1 ');
+  s = s.replace(/^([ \t]*\d+[.)])\s{2,}/gm, '$1 ');
+
+  // Convert unicode bullets to dashes
+  s = s.replace(/^\s*[•▪◦]\s+/gm, '- ');
+
+  // Normalize nested list indentation: reduce 3+ leading spaces before a bullet/number to 2 spaces
+  // This helps simple parsers treat them as nested lists rather than code blocks
+  s = s.replace(/^([ \t]{3,})([*+-]|\d+[.)])\s+/gm, '  $2 ');
+  s = s.replace(/\n[ \t]{3,}([*+-]|\d+[.)])\s+/g, '\n  $1 ');
+
+  // Collapse extra blank lines (including whitespace-only lines) between adjacent list items
+  // Example: "* item A\n\n* item B" -> "* item A\n* item B"
+  s = s.replace(
+    /(^[ \t]*(?:[*+-]|\d+[.)])\s+.+)\n(?:[ \t]*\n)+(?=^[ \t]*(?:[*+-]|\d+[.)])\s)/gm,
+    '$1\n'
+  );
+
+  return s;
+}
+
 function markdownToHtml(md) {
   if (!md) return '';
   const lib = window.__snarkdown;
   if (!lib) return (md + '').replace(/</g, '&lt;');
-  const html = lib(md);
+  const html = lib(normalizeMarkdown(md));
   return sanitizeHtml(html);
 }

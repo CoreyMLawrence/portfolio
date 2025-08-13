@@ -548,6 +548,15 @@ body {
   list-style-position: outside; /* bullets outside for clean alignment */
 }
 
+/* Tighten spacing for list item paragraphs and nested lists */
+.message.ai .message-content li > p {
+  margin: 0.2rem 0; /* reduce gap between bullet text and nested content */
+}
+.message.ai .message-content li ul,
+.message.ai .message-content li ol {
+  margin: 0.2rem 0 0.2rem 1rem; /* slightly tighter nested list spacing */
+}
+
 .message.ai .message-content li {
   margin: 0.25rem 0; /* space between bullets */
 }
