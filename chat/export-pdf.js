@@ -17,7 +17,10 @@
     try {
       // Check if libraries are already loaded when not forcing CDN
       if (!forceCdn) {
-        if (typeof jspdf !== 'undefined' && typeof html2canvas !== 'undefined') {
+        if (
+          typeof jspdf !== 'undefined' &&
+          typeof html2canvas !== 'undefined'
+        ) {
           librariesLoaded = true;
           return true;
         }
@@ -43,13 +46,15 @@
         'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
       ];
       // Avoid duplicate script tags when forceCdn=true and scripts already exist
-      const toLoad = urls.filter((src) => !document.querySelector(`script[src="${src}"]`));
+      const toLoad = urls.filter(
+        (src) => !document.querySelector(`script[src="${src}"]`)
+      );
       if (toLoad.length) {
         await Promise.all(toLoad.map((u) => loadScript(u)));
       }
 
       // Verify libraries loaded correctly
-  if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
+      if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
         throw new Error('Libraries not available after loading');
       }
 
@@ -88,7 +93,8 @@
   function hideExportTypingIndicator() {
     try {
       const chat = document.getElementById('chat-messages');
-      const typing = chat && chat.querySelector('.typing-message.export-typing');
+      const typing =
+        chat && chat.querySelector('.typing-message.export-typing');
       if (typing) typing.remove();
     } catch {}
   }
@@ -112,12 +118,12 @@
     if (exportInProgress) return;
     exportInProgress = true;
 
-  // Show typing dots in the chat area
-  showExportTypingIndicator();
+    // Show typing dots in the chat area
+    showExportTypingIndicator();
 
     try {
-  // Load the libraries via CDN for consistent behavior across environments
-  const loaded = await loadLibraries(true);
+      // Load the libraries via CDN for consistent behavior across environments
+      const loaded = await loadLibraries(true);
       if (!loaded) {
         throw new Error(
           'Required libraries (jsPDF or html2canvas) could not be loaded'
@@ -149,13 +155,13 @@
       htmlEl.style.overflowX = 'hidden';
       bodyEl.style.overflowX = 'hidden';
 
-  // Create a container for the cloned content with chat-like styling
-  const pdfContent = document.createElement('div');
-  pdfContent.id = 'pdf-export-content';
-  // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
-  // Optimize width & padding to reduce render surface (performance on mobile Safari)
-  pdfContent.style.width = '760px';
-  pdfContent.style.padding = '40px';
+      // Create a container for the cloned content with chat-like styling
+      const pdfContent = document.createElement('div');
+      pdfContent.id = 'pdf-export-content';
+      // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
+      // Optimize width & padding to reduce render surface (performance on mobile Safari)
+      pdfContent.style.width = '760px';
+      pdfContent.style.padding = '40px';
       pdfContent.style.backgroundColor = '#fff';
       // Keep it offscreen and invisible, but still renderable for html2canvas
       // Avoid visibility:hidden (html2canvas skips it). Use opacity:0 and off-canvas position.
@@ -186,7 +192,9 @@
       const messageTexts = messages.map((m) => {
         const isUser = m.classList.contains('user');
         const contentEl = m.querySelector('.message-content');
-        const text = contentEl ? (contentEl.innerText || contentEl.textContent || '').trim() : '';
+        const text = contentEl
+          ? (contentEl.innerText || contentEl.textContent || '').trim()
+          : '';
         return { role: isUser ? 'You' : 'Assistant', text };
       });
 
@@ -231,12 +239,13 @@
       // Wait a moment for rendering and fonts, but never hang
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
       await delay(300);
-      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+      if (
+        document.fonts &&
+        document.fonts.ready &&
+        typeof document.fonts.ready.then === 'function'
+      ) {
         // Race with timeout to avoid Safari hanging on fonts.ready
-        await Promise.race([
-          document.fonts.ready,
-          delay(1200),
-        ]);
+        await Promise.race([document.fonts.ready, delay(1200)]);
       }
       // Force a reflow to ensure layout is committed
       void pdfContent.offsetHeight;
@@ -260,61 +269,64 @@
         addTranscriptToPdf(doc, messageTexts);
       } else {
         // Replace the previous single-image + broken multipage block with reliable slicing
-      // Page metrics and margins
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const margins = { top: 15, right: 15, bottom: 15, left: 15 };
+        // Page metrics and margins
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const margins = { top: 15, right: 15, bottom: 15, left: 15 };
 
-      // Header is already drawn; reserve extra top space on page 1 so content starts below it
-      const firstPageContentTop = 30; // matches header layout
-      const contentWidthMm = pageWidth - margins.left - margins.right;
+        // Header is already drawn; reserve extra top space on page 1 so content starts below it
+        const firstPageContentTop = 30; // matches header layout
+        const contentWidthMm = pageWidth - margins.left - margins.right;
 
-      // Canvas dimensions (px)
-      const srcWidthPx = canvas.width;
-      const srcHeightPx = canvas.height;
+        // Canvas dimensions (px)
+        const srcWidthPx = canvas.width;
+        const srcHeightPx = canvas.height;
 
-      // Convert px <-> mm for consistent scaling
-      const mmPerPx = contentWidthMm / srcWidthPx;
+        // Convert px <-> mm for consistent scaling
+        const mmPerPx = contentWidthMm / srcWidthPx;
 
-      // Compute how many source pixels fit on a page
-      const firstPageContentHeightMm =
-        pageHeight - firstPageContentTop - margins.bottom;
-      const nextPageContentHeightMm = pageHeight - margins.top - margins.bottom;
+        // Compute how many source pixels fit on a page
+        const firstPageContentHeightMm =
+          pageHeight - firstPageContentTop - margins.bottom;
+        const nextPageContentHeightMm =
+          pageHeight - margins.top - margins.bottom;
 
-      const firstSliceHeightPx = Math.floor(firstPageContentHeightMm / mmPerPx);
-      const sliceHeightPx = Math.floor(nextPageContentHeightMm / mmPerPx);
-
-      // Helper: add a slice of the big canvas as an image to the PDF
-      function addSliceToPdf(srcCanvas, srcY, slicePxHeight, isFirstPage) {
-        const sliceCanvas = document.createElement('canvas');
-        sliceCanvas.width = srcCanvas.width;
-        sliceCanvas.height = slicePxHeight;
-        const ctx = sliceCanvas.getContext('2d');
-        ctx.drawImage(
-          srcCanvas,
-          0,
-          srcY,
-          srcCanvas.width,
-          slicePxHeight, // src crop
-          0,
-          0,
-          sliceCanvas.width,
-          sliceCanvas.height // dst
+        const firstSliceHeightPx = Math.floor(
+          firstPageContentHeightMm / mmPerPx
         );
-        const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
+        const sliceHeightPx = Math.floor(nextPageContentHeightMm / mmPerPx);
 
-        const drawYmm = isFirstPage ? firstPageContentTop : margins.top;
-        const sliceHeightMm = slicePxHeight * mmPerPx;
+        // Helper: add a slice of the big canvas as an image to the PDF
+        function addSliceToPdf(srcCanvas, srcY, slicePxHeight, isFirstPage) {
+          const sliceCanvas = document.createElement('canvas');
+          sliceCanvas.width = srcCanvas.width;
+          sliceCanvas.height = slicePxHeight;
+          const ctx = sliceCanvas.getContext('2d');
+          ctx.drawImage(
+            srcCanvas,
+            0,
+            srcY,
+            srcCanvas.width,
+            slicePxHeight, // src crop
+            0,
+            0,
+            sliceCanvas.width,
+            sliceCanvas.height // dst
+          );
+          const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
 
-        doc.addImage(
-          imgData,
-          'JPEG',
-          margins.left,
-          drawYmm,
-          contentWidthMm,
-          sliceHeightMm
-        );
-      }
+          const drawYmm = isFirstPage ? firstPageContentTop : margins.top;
+          const sliceHeightMm = slicePxHeight * mmPerPx;
+
+          doc.addImage(
+            imgData,
+            'JPEG',
+            margins.left,
+            drawYmm,
+            contentWidthMm,
+            sliceHeightMm
+          );
+        }
 
         // Add first page content slice
         let offsetPx = 0;
@@ -349,11 +361,17 @@
         // Revoke URL shortly after the user clicks; also set a long-timeout safeguard
         const chat = document.getElementById('chat-messages');
         if (chat) {
-          const lastLink = chat.querySelector('.message.ai:last-child .message-content a[href^="blob:"]');
+          const lastLink = chat.querySelector(
+            '.message.ai:last-child .message-content a[href^="blob:"]'
+          );
           if (lastLink) {
-            lastLink.addEventListener('click', () => {
-              setTimeout(() => URL.revokeObjectURL(url), 60_000);
-            }, { once: true });
+            lastLink.addEventListener(
+              'click',
+              () => {
+                setTimeout(() => URL.revokeObjectURL(url), 60_000);
+              },
+              { once: true }
+            );
           }
         }
         setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
