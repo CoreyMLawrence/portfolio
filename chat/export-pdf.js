@@ -202,6 +202,12 @@
     exportInProgress = true;
     showExportTypingIndicator();
 
+    // Platform detection - do this early so it's available throughout
+    const ua = (navigator && navigator.userAgent) || '';
+    const isIOS =
+      /iP(hone|ad|od)/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
     // We capture previous overflow values in the outer scope to guarantee restoration
     const htmlEl = document.documentElement;
     const bodyEl = document.body;
@@ -262,6 +268,18 @@
       pdfContent.style.color = '#333';
       pdfContent.style.display = 'flex';
       pdfContent.style.flexDirection = 'column';
+      
+      // iOS-specific optimizations
+      if (isIOS) {
+        pdfContent.style.webkitBackfaceVisibility = 'hidden';
+        pdfContent.style.webkitPerspective = '1000px';
+        pdfContent.style.webkitTransform = 'translate3d(0,0,0)';
+        pdfContent.style.isolation = 'isolate';
+        // Reduce complexity for iOS
+        pdfContent.style.textRendering = 'optimizeSpeed';
+        pdfContent.style.fontSmooth = 'never';
+        pdfContent.style.webkitFontSmoothing = 'none';
+      }
 
       // Style once for code and lists to match chat look
       const globalStyle = document.createElement('style');
@@ -275,6 +293,7 @@
           font-size: 13px;
           line-height: 1.45;
           margin: 10px 0;
+          ${isIOS ? 'will-change: auto; transform: translateZ(0);' : ''}
         }
         #pdf-export-content code {
           background-color: #f6f8fa;
@@ -290,6 +309,19 @@
         #pdf-export-content li { margin-bottom: 6px; }
         #pdf-export-content p { margin: 0 0 10px 0; }
         #pdf-export-content a { color: #0366d6; text-decoration: underline; }
+        ${isIOS ? `
+        #pdf-export-content * {
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          -webkit-font-smoothing: none;
+          font-smooth: never;
+        }
+        #pdf-export-content img {
+          image-rendering: -webkit-optimize-contrast;
+          max-width: 100%;
+          height: auto;
+        }
+        ` : ''}
       `;
       pdfContent.appendChild(globalStyle);
 
@@ -324,16 +356,38 @@
 
       // Give the browser a beat to layout and load fonts
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-      await delay(300);
+      
+      // Longer delay for iOS to ensure proper layout
+      const layoutDelay = isIOS ? 500 : 300;
+      await delay(layoutDelay);
+      
       if (
         document.fonts &&
         document.fonts.ready &&
         typeof document.fonts.ready.then === 'function'
       ) {
         dlog('Waiting on fonts.ready with timeout');
-        await Promise.race([document.fonts.ready, delay(1200)]);
+        const fontTimeout = isIOS ? 2000 : 1200;
+        await Promise.race([document.fonts.ready, delay(fontTimeout)]);
       }
       void pdfContent.offsetHeight; // reflow
+      
+      // Additional iOS stabilization delay
+      if (isIOS) {
+        await delay(200);
+      }
+
+      // Platform tuning with iOS memory optimization
+      const vw = window.innerWidth || 0;
+      
+      // Detect device memory constraints
+      const deviceMemory = navigator.deviceMemory || 4; // Default to 4GB if unknown
+      const isLowMemory = deviceMemory <= 2 || isIOS;
+      
+      // More aggressive scaling for iOS to reduce memory pressure
+      const baseScale = isIOS 
+        ? (vw <= 480 ? 0.8 : 0.9) 
+        : (vw <= 480 ? 1.0 : 1.15);
 
       // Mark all imgs CORS safe to reduce taint risk
       try {
@@ -343,32 +397,19 @@
         });
       } catch {}
 
-      // Platform tuning
-      const ua = (navigator && navigator.userAgent) || '';
-      const isIOS =
-        /iP(hone|ad|od)/i.test(ua) ||
-        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const vw = window.innerWidth || 0;
-      const baseScale = vw <= 480 ? 1.0 : 1.15;
-
       const attempts = isIOS
         ? [
-            { scale: baseScale, width: 760, pad: 40, timeout: 6000 },
-            {
-              scale: Math.max(0.95, baseScale - 0.1),
-              width: 720,
-              pad: 34,
-              timeout: 6000,
-            },
-            { scale: 0.9, width: 680, pad: 30, timeout: 5500 },
-            { scale: 0.85, width: 640, pad: 26, timeout: 5000 },
-            { scale: 0.8, width: 600, pad: 24, timeout: 4800 },
+            { scale: 0.75, width: 600, pad: 24, timeout: 8000, maxSliceHeight: 800 },
+            { scale: 0.7, width: 580, pad: 22, timeout: 8000, maxSliceHeight: 700 },
+            { scale: 0.65, width: 560, pad: 20, timeout: 7500, maxSliceHeight: 600 },
+            { scale: 0.6, width: 540, pad: 18, timeout: 7000, maxSliceHeight: 500 },
+            { scale: 0.55, width: 520, pad: 16, timeout: 6500, maxSliceHeight: 400 },
           ]
         : [
-            { scale: baseScale, width: 760, pad: 40, timeout: 7000 },
-            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 6500 },
-            { scale: 1.0, width: 680, pad: 30, timeout: 6500 },
-            { scale: 0.9, width: 640, pad: 26, timeout: 6000 },
+            { scale: baseScale, width: 760, pad: 40, timeout: 7000, maxSliceHeight: 1200 },
+            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 6500, maxSliceHeight: 1100 },
+            { scale: 1.0, width: 680, pad: 30, timeout: 6500, maxSliceHeight: 1000 },
+            { scale: 0.9, width: 640, pad: 26, timeout: 6000, maxSliceHeight: 900 },
           ];
 
       // Page metrics
@@ -381,8 +422,18 @@
       async function attemptRenderSlice({ scale, timeoutMs, y, heightPx }) {
         try {
           const widthPx = pdfContent.clientWidth;
+          
+          // Force garbage collection on iOS before rendering
+          if (isIOS && window.gc) {
+            try {
+              window.gc();
+            } catch {}
+          }
+          
           dtimeStart(`render-slice:${y}:${heightPx}:s${scale}`);
-          const renderPromise = html2canvas(pdfContent, {
+          
+          // iOS-specific canvas options for better compatibility
+          const canvasOptions = {
             scale,
             useCORS: true,
             backgroundColor: '#FFFFFF',
@@ -396,7 +447,33 @@
             windowHeight: Math.max(heightPx, 600),
             scrollX: 0,
             scrollY: y,
-          });
+            // iOS-specific optimizations
+            allowTaint: false,
+            foreignObjectRendering: false,
+            imageTimeout: isIOS ? 5000 : 15000,
+            onclone: isIOS ? (clonedDoc) => {
+              // Remove heavy elements that might cause issues on iOS
+              try {
+                const videos = clonedDoc.querySelectorAll('video, iframe, embed, object');
+                videos.forEach(v => v.remove());
+                
+                // Simplify complex CSS that might cause rendering issues
+                const style = clonedDoc.createElement('style');
+                style.textContent = `
+                  * { 
+                    box-shadow: none !important; 
+                    text-shadow: none !important;
+                    filter: none !important;
+                    backdrop-filter: none !important;
+                  }
+                `;
+                clonedDoc.head.appendChild(style);
+              } catch {}
+              return clonedDoc;
+            } : undefined,
+          };
+          
+          const renderPromise = html2canvas(pdfContent, canvasOptions);
           const canvas = await Promise.race([
             renderPromise,
             new Promise((_, reject) =>
@@ -425,13 +502,16 @@
           pageHeight - firstPageContentTop - margins.bottom;
         const nextPageContentHeightMm =
           pageHeight - margins.top - margins.bottom;
-        const firstSliceHeightPx = Math.max(
-          200,
-          Math.floor(firstPageContentHeightMm / mmPerPx)
+        
+        // iOS-specific slice height limits to prevent memory issues
+        const maxSliceHeightPx = cfg.maxSliceHeight || 1000;
+        const firstSliceHeightPx = Math.min(
+          maxSliceHeightPx,
+          Math.max(200, Math.floor(firstPageContentHeightMm / mmPerPx))
         );
-        const sliceHeightPx = Math.max(
-          200,
-          Math.floor(nextPageContentHeightMm / mmPerPx)
+        const sliceHeightPx = Math.min(
+          maxSliceHeightPx,
+          Math.max(200, Math.floor(nextPageContentHeightMm / mmPerPx))
         );
         const totalHeightPx = Math.max(
           pdfContent.scrollHeight,
@@ -449,22 +529,43 @@
           try {
             const drawYmm = isFirst ? firstPageContentTop : margins.top;
             const sliceHeightMm = h * mmPerPx;
+            
+            // Convert canvas to JPEG with quality optimization for iOS
+            const quality = isIOS ? 0.8 : 0.92;
             doc.addImage(
               canvas,
               'JPEG',
               margins.left,
               drawYmm,
               contentWidthMm,
-              sliceHeightMm
+              sliceHeightMm,
+              undefined,
+              'MEDIUM',
+              0,
+              quality
             );
           } finally {
+            // Aggressive canvas cleanup for iOS memory management
             try {
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+              }
               canvas.width = 1;
               canvas.height = 1;
             } catch {}
             try {
               canvas.remove();
             } catch {}
+            
+            // Force cleanup on iOS
+            if (isIOS) {
+              setTimeout(() => {
+                if (window.gc) {
+                  try { window.gc(); } catch {}
+                }
+              }, 100);
+            }
           }
         };
 
@@ -480,6 +581,11 @@
             const h = Math.min(sliceHeightPx, remainingPx);
             await renderAndAdd(offsetPx, h, false);
             offsetPx += h;
+            
+            // iOS memory management: small delay between slices
+            if (isIOS && offsetPx < totalHeightPx) {
+              await delay(150);
+            }
           }
           success = true;
         } catch (err) {
@@ -499,7 +605,10 @@
               'F'
             );
           } catch {}
-          await new Promise((r) => setTimeout(r, 120));
+          
+          // Longer recovery delay for iOS
+          const recoveryDelay = isIOS ? 300 : 120;
+          await new Promise((r) => setTimeout(r, recoveryDelay));
         }
       }
 
@@ -541,10 +650,7 @@
             );
           }
         }
-        const uaIOS =
-          /iP(hone|ad|od)/i.test(ua) ||
-          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        setTimeout(revokeSafely, uaIOS ? 2 * 60 * 1000 : 10 * 60 * 1000);
+        setTimeout(revokeSafely, isIOS ? 2 * 60 * 1000 : 10 * 60 * 1000);
       } catch {
         hideExportTypingIndicator();
         appendChatMessage('PDF export failed. Please try again.');
