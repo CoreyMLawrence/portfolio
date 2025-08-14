@@ -373,42 +373,50 @@
       void pdfContent.offsetHeight;
       dlog('Layout reflowed');
 
-      // Strategy: High-quality first attempt; if it fails/timeouts, retry with lower scale.
-      const viewportWidth = window.innerWidth || 0;
-      const firstScale = viewportWidth <= 480 ? 1.05 : 1.3; // lower than before
-      const secondScale = viewportWidth <= 480 ? 0.95 : 1.05; // fallback smaller scale
-      let canvas = await attemptRenderCanvas(firstScale, 14000);
-      if (!canvas) {
-        // Reduce padding & width further for retry to shrink surface area
-        pdfContent.style.padding = '32px';
-        pdfContent.style.width = '700px';
-        // Force reflow before second attempt
-        void pdfContent.offsetHeight;
-        dlog('Retrying render with smaller size');
-        canvas = await attemptRenderCanvas(secondScale, 18000);
-      }
+      // iOS often needs more, smaller, faster retries rather than one long wait.
+      // Build a short sequence of attempts with progressive downscaling and shorter timeouts.
+      const ua = (navigator && navigator.userAgent) || '';
+      const isIOS = /iP(hone|ad|od)/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-      // If rendering failed or timed out after retries, attempt a CDN-powered retry before transcript
-      if (!canvas) {
-        try {
-          const needCdnReload =
-            status.jspdf.source !== 'cdn' ||
-            status.html2canvas.source !== 'cdn';
-          if (needCdnReload) {
-            console.warn(
-              'Render failed; reloading libraries from CDN and retrying...'
-            );
-            dlog('Render failed after retries; forcing CDN reload then re-attempt');
-            await loadLibraries({ preferCdn: true, reload: true });
-            // Slight delay to ensure parse/ready
-            await new Promise((r) => setTimeout(r, 150));
-            // Reflow prior to retry
-            void pdfContent.offsetHeight;
-            canvas = await attemptRenderCanvas(1.05, 16000);
-          }
-        } catch (retryErr) {
-          console.warn('CDN retry failed:', retryErr);
-          dlog('CDN retry error:', retryErr?.message || retryErr);
+      // Make sure any images in the cloned content are not tainting the canvas
+      try {
+        pdfContent.querySelectorAll('img').forEach((img) => {
+          if (!img.getAttribute('crossorigin')) img.setAttribute('crossorigin', 'anonymous');
+          // If same-origin images have no srcset/sizes issues, this helps prevent tainting
+        });
+      } catch {}
+
+      const initialWidthPx = 760;
+      const initialPaddingPx = 40;
+      const vw = window.innerWidth || 0;
+      const baseScale = vw <= 480 ? 1.0 : 1.2;
+      const attempts = (isIOS
+        ? [
+            { scale: baseScale, width: initialWidthPx, pad: initialPaddingPx, timeout: 6500 },
+            { scale: Math.max(0.95, baseScale - 0.1), width: 720, pad: 34, timeout: 6500 },
+            { scale: 0.9, width: 680, pad: 30, timeout: 6500 },
+            { scale: 0.85, width: 640, pad: 26, timeout: 6000 },
+            { scale: 0.8, width: 600, pad: 24, timeout: 5500 },
+          ]
+        : [
+            { scale: baseScale, width: initialWidthPx, pad: initialPaddingPx, timeout: 7000 },
+            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 7000 },
+            { scale: 1.0, width: 680, pad: 30, timeout: 6500 },
+            { scale: 0.9, width: 640, pad: 26, timeout: 6000 },
+          ]);
+
+      let canvas = null;
+      for (let i = 0; i < attempts.length && !canvas; i++) {
+        const cfg = attempts[i];
+        pdfContent.style.width = cfg.width + 'px';
+        pdfContent.style.padding = cfg.pad + 'px';
+        void pdfContent.offsetHeight; // reflow
+        dlog('Render attempt', i + 1, '/', attempts.length, cfg);
+        canvas = await attemptRenderCanvas(cfg.scale, cfg.timeout);
+        if (!canvas) {
+          dlog('Render attempt failed', i + 1);
+          // Small pause before next attempt
+          await new Promise((r) => setTimeout(r, 120));
         }
       }
 
