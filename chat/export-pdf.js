@@ -19,33 +19,52 @@
   // --- Debug logging helpers (no-ops unless enabled) ---
   const _timers = {};
   function isDebug() {
-    try { return !!(window.ChatExport && window.ChatExport.debug); } catch { return false; }
+    try {
+      return !!(window.ChatExport && window.ChatExport.debug);
+    } catch {
+      return false;
+    }
   }
   function dlog(...args) {
     if (!isDebug()) return;
-    try { console.log('[PDF DEBUG]', ...args); } catch {}
+    try {
+      console.log('[PDF DEBUG]', ...args);
+    } catch {}
   }
   function dtimeStart(label) {
     if (!isDebug()) return;
-    _timers[label] = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-    try { console.log('[PDF DEBUG TIME]', label, 'start'); } catch {}
+    _timers[label] =
+      typeof performance !== 'undefined' && performance.now
+        ? performance.now()
+        : Date.now();
+    try {
+      console.log('[PDF DEBUG TIME]', label, 'start');
+    } catch {}
   }
   function dtimeEnd(label) {
     if (!isDebug()) return;
     const t0 = _timers[label];
-    const t1 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
-    const ms = (t0 && t1) ? (t1 - t0).toFixed(1) : 'n/a';
-    try { console.log('[PDF DEBUG TIME]', label, 'end', ms + 'ms'); } catch {}
+    const t1 =
+      typeof performance !== 'undefined' && performance.now
+        ? performance.now()
+        : Date.now();
+    const ms = t0 && t1 ? (t1 - t0).toFixed(1) : 'n/a';
+    try {
+      console.log('[PDF DEBUG TIME]', label, 'end', ms + 'ms');
+    } catch {}
   }
 
   // Load required libraries dynamically
   async function loadLibraries(options = {}) {
     const { preferCdn = false, reload = false } = options || {};
-  if (librariesLoaded && !reload) { dlog('Libraries already loaded; skip reload'); return true; }
+    if (librariesLoaded && !reload) {
+      dlog('Libraries already loaded; skip reload');
+      return true;
+    }
 
     try {
       // Check if libraries are already loaded when not reloading
-    if (!reload) {
+      if (!reload) {
         if (
           typeof jspdf !== 'undefined' &&
           typeof html2canvas !== 'undefined'
@@ -55,23 +74,32 @@
           status.html2canvas.loaded = true;
           status.jspdf.source = status.jspdf.source || 'preloaded';
           status.html2canvas.source = status.html2canvas.source || 'preloaded';
-      dlog('Detected preloaded libs:', { jspdf: status.jspdf, html2canvas: status.html2canvas });
+          dlog('Detected preloaded libs:', {
+            jspdf: status.jspdf,
+            html2canvas: status.html2canvas,
+          });
           return true;
         }
       }
 
-    console.log('Loading PDF export libraries...');
-    dlog('loadLibraries options:', { preferCdn, reload });
+      console.log('Loading PDF export libraries...');
+      dlog('loadLibraries options:', { preferCdn, reload });
 
       // Function to load a script
-    const loadScript = (src) => {
+      const loadScript = (src) => {
         return new Promise((resolve, reject) => {
           const script = document.createElement('script');
           script.src = src;
           script.async = true;
           script.crossOrigin = 'anonymous';
-      script.onload = () => { dlog('Loaded script:', src); resolve(); };
-      script.onerror = () => { dlog('Script failed:', src); reject(new Error(`Failed to load: ${src}`)); };
+          script.onload = () => {
+            dlog('Loaded script:', src);
+            resolve();
+          };
+          script.onerror = () => {
+            dlog('Script failed:', src);
+            reject(new Error(`Failed to load: ${src}`));
+          };
           document.head.appendChild(script);
         });
       };
@@ -115,7 +143,10 @@
           status.html2canvas.url =
             urls.find((u) => /html2canvas/i.test(u)) || null;
         }
-        dlog('Post-load status:', { jspdf: status.jspdf, html2canvas: status.html2canvas });
+        dlog('Post-load status:', {
+          jspdf: status.jspdf,
+          html2canvas: status.html2canvas,
+        });
       }
 
       // Loading strategy: prefer vendor first (checked-in), then node_modules, then CDN
@@ -123,10 +154,15 @@
       const order = preferCdn
         ? [cdnCandidates, vendorCandidates, localCandidates]
         : [vendorCandidates, localCandidates, cdnCandidates];
-    let loadedFrom = null;
+      let loadedFrom = null;
       let lastErr = null;
       for (const [idx, urls] of order.entries()) {
-        const label = urls === cdnCandidates ? 'cdn' : urls === localCandidates ? 'local' : 'vendor';
+        const label =
+          urls === cdnCandidates
+            ? 'cdn'
+            : urls === localCandidates
+            ? 'local'
+            : 'vendor';
         try {
           await tryLoadFrom(urls, label);
           loadedFrom = label;
@@ -134,25 +170,26 @@
         } catch (err) {
           lastErr = err;
           if (label === 'cdn') status.cdn.error = status.cdn.error || err;
-      dlog('Source failed:', label, err?.message || err);
+          dlog('Source failed:', label, err?.message || err);
         }
       }
-      if (!loadedFrom) throw lastErr || new Error('No library source succeeded');
+      if (!loadedFrom)
+        throw lastErr || new Error('No library source succeeded');
 
       // Verify libraries loaded correctly
       if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
         throw new Error('Libraries not available after loading');
       }
 
-  librariesLoaded = true;
-  console.log('PDF libraries loaded successfully from', loadedFrom);
-  dlog('Libraries ready from:', loadedFrom);
+      librariesLoaded = true;
+      console.log('PDF libraries loaded successfully from', loadedFrom);
+      dlog('Libraries ready from:', loadedFrom);
       return true;
     } catch (error) {
       console.error('Failed to load PDF libraries:', error);
       status.jspdf.error = status.jspdf.error || error;
       status.html2canvas.error = status.html2canvas.error || error;
-  dlog('loadLibraries error:', error?.message || error);
+      dlog('loadLibraries error:', error?.message || error);
       return false;
     }
   }
@@ -213,14 +250,20 @@
 
     try {
       // Decide default source: prefer vendored files by default; allow global override via window.ChatExport.preferSource
-      const forced = (window.ChatExport && window.ChatExport.preferSource) || '';
+      const forced =
+        (window.ChatExport && window.ChatExport.preferSource) || '';
       let preferCdnDefault = false; // vendor/local first by default
       if (typeof forced === 'string' && forced) {
         const f = forced.toLowerCase();
         if (f === 'cdn') preferCdnDefault = true;
         else preferCdnDefault = false; // 'vendor' or 'local' -> non-CDN path first
       }
-      dlog('exportChat start; forced source:', forced || '(none)', 'preferCdnDefault:', preferCdnDefault);
+      dlog(
+        'exportChat start; forced source:',
+        forced || '(none)',
+        'preferCdnDefault:',
+        preferCdnDefault
+      );
 
       // Load libraries with environment-aware preference, then fallback
       let loaded = await loadLibraries({
@@ -293,14 +336,14 @@
       pdfContent.style.display = 'flex';
       pdfContent.style.flexDirection = 'column';
 
-  // Process each message and add to the PDF content container
+      // Process each message and add to the PDF content container
       const messages = Array.from(chatContainer.children).filter(
         (el) =>
           el.classList.contains('message') &&
           !el.classList.contains('typing-message') &&
           !el.classList.contains('welcome-message')
       );
-  dlog('Messages selected for export:', { count: messages.length });
+      dlog('Messages selected for export:', { count: messages.length });
 
       // Prepare a text-only transcript fallback in case rendering fails or times out
       const messageTexts = messages.map((m) => {
@@ -324,22 +367,31 @@
         });
       }
 
-  // Add to document temporarily
+      // Add to document temporarily
       document.body.appendChild(pdfContent);
-  dlog('Temporary PDF content appended to body');
+      dlog('Temporary PDF content appended to body');
 
-      // Helper to attempt rendering the entire cloned chat to a canvas with a timeout
-    async function attemptRenderCanvas(scale, timeoutMs) {
+      // Helper to attempt rendering a bounded region to a canvas with a timeout
+      // Note: We limit output canvas size to avoid large allocations on iOS.
+      async function attemptRenderSlice({ scale, timeoutMs, y = 0, heightPx }) {
         try {
-      dlog('attemptRenderCanvas start', { scale, timeoutMs });
-      dtimeStart(`render:${scale}`);
+          const widthPx = pdfContent.clientWidth;
+          dlog('attemptRenderSlice start', { scale, timeoutMs, y, heightPx, widthPx });
+          dtimeStart(`render-slice:${y}:${heightPx}:s${scale}`);
           const renderPromise = html2canvas(pdfContent, {
             scale,
             useCORS: true,
             backgroundColor: '#FFFFFF',
             logging: false,
-            // Trim large shadow/overflow computations for speed
             removeContainer: true,
+            width: widthPx,
+            height: heightPx,
+            x: 0,
+            y,
+            windowWidth: Math.max(widthPx, 800),
+            windowHeight: Math.max(heightPx, 600),
+            scrollX: 0,
+            scrollY: y,
           });
           const canvas = await Promise.race([
             renderPromise,
@@ -347,11 +399,12 @@
               setTimeout(() => reject(new Error('render-timeout')), timeoutMs)
             ),
           ]);
-      dtimeEnd(`render:${scale}`);
-      if (canvas) dlog('Canvas rendered:', { w: canvas.width, h: canvas.height });
+          dtimeEnd(`render-slice:${y}:${heightPx}:s${scale}`);
+          if (canvas)
+            dlog('Slice rendered:', { w: canvas.width, h: canvas.height, y });
           return canvas || null;
         } catch (e) {
-      dlog('attemptRenderCanvas error:', e?.message || e);
+          dlog('attemptRenderSlice error:', e?.message || e);
           return null;
         }
       }
@@ -376,142 +429,133 @@
       // iOS often needs more, smaller, faster retries rather than one long wait.
       // Build a short sequence of attempts with progressive downscaling and shorter timeouts.
       const ua = (navigator && navigator.userAgent) || '';
-      const isIOS = /iP(hone|ad|od)/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isIOS =
+        /iP(hone|ad|od)/i.test(ua) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
       // Make sure any images in the cloned content are not tainting the canvas
       try {
         pdfContent.querySelectorAll('img').forEach((img) => {
-          if (!img.getAttribute('crossorigin')) img.setAttribute('crossorigin', 'anonymous');
-          // If same-origin images have no srcset/sizes issues, this helps prevent tainting
+          if (!img.getAttribute('crossorigin'))
+            img.setAttribute('crossorigin', 'anonymous');
         });
       } catch {}
 
       const initialWidthPx = 760;
       const initialPaddingPx = 40;
       const vw = window.innerWidth || 0;
-      const baseScale = vw <= 480 ? 1.0 : 1.2;
-      const attempts = (isIOS
+      const baseScale = vw <= 480 ? 1.0 : 1.15;
+      const attempts = isIOS
         ? [
-            { scale: baseScale, width: initialWidthPx, pad: initialPaddingPx, timeout: 6500 },
-            { scale: Math.max(0.95, baseScale - 0.1), width: 720, pad: 34, timeout: 6500 },
-            { scale: 0.9, width: 680, pad: 30, timeout: 6500 },
-            { scale: 0.85, width: 640, pad: 26, timeout: 6000 },
-            { scale: 0.8, width: 600, pad: 24, timeout: 5500 },
+            { scale: baseScale, width: initialWidthPx, pad: initialPaddingPx, timeout: 6000 },
+            { scale: Math.max(0.95, baseScale - 0.1), width: 720, pad: 34, timeout: 6000 },
+            { scale: 0.9, width: 680, pad: 30, timeout: 5500 },
+            { scale: 0.85, width: 640, pad: 26, timeout: 5000 },
+            { scale: 0.8, width: 600, pad: 24, timeout: 4800 },
           ]
         : [
             { scale: baseScale, width: initialWidthPx, pad: initialPaddingPx, timeout: 7000 },
-            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 7000 },
+            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 6500 },
             { scale: 1.0, width: 680, pad: 30, timeout: 6500 },
             { scale: 0.9, width: 640, pad: 26, timeout: 6000 },
-          ]);
+          ];
 
-      let canvas = null;
-      for (let i = 0; i < attempts.length && !canvas; i++) {
+      // Page metrics and margins
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const margins = { top: 15, right: 15, bottom: 15, left: 15 };
+      const firstPageContentTop = 30; // below header
+      const contentWidthMm = pageWidth - margins.left - margins.right;
+
+      // We'll try a few scale attempts; for each, render in smaller slices to keep memory bounded
+      let success = false;
+      for (let i = 0; i < attempts.length && !success; i++) {
         const cfg = attempts[i];
         pdfContent.style.width = cfg.width + 'px';
         pdfContent.style.padding = cfg.pad + 'px';
         void pdfContent.offsetHeight; // reflow
-        dlog('Render attempt', i + 1, '/', attempts.length, cfg);
-        canvas = await attemptRenderCanvas(cfg.scale, cfg.timeout);
-        if (!canvas) {
-          dlog('Render attempt failed', i + 1);
-          // Small pause before next attempt
+        dlog('Slice render attempt', i + 1, '/', attempts.length, cfg);
+
+        // Compute px/mm conversion for this width
+        const contentWidthPx = pdfContent.clientWidth || cfg.width;
+        const mmPerPx = contentWidthMm / contentWidthPx;
+        const firstPageContentHeightMm = pageHeight - firstPageContentTop - margins.bottom;
+        const nextPageContentHeightMm = pageHeight - margins.top - margins.bottom;
+        const firstSliceHeightPx = Math.max(200, Math.floor(firstPageContentHeightMm / mmPerPx));
+        const sliceHeightPx = Math.max(200, Math.floor(nextPageContentHeightMm / mmPerPx));
+        const totalHeightPx = Math.max(pdfContent.scrollHeight, firstSliceHeightPx);
+
+        try {
+          // Render first page slice
+          let offsetPx = 0;
+          let pageCount = 0;
+          const renderAndAdd = async (y, h, isFirst) => {
+            const canvas = await attemptRenderSlice({
+              scale: cfg.scale,
+              timeoutMs: cfg.timeout,
+              y,
+              heightPx: h,
+            });
+            if (!canvas) throw new Error('slice-render-failed');
+            try {
+              const drawYmm = isFirst ? firstPageContentTop : margins.top;
+              const sliceHeightMm = h * mmPerPx;
+              // Prefer passing canvas directly if supported; jsPDF handles canvas inputs.
+              doc.addImage(canvas, 'JPEG', margins.left, drawYmm, contentWidthMm, sliceHeightMm);
+            } finally {
+              // Aggressive canvas cleanup to free memory on iOS
+              try { canvas.width = 1; canvas.height = 1; } catch {}
+              try { canvas.remove(); } catch {}
+            }
+          };
+
+          // First page
+          const h0 = Math.min(firstSliceHeightPx, totalHeightPx);
+          await renderAndAdd(offsetPx, h0, true);
+          offsetPx += h0;
+          pageCount++;
+
+          // Remaining pages
+          while (offsetPx < totalHeightPx) {
+            doc.addPage();
+            const remainingPx = totalHeightPx - offsetPx;
+            const h = Math.min(sliceHeightPx, remainingPx);
+            await renderAndAdd(offsetPx, h, false);
+            offsetPx += h;
+            pageCount++;
+          }
+          dlog('Added slice images to PDF', { pages: pageCount, scale: cfg.scale });
+          success = true;
+        } catch (sliceErr) {
+          dlog('Slice attempt failed', sliceErr?.message || sliceErr);
+          // Reset document to a clean state for next attempt
+          try {
+            // Remove all pages but the first (which only has header at this point)
+            const total = doc.getNumberOfPages && doc.getNumberOfPages();
+            if (total && total > 1) {
+              for (let p = total; p > 1; p--) doc.deletePage(p);
+            }
+            // Clear any drawings on page 1 below the header by adding a white rect
+            doc.setFillColor(255, 255, 255);
+            doc.rect(margins.left, firstPageContentTop, contentWidthMm, pageHeight - firstPageContentTop - margins.bottom, 'F');
+          } catch {}
+          // small pause before next attempt
           await new Promise((r) => setTimeout(r, 120));
         }
       }
 
-      // If still no canvas, fallback to text-only transcript
-      if (!canvas) {
-        dlog('Falling back to transcript-only PDF');
+      if (!success) {
+        dlog('All slice attempts failed; falling back to transcript-only PDF');
         addTranscriptToPdf(doc, messageTexts);
-      } else {
-        // Replace the previous single-image + broken multipage block with reliable slicing
-        // Page metrics and margins
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-        const margins = { top: 15, right: 15, bottom: 15, left: 15 };
-
-        // Header is already drawn; reserve extra top space on page 1 so content starts below it
-        const firstPageContentTop = 30; // matches header layout
-        const contentWidthMm = pageWidth - margins.left - margins.right;
-
-        // Canvas dimensions (px)
-        const srcWidthPx = canvas.width;
-        const srcHeightPx = canvas.height;
-
-        // Convert px <-> mm for consistent scaling
-  const mmPerPx = contentWidthMm / srcWidthPx;
-  dlog('Page metrics:', { pageWidth, pageHeight, contentWidthMm, srcWidthPx, srcHeightPx, mmPerPx });
-
-        // Compute how many source pixels fit on a page
-        const firstPageContentHeightMm =
-          pageHeight - firstPageContentTop - margins.bottom;
-        const nextPageContentHeightMm =
-          pageHeight - margins.top - margins.bottom;
-
-        const firstSliceHeightPx = Math.floor(
-          firstPageContentHeightMm / mmPerPx
-        );
-        const sliceHeightPx = Math.floor(nextPageContentHeightMm / mmPerPx);
-
-        // Helper: add a slice of the big canvas as an image to the PDF
-        function addSliceToPdf(srcCanvas, srcY, slicePxHeight, isFirstPage) {
-          const sliceCanvas = document.createElement('canvas');
-          sliceCanvas.width = srcCanvas.width;
-          sliceCanvas.height = slicePxHeight;
-          const ctx = sliceCanvas.getContext('2d');
-          ctx.drawImage(
-            srcCanvas,
-            0,
-            srcY,
-            srcCanvas.width,
-            slicePxHeight, // src crop
-            0,
-            0,
-            sliceCanvas.width,
-            sliceCanvas.height // dst
-          );
-          const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
-
-          const drawYmm = isFirstPage ? firstPageContentTop : margins.top;
-          const sliceHeightMm = slicePxHeight * mmPerPx;
-
-          doc.addImage(
-            imgData,
-            'JPEG',
-            margins.left,
-            drawYmm,
-            contentWidthMm,
-            sliceHeightMm
-          );
-        }
-
-        // Add first page content slice
-        let offsetPx = 0;
-        const firstHeight = Math.min(firstSliceHeightPx, srcHeightPx);
-        addSliceToPdf(canvas, offsetPx, firstHeight, true);
-        offsetPx += firstHeight;
-
-        // Remaining pages
-        let pageCount = 1;
-        while (offsetPx < srcHeightPx) {
-          doc.addPage();
-          const remainingPx = srcHeightPx - offsetPx;
-          const thisSlicePx = Math.min(sliceHeightPx, remainingPx);
-          addSliceToPdf(canvas, offsetPx, thisSlicePx, false);
-          offsetPx += thisSlicePx;
-          pageCount++;
-        }
-        dlog('Added image slices to PDF', { pages: pageCount });
       }
 
       // Create a Blob URL and post a chat message with a text download link (desktop + mobile)
       const date = new Date().toISOString().slice(0, 10);
       const filename = `Chat-Corey-Lawrence-${date}.pdf`;
       try {
-  const blob = doc.output('blob');
+        const blob = doc.output('blob');
         const url = URL.createObjectURL(blob);
-  dlog('PDF blob created; size unknown in browser, URL prepared');
+        dlog('PDF blob created; size unknown in browser, URL prepared');
 
         // Hide typing dots
         hideExportTypingIndicator();
@@ -520,8 +564,11 @@
         const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}">Download PDF</a>`;
         appendChatMessage(linkHtml);
 
-        // Revoke URL shortly after the user clicks; also set a long-timeout safeguard
+        // Revoke URL shortly after the user clicks; also set a shorter safeguard on iOS
         const chat = document.getElementById('chat-messages');
+        const revokeSafely = () => {
+          try { URL.revokeObjectURL(url); } catch {}
+        };
         if (chat) {
           const lastLink = chat.querySelector(
             '.message.ai:last-child .message-content a[href^="blob:"]'
@@ -530,13 +577,13 @@
             lastLink.addEventListener(
               'click',
               () => {
-                setTimeout(() => URL.revokeObjectURL(url), 60_000);
+                setTimeout(revokeSafely, 45_000);
               },
               { once: true }
             );
           }
         }
-        setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+        setTimeout(revokeSafely, isIOS ? 2 * 60 * 1000 : 10 * 60 * 1000);
       } catch (e) {
         // Final fallback: show error in chat
         hideExportTypingIndicator();
@@ -554,7 +601,11 @@
       // Always clean up the offscreen node and any temporary style changes
       try {
         const temp = document.getElementById('pdf-export-content');
-        if (temp && temp.parentNode) temp.parentNode.removeChild(temp);
+        if (temp) {
+          // Force inline styles and children to be GC eligible
+          try { temp.replaceChildren(); } catch {}
+          if (temp.parentNode) temp.parentNode.removeChild(temp);
+        }
         dlog('Cleaned up temporary export DOM');
       } catch {}
       try {
@@ -701,10 +752,13 @@
           text-decoration: underline;
         }
       `;
-      document.head.appendChild(styleTag);
-
-      // Remove the style tag after PDF generation
-      setTimeout(() => styleTag.remove(), 2000);
+      // Prefer scoping styles to the export container to avoid head leaks
+      const styleHost = document.getElementById('pdf-export-content') || document.head;
+      styleHost.appendChild(styleTag);
+      // If we had to append to head (rare), remove it shortly after
+      if (styleHost === document.head) {
+        setTimeout(() => styleTag.remove(), 2000);
+      }
     }
 
     messageBox.appendChild(messageContent);
@@ -804,8 +858,8 @@
 
     // Add click handler
     newButton.addEventListener('click', exportChat);
-  console.log('PDF export initialized with jsPDF implementation');
-  dlog('Init complete; click handler bound');
+    console.log('PDF export initialized with jsPDF implementation');
+    dlog('Init complete; click handler bound');
   }
 
   // Expose a tiny global API so other scripts (chat-interface) can trigger export
@@ -813,20 +867,48 @@
     window.ChatExport = Object.assign({}, window.ChatExport, {
       exportChat,
       isExporting: () => !!exportInProgress,
-  // Debug flag and helpers
-  get debug() { try { return !!window.ChatExport._debug; } catch { return false; } },
-  set debug(v) { try { window.ChatExport._debug = !!v; } catch {} },
-  setDebug: (v) => { try { window.ChatExport._debug = !!v; } catch {} },
+      // Debug flag and helpers
+      get debug() {
+        try {
+          return !!window.ChatExport._debug;
+        } catch {
+          return false;
+        }
+      },
+      set debug(v) {
+        try {
+          window.ChatExport._debug = !!v;
+        } catch {}
+      },
+      setDebug: (v) => {
+        try {
+          window.ChatExport._debug = !!v;
+        } catch {}
+      },
       // Allow overriding source preference at runtime: 'cdn' | 'vendor' | 'local'
       get preferSource() {
-        try { return window.ChatExport && window.ChatExport._preferSource; } catch { return ''; }
+        try {
+          return window.ChatExport && window.ChatExport._preferSource;
+        } catch {
+          return '';
+        }
       },
       set preferSource(val) {
-        try { window.ChatExport._preferSource = String(val || '').toLowerCase(); } catch {}
+        try {
+          window.ChatExport._preferSource = String(val || '').toLowerCase();
+        } catch {}
       },
-      setPreferSource: (val) => { try { window.ChatExport._preferSource = String(val || '').toLowerCase(); } catch {} },
+      setPreferSource: (val) => {
+        try {
+          window.ChatExport._preferSource = String(val || '').toLowerCase();
+        } catch {}
+      },
       getStatus: () => {
-        try { return JSON.parse(JSON.stringify(status)); } catch { return { error: 'unavailable' }; }
+        try {
+          return JSON.parse(JSON.stringify(status));
+        } catch {
+          return { error: 'unavailable' };
+        }
       },
     });
     // Ensure debug logging is ON by default (you can turn off via window.ChatExport.setDebug(false))
