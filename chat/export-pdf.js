@@ -361,8 +361,8 @@
       // Give the browser a beat to layout and load fonts
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
-      // Longer delay for iOS to ensure proper layout
-      const layoutDelay = isIOS ? 500 : 300;
+      // Shorten layout delay for iOS and other platforms
+      const layoutDelay = isIOS ? 300 : 200; // Reduced delay
       await delay(layoutDelay);
 
       if (
@@ -371,14 +371,14 @@
         typeof document.fonts.ready.then === 'function'
       ) {
         dlog('Waiting on fonts.ready with timeout');
-        const fontTimeout = isIOS ? 1000 : 1000; // Adjusted timeout to 1000ms for both cases
+        const fontTimeout = 500; // Further reduced timeout to 500ms
         await Promise.race([document.fonts.ready, delay(fontTimeout)]);
       }
       void pdfContent.offsetHeight; // reflow
 
       // Additional iOS stabilization delay
       if (isIOS) {
-        await delay(200);
+        await delay(100); // Reduced delay
       }
 
       // Platform tuning with iOS memory optimization
@@ -674,8 +674,8 @@
             );
           } catch {}
 
-          // Longer recovery delay for iOS
-          const recoveryDelay = isIOS ? 300 : 120;
+          // Reduce recovery delay after slice attempt failures
+          const recoveryDelay = isIOS ? 150 : 80; // Shortened recovery delay
           await new Promise((r) => setTimeout(r, recoveryDelay));
         }
       }
