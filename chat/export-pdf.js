@@ -821,6 +821,10 @@
         try { return JSON.parse(JSON.stringify(status)); } catch { return { error: 'unavailable' }; }
       },
     });
+    // Ensure debug logging is ON by default (you can turn off via window.ChatExport.setDebug(false))
+    if (typeof window.ChatExport._debug === 'undefined') {
+      window.ChatExport._debug = true;
+    }
   } catch {}
 
   // Run initialization when DOM is ready
