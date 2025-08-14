@@ -268,7 +268,7 @@
       pdfContent.style.color = '#333';
       pdfContent.style.display = 'flex';
       pdfContent.style.flexDirection = 'column';
-      
+
       // iOS-specific optimizations
       if (isIOS) {
         pdfContent.style.webkitBackfaceVisibility = 'hidden';
@@ -309,7 +309,9 @@
         #pdf-export-content li { margin-bottom: 6px; }
         #pdf-export-content p { margin: 0 0 10px 0; }
         #pdf-export-content a { color: #0366d6; text-decoration: underline; }
-        ${isIOS ? `
+        ${
+          isIOS
+            ? `
         #pdf-export-content * {
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
@@ -321,7 +323,9 @@
           max-width: 100%;
           height: auto;
         }
-        ` : ''}
+        `
+            : ''
+        }
       `;
       pdfContent.appendChild(globalStyle);
 
@@ -356,22 +360,22 @@
 
       // Give the browser a beat to layout and load fonts
       const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-      
+
       // Longer delay for iOS to ensure proper layout
       const layoutDelay = isIOS ? 500 : 300;
       await delay(layoutDelay);
-      
+
       if (
         document.fonts &&
         document.fonts.ready &&
         typeof document.fonts.ready.then === 'function'
       ) {
         dlog('Waiting on fonts.ready with timeout');
-        const fontTimeout = isIOS ? 2000 : 1200;
+        const fontTimeout = isIOS ? 1000 : 1000; // Adjusted timeout to 1000ms for both cases
         await Promise.race([document.fonts.ready, delay(fontTimeout)]);
       }
       void pdfContent.offsetHeight; // reflow
-      
+
       // Additional iOS stabilization delay
       if (isIOS) {
         await delay(200);
@@ -379,15 +383,19 @@
 
       // Platform tuning with iOS memory optimization
       const vw = window.innerWidth || 0;
-      
+
       // Detect device memory constraints
       const deviceMemory = navigator.deviceMemory || 4; // Default to 4GB if unknown
       const isLowMemory = deviceMemory <= 2 || isIOS;
-      
+
       // More aggressive scaling for iOS to reduce memory pressure
-      const baseScale = isIOS 
-        ? (vw <= 480 ? 0.8 : 0.9) 
-        : (vw <= 480 ? 1.0 : 1.15);
+      const baseScale = isIOS
+        ? vw <= 480
+          ? 0.8
+          : 0.9
+        : vw <= 480
+        ? 1.0
+        : 1.15;
 
       // Mark all imgs CORS safe to reduce taint risk
       try {
@@ -399,17 +407,71 @@
 
       const attempts = isIOS
         ? [
-            { scale: 0.75, width: 600, pad: 24, timeout: 8000, maxSliceHeight: 800 },
-            { scale: 0.7, width: 580, pad: 22, timeout: 8000, maxSliceHeight: 700 },
-            { scale: 0.65, width: 560, pad: 20, timeout: 7500, maxSliceHeight: 600 },
-            { scale: 0.6, width: 540, pad: 18, timeout: 7000, maxSliceHeight: 500 },
-            { scale: 0.55, width: 520, pad: 16, timeout: 6500, maxSliceHeight: 400 },
+            {
+              scale: 0.75,
+              width: 600,
+              pad: 24,
+              timeout: 8000,
+              maxSliceHeight: 800,
+            },
+            {
+              scale: 0.7,
+              width: 580,
+              pad: 22,
+              timeout: 8000,
+              maxSliceHeight: 700,
+            },
+            {
+              scale: 0.65,
+              width: 560,
+              pad: 20,
+              timeout: 7500,
+              maxSliceHeight: 600,
+            },
+            {
+              scale: 0.6,
+              width: 540,
+              pad: 18,
+              timeout: 7000,
+              maxSliceHeight: 500,
+            },
+            {
+              scale: 0.55,
+              width: 520,
+              pad: 16,
+              timeout: 6500,
+              maxSliceHeight: 400,
+            },
           ]
         : [
-            { scale: baseScale, width: 760, pad: 40, timeout: 7000, maxSliceHeight: 1200 },
-            { scale: baseScale - 0.1, width: 720, pad: 34, timeout: 6500, maxSliceHeight: 1100 },
-            { scale: 1.0, width: 680, pad: 30, timeout: 6500, maxSliceHeight: 1000 },
-            { scale: 0.9, width: 640, pad: 26, timeout: 6000, maxSliceHeight: 900 },
+            {
+              scale: baseScale,
+              width: 760,
+              pad: 40,
+              timeout: 7000,
+              maxSliceHeight: 1200,
+            },
+            {
+              scale: baseScale - 0.1,
+              width: 720,
+              pad: 34,
+              timeout: 6500,
+              maxSliceHeight: 1100,
+            },
+            {
+              scale: 1.0,
+              width: 680,
+              pad: 30,
+              timeout: 6500,
+              maxSliceHeight: 1000,
+            },
+            {
+              scale: 0.9,
+              width: 640,
+              pad: 26,
+              timeout: 6000,
+              maxSliceHeight: 900,
+            },
           ];
 
       // Page metrics
@@ -422,16 +484,16 @@
       async function attemptRenderSlice({ scale, timeoutMs, y, heightPx }) {
         try {
           const widthPx = pdfContent.clientWidth;
-          
+
           // Force garbage collection on iOS before rendering
           if (isIOS && window.gc) {
             try {
               window.gc();
             } catch {}
           }
-          
+
           dtimeStart(`render-slice:${y}:${heightPx}:s${scale}`);
-          
+
           // iOS-specific canvas options for better compatibility
           const canvasOptions = {
             scale,
@@ -451,15 +513,18 @@
             allowTaint: false,
             foreignObjectRendering: false,
             imageTimeout: isIOS ? 5000 : 15000,
-            onclone: isIOS ? (clonedDoc) => {
-              // Remove heavy elements that might cause issues on iOS
-              try {
-                const videos = clonedDoc.querySelectorAll('video, iframe, embed, object');
-                videos.forEach(v => v.remove());
-                
-                // Simplify complex CSS that might cause rendering issues
-                const style = clonedDoc.createElement('style');
-                style.textContent = `
+            onclone: isIOS
+              ? (clonedDoc) => {
+                  // Remove heavy elements that might cause issues on iOS
+                  try {
+                    const videos = clonedDoc.querySelectorAll(
+                      'video, iframe, embed, object'
+                    );
+                    videos.forEach((v) => v.remove());
+
+                    // Simplify complex CSS that might cause rendering issues
+                    const style = clonedDoc.createElement('style');
+                    style.textContent = `
                   * { 
                     box-shadow: none !important; 
                     text-shadow: none !important;
@@ -467,12 +532,13 @@
                     backdrop-filter: none !important;
                   }
                 `;
-                clonedDoc.head.appendChild(style);
-              } catch {}
-              return clonedDoc;
-            } : undefined,
+                    clonedDoc.head.appendChild(style);
+                  } catch {}
+                  return clonedDoc;
+                }
+              : undefined,
           };
-          
+
           const renderPromise = html2canvas(pdfContent, canvasOptions);
           const canvas = await Promise.race([
             renderPromise,
@@ -502,7 +568,7 @@
           pageHeight - firstPageContentTop - margins.bottom;
         const nextPageContentHeightMm =
           pageHeight - margins.top - margins.bottom;
-        
+
         // iOS-specific slice height limits to prevent memory issues
         const maxSliceHeightPx = cfg.maxSliceHeight || 1000;
         const firstSliceHeightPx = Math.min(
@@ -529,7 +595,7 @@
           try {
             const drawYmm = isFirst ? firstPageContentTop : margins.top;
             const sliceHeightMm = h * mmPerPx;
-            
+
             // Convert canvas to JPEG with quality optimization for iOS
             const quality = isIOS ? 0.8 : 0.92;
             doc.addImage(
@@ -557,12 +623,14 @@
             try {
               canvas.remove();
             } catch {}
-            
+
             // Force cleanup on iOS
             if (isIOS) {
               setTimeout(() => {
                 if (window.gc) {
-                  try { window.gc(); } catch {}
+                  try {
+                    window.gc();
+                  } catch {}
                 }
               }, 100);
             }
@@ -581,7 +649,7 @@
             const h = Math.min(sliceHeightPx, remainingPx);
             await renderAndAdd(offsetPx, h, false);
             offsetPx += h;
-            
+
             // iOS memory management: small delay between slices
             if (isIOS && offsetPx < totalHeightPx) {
               await delay(150);
@@ -605,7 +673,7 @@
               'F'
             );
           } catch {}
-          
+
           // Longer recovery delay for iOS
           const recoveryDelay = isIOS ? 300 : 120;
           await new Promise((r) => setTimeout(r, recoveryDelay));
@@ -687,25 +755,29 @@
     const margin = 15;
     const maxWidth = pageWidth - margin * 2;
     const lineHeight = 6;
-    let cursorY = 30;
+    let cursorY = 40; // Moved down to avoid overlapping the separator
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
 
     function drawLines(text, isUser) {
+      const xOffset = isUser ? pageWidth * 0.5 : margin; // Left-indent user messages by 50% of the page width
       doc.setFont('helvetica', isUser ? 'bold' : 'normal');
       doc.setFontSize(11);
       doc.setTextColor(isUser ? 10 : 30, isUser ? 102 : 30, isUser ? 194 : 30);
-      const lines = doc.splitTextToSize(text, maxWidth);
+      const lines = doc.splitTextToSize(
+        text,
+        maxWidth - (isUser ? xOffset - margin : 0)
+      );
       for (const ln of lines) {
         if (cursorY + lineHeight > pageHeight - margin) {
           doc.addPage();
           doc.setDrawColor(200, 200, 200);
           doc.line(15, 28, pageWidth - 15, 28);
-          cursorY = 30;
+          cursorY = 40; // Reset cursorY for the new page
         }
-        doc.text(ln, margin, cursorY);
+        doc.text(ln, xOffset, cursorY);
         cursorY += lineHeight;
       }
       cursorY += 2;
