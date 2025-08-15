@@ -148,7 +148,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (display) addMessage('user', display);
 
     showTypingIndicator();
-    generateGeminiResponse(prompt);
+    // Generate response with internal prompt but store only the display text in history
+    generateGeminiResponse(prompt, display);
   }
 
   function handleSendMessage() {
@@ -169,7 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     generateGeminiResponse(message);
   }
 
-  async function generateGeminiResponse(question) {
+  async function generateGeminiResponse(question, userDisplayText = null) {
     try {
       const API_KEY = 'AIzaSyDZdLgX_XQP6jaN7eCprfJx15GGt2nYD4k';
       const MODEL_ID = 'gemini-2.0-flash';
@@ -452,12 +453,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (shouldAutoScroll) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
-      history.push({ role: 'user', text: question });
+      
+      // Use the display text for history storage (simple button text) instead of internal prompt
+      const textToStore = userDisplayText || question;
+      history.push({ role: 'user', text: textToStore });
       // Persist only the visible text (without hidden tokens)
       history.push({ role: 'model', text: visibleText });
       
       // Store enhanced history with markdown for PDF export
-      enhancedHistory.push({ role: 'user', text: question });
+      enhancedHistory.push({ role: 'user', text: textToStore });
       enhancedHistory.push({ role: 'model', text: visibleText, markdown: visibleText });
       
       // Expose enhanced history for PDF export
