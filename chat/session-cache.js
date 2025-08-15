@@ -109,7 +109,7 @@
           console.warn('Failed to get cached history:', e);
           return [];
         }
-      }
+      },
     };
   }
 

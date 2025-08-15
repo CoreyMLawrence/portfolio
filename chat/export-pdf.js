@@ -103,7 +103,7 @@
       librariesLoaded = true;
       return true;
     } catch (error) {
-      console.error('Failed to load PDF library:', error);
+  console.error('Failed to load PDF library:', error);
       status.jspdf.error = status.jspdf.error || error;
       return false;
     }
@@ -361,7 +361,7 @@
       // Get the cached history with markdown - this is the single source of truth
       if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
         const cachedHistory = window.ChatSessionCache.getCachedHistory();
-        console.log('PDF Export: Using cached history as single source of truth:', cachedHistory.length, 'messages');
+  // ...removed console.log...
         
         transcript = cachedHistory.map(item => ({
           role: item.role === 'model' ? 'ai' : item.role,
@@ -371,12 +371,12 @@
         
         // Log markdown content for debugging
         const aiMessages = transcript.filter(t => t.role === 'ai');
-        console.log('PDF Export: AI messages with markdown:', aiMessages.length);
+  // ...removed console.log...
         if (aiMessages.length > 0) {
-          console.log('PDF Export: Sample markdown:', aiMessages[0].markdown?.substring(0, 100) + '...');
+          // ...removed console.log...
         }
       } else {
-        console.error('PDF Export: ChatSessionCache not available - cannot export without cached data');
+  console.error('PDF Export: ChatSessionCache not available - cannot export without cached data');
         throw new Error('Session cache not available. Please refresh and try again.');
       }
 
@@ -634,7 +634,7 @@
         appendChatMessage('PDF export failed. Please try again.');
       }
 
-      console.log('PDF export completed successfully');
+  // ...removed console.log...
     } catch (error) {
       console.error('PDF export failed:', error);
       hideExportTypingIndicator();
@@ -728,7 +728,7 @@
   function init() {
     const exportButton = document.getElementById('download-pdf-btn');
     if (!exportButton) {
-      console.warn('PDF export button not found');
+    console.warn('PDF export button not found');
       return;
     }
     // Replace button to remove any existing listeners
@@ -738,7 +738,7 @@
     }
     // Add click handler
     newButton.addEventListener('click', exportChat);
-    console.log('PDF export initialized with jsPDF vector implementation');
+  // ...removed console.log...
   }
 
   // Expose a tiny global API so other scripts can trigger export
@@ -755,36 +755,36 @@
       },
       // Debug function to test bold rendering and session cache
       testBoldRendering: () => {
-        console.log('=== PDF Export Debug Test ===');
+  // ...removed console.log...
         
         // Test basic markdown parsing
         const testText = 'This is **bold text** and this is normal text with **more bold**.';
-        console.log('Test text:', testText);
-        console.log('Bold markers detected:', testText.includes('**'));
+  // ...removed console.log...
+  // ...removed console.log...
         
         // Test the parsing
         const elements = parseMarkdownForPdf(testText);
-        console.log('Parsed elements:', elements);
+  // ...removed console.log...
         
         // Test session cache (primary source)
         if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
           const cachedHistory = window.ChatSessionCache.getCachedHistory();
-          console.log('Session cache history length:', cachedHistory.length);
+          // ...removed console.log...
           
           if (cachedHistory.length > 0) {
             const lastItem = cachedHistory[cachedHistory.length - 1];
-            console.log('Last cached item:', lastItem);
+            // ...removed console.log...
             if (lastItem.markdown) {
-              console.log('Last cached markdown:', lastItem.markdown.substring(0, 100) + '...');
+              // ...removed console.log...
             }
           }
           
           // Show AI messages with markdown
           const aiMessages = cachedHistory.filter(item => item.role === 'model');
-          console.log('AI messages in cache:', aiMessages.length);
+          // ...removed console.log...
           aiMessages.forEach((msg, i) => {
             if (msg.markdown && msg.markdown.includes('**')) {
-              console.log(`AI message ${i + 1} has bold text:`, msg.markdown.substring(0, 50) + '...');
+              // ...removed console.log...
             }
           });
         } else {
