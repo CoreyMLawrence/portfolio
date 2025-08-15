@@ -2,7 +2,7 @@
  * Chat PDF Export (Vector) - Uses jsPDF only, no html2canvas
  * Required library:
  * - jsPDF UMD (https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js)
- * 
+ *
  * Enhanced with markdown support for AI messages
  */
 
@@ -103,7 +103,7 @@
       librariesLoaded = true;
       return true;
     } catch (error) {
-  console.error('Failed to load PDF library:', error);
+      console.error('Failed to load PDF library:', error);
       status.jspdf.error = status.jspdf.error || error;
       return false;
     }
@@ -112,15 +112,15 @@
   // Markdown parsing utilities for PDF export
   function parseMarkdownForPdf(markdown) {
     if (!markdown) return [];
-    
+
     const lines = markdown.split('\n');
     const elements = [];
     let currentList = null;
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmedLine = line.trim();
-      
+
       if (!trimmedLine) {
         // Empty line - close current list if any and add spacing
         if (currentList) {
@@ -130,26 +130,41 @@
         elements.push({ type: 'spacing', height: 3 });
         continue;
       }
-      
+
       // Headers (with proper spacing)
       if (trimmedLine.startsWith('### ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header3', text: trimmedLine.substring(4), style: 'bold', fontSize: 12 });
+        elements.push({
+          type: 'header3',
+          text: trimmedLine.substring(4),
+          style: 'bold',
+          fontSize: 12,
+        });
       } else if (trimmedLine.startsWith('## ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header2', text: trimmedLine.substring(3), style: 'bold', fontSize: 13 });
+        elements.push({
+          type: 'header2',
+          text: trimmedLine.substring(3),
+          style: 'bold',
+          fontSize: 13,
+        });
       } else if (trimmedLine.startsWith('# ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header1', text: trimmedLine.substring(2), style: 'bold', fontSize: 14 });
+        elements.push({
+          type: 'header1',
+          text: trimmedLine.substring(2),
+          style: 'bold',
+          fontSize: 14,
+        });
       }
       // Lists with better nesting support
       else if (trimmedLine.match(/^[-*+]\s+/)) {
@@ -200,37 +215,44 @@
         elements.push({ type: 'paragraph', text: trimmedLine });
       }
     }
-    
+
     // Close any remaining list
     if (currentList) {
       elements.push(currentList);
     }
-    
+
     return elements;
   }
 
-  function renderMarkdownText(doc, text, x, maxWidth, style = 'normal', fontSize = 11) {
+  function renderMarkdownText(
+    doc,
+    text,
+    x,
+    maxWidth,
+    style = 'normal',
+    fontSize = 11
+  ) {
     doc.setFont('helvetica', style);
     doc.setFontSize(fontSize);
-    
+
     if (!text.includes('**')) {
       return doc.splitTextToSize(text, maxWidth);
     }
-    
+
     // For text with bold, just split into lines and preserve ** markers for later processing
     const words = text.split(' ');
     const lines = [];
     let currentLine = '';
-    
+
     for (const word of words) {
       const testLine = currentLine ? currentLine + ' ' + word : word;
-      
+
       // Calculate width by temporarily removing ** markers for measurement
       const measureText = testLine.replace(/\*\*/g, '');
       doc.setFont('helvetica', 'normal');
       const normalWidth = doc.getTextWidth(measureText);
       doc.setFont('helvetica', style);
-      
+
       if (normalWidth > maxWidth && currentLine) {
         lines.push(currentLine);
         currentLine = word;
@@ -238,11 +260,11 @@
         currentLine = testLine;
       }
     }
-    
+
     if (currentLine) {
       lines.push(currentLine);
     }
-    
+
     return lines;
   }
 
@@ -357,27 +379,32 @@
 
       // Read transcript directly from session cache (same source as chat display)
       let transcript = [];
-      
+
       // Get the cached history with markdown - this is the single source of truth
-      if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
+      if (
+        window.ChatSessionCache &&
+        typeof window.ChatSessionCache.getCachedHistory === 'function'
+      ) {
         const cachedHistory = window.ChatSessionCache.getCachedHistory();
-  // ...removed console.log...
-        
-        transcript = cachedHistory.map(item => ({
+
+        transcript = cachedHistory.map((item) => ({
           role: item.role === 'model' ? 'ai' : item.role,
           text: item.text,
-          markdown: item.markdown || item.text
+          markdown: item.markdown || item.text,
         }));
-        
+
         // Log markdown content for debugging
-        const aiMessages = transcript.filter(t => t.role === 'ai');
-  // ...removed console.log...
+        const aiMessages = transcript.filter((t) => t.role === 'ai');
+
         if (aiMessages.length > 0) {
-          // ...removed console.log...
         }
       } else {
-  console.error('PDF Export: ChatSessionCache not available - cannot export without cached data');
-        throw new Error('Session cache not available. Please refresh and try again.');
+        console.error(
+          'PDF Export: ChatSessionCache not available - cannot export without cached data'
+        );
+        throw new Error(
+          'Session cache not available. Please refresh and try again.'
+        );
       }
 
       // Helpers
@@ -455,13 +482,13 @@
 
       function drawAiBlock(text, markdown) {
         if (!text && !markdown) return;
-        
+
         const contentToRender = markdown || text;
         const maxWidth = pageW - margin.left - margin.right;
-        
+
         // Parse markdown into structured elements
         const elements = parseMarkdownForPdf(contentToRender);
-        
+
         for (const element of elements) {
           switch (element.type) {
             case 'header1':
@@ -474,60 +501,71 @@
               doc.text(element.text, margin.left, cursorY);
               cursorY += (element.fontSize || ai.fontSize) * 1.5 + 4; // More spacing after headers
               break;
-              
+
             case 'list':
             case 'orderedList':
               // Add spacing before list
               cursorY += 3;
-              
+
               for (let i = 0; i < element.items.length; i++) {
                 const item = element.items[i];
-                const indent = margin.left + (item.level * 10); // Increased indent
+                const indent = margin.left + item.level * 10; // Increased indent
                 const bulletWidth = element.type === 'orderedList' ? 12 : 8; // More space for bullets
-                const textMaxWidth = maxWidth - (item.level * 10) - bulletWidth;
-                
+                const textMaxWidth = maxWidth - item.level * 10 - bulletWidth;
+
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(ai.fontSize);
                 doc.setTextColor(ai.textR, ai.textG, ai.textB);
-                
-                const lines = renderMarkdownText(doc, item.text, indent + bulletWidth, textMaxWidth);
+
+                const lines = renderMarkdownText(
+                  doc,
+                  item.text,
+                  indent + bulletWidth,
+                  textMaxWidth
+                );
                 const blockHeight = lines.length * ai.lineH + 1; // Add small spacing between items
-                
+
                 addPageIfNeeded(blockHeight);
-                
+
                 // Draw bullet/number
-                const bullet = element.type === 'orderedList' ? `${i + 1}.` : '•';
+                const bullet =
+                  element.type === 'orderedList' ? `${i + 1}.` : '•';
                 doc.text(bullet, indent, cursorY);
-                
+
                 // Draw text lines with proper formatting
                 let lineY = cursorY;
                 for (const line of lines) {
                   renderFormattedLine(doc, line, indent + bulletWidth, lineY);
                   lineY += ai.lineH;
                 }
-                
+
                 cursorY = lineY + 1; // Small spacing between list items
               }
               cursorY += 5; // More spacing after list
               break;
-              
+
             case 'paragraph':
               doc.setFont('helvetica', 'normal');
               doc.setFontSize(ai.fontSize);
               doc.setTextColor(ai.textR, ai.textG, ai.textB);
-              
-              const lines = renderMarkdownText(doc, element.text, margin.left, maxWidth);
+
+              const lines = renderMarkdownText(
+                doc,
+                element.text,
+                margin.left,
+                maxWidth
+              );
               const blockHeight = lines.length * ai.lineH + 4;
-              
+
               addPageIfNeeded(blockHeight);
-              
+
               for (const line of lines) {
                 renderFormattedLine(doc, line, margin.left, cursorY);
                 cursorY += ai.lineH;
               }
               cursorY += 4; // More spacing after paragraph
               break;
-              
+
             case 'spacing':
               cursorY += element.height || 4; // Increased default spacing
               break;
@@ -541,13 +579,13 @@
           doc.text(text, x, y);
           return;
         }
-        
+
         const parts = text.split(/(\*\*[^*]+\*\*)/);
         let currentX = x;
-        
+
         for (const part of parts) {
           if (!part) continue;
-          
+
           if (part.startsWith('**') && part.endsWith('**')) {
             // Bold text
             const boldText = part.slice(2, -2);
@@ -608,33 +646,33 @@
         const blob = doc.output('blob');
         const url = URL.createObjectURL(blob);
 
-        hideExportTypingIndicator();
+        // Show loading bubble for 1000ms before displaying the link
+        setTimeout(() => {
+          hideExportTypingIndicator();
+          const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}">Download PDF</a>`;
+          appendChatMessage(linkHtml);
 
-        const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}">Download PDF</a>`;
-        appendChatMessage(linkHtml);
-
-        const chat = document.getElementById('chat-messages');
-        if (chat) {
-          const lastLink = chat.querySelector(
-            '.message.ai:last-child .message-content a[href^="blob:"]'
-          );
-          if (lastLink) {
-            lastLink.addEventListener(
-              'click',
-              () => {
-                setTimeout(() => URL.revokeObjectURL(url), 60_000);
-              },
-              { once: true }
+          const chat = document.getElementById('chat-messages');
+          if (chat) {
+            const lastLink = chat.querySelector(
+              '.message.ai:last-child .message-content a[href^="blob:"]'
             );
+            if (lastLink) {
+              lastLink.addEventListener(
+                'click',
+                () => {
+                  setTimeout(() => URL.revokeObjectURL(url), 60_000);
+                },
+                { once: true }
+              );
+            }
           }
-        }
-        setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+          setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
+        }, 1000);
       } catch (e) {
         hideExportTypingIndicator();
         appendChatMessage('PDF export failed. Please try again.');
       }
-
-  // ...removed console.log...
     } catch (error) {
       console.error('PDF export failed:', error);
       hideExportTypingIndicator();
@@ -728,7 +766,7 @@
   function init() {
     const exportButton = document.getElementById('download-pdf-btn');
     if (!exportButton) {
-    console.warn('PDF export button not found');
+      console.warn('PDF export button not found');
       return;
     }
     // Replace button to remove any existing listeners
@@ -738,7 +776,6 @@
     }
     // Add click handler
     newButton.addEventListener('click', exportChat);
-  // ...removed console.log...
   }
 
   // Expose a tiny global API so other scripts can trigger export
@@ -755,49 +792,49 @@
       },
       // Debug function to test bold rendering and session cache
       testBoldRendering: () => {
-  // ...removed console.log...
-        
         // Test basic markdown parsing
-        const testText = 'This is **bold text** and this is normal text with **more bold**.';
-  // ...removed console.log...
-  // ...removed console.log...
-        
+        const testText =
+          'This is **bold text** and this is normal text with **more bold**.';
+
         // Test the parsing
         const elements = parseMarkdownForPdf(testText);
-  // ...removed console.log...
-        
+
         // Test session cache (primary source)
-        if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
+        if (
+          window.ChatSessionCache &&
+          typeof window.ChatSessionCache.getCachedHistory === 'function'
+        ) {
           const cachedHistory = window.ChatSessionCache.getCachedHistory();
-          // ...removed console.log...
-          
+
           if (cachedHistory.length > 0) {
             const lastItem = cachedHistory[cachedHistory.length - 1];
-            // ...removed console.log...
+
             if (lastItem.markdown) {
-              // ...removed console.log...
             }
           }
-          
+
           // Show AI messages with markdown
-          const aiMessages = cachedHistory.filter(item => item.role === 'model');
-          // ...removed console.log...
+          const aiMessages = cachedHistory.filter(
+            (item) => item.role === 'model'
+          );
+
           aiMessages.forEach((msg, i) => {
             if (msg.markdown && msg.markdown.includes('**')) {
-              // ...removed console.log...
             }
           });
         } else {
           console.error('Session cache not available!');
         }
-        
-        return { 
-          testText, 
-          elements, 
+
+        return {
+          testText,
+          elements,
           hasBold: testText.includes('**'),
-          cacheAvailable: !!(window.ChatSessionCache && window.ChatSessionCache.getCachedHistory)
+          cacheAvailable: !!(
+            window.ChatSessionCache && window.ChatSessionCache.getCachedHistory
+          ),
         };
-      }
+      },
     });
   } catch {}
 
