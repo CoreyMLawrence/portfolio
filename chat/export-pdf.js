@@ -668,7 +668,7 @@
             }
           }
           setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
-        }, 1000);
+        }, 700);
       } catch (e) {
         hideExportTypingIndicator();
         appendChatMessage('PDF export failed. Please try again.');

@@ -13,7 +13,7 @@
   --border-medium: rgba(0, 0, 0, 0.12);
 
   /* Shadows */
-  --shadow-sidebar: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-sidebar: 0 4px 20px rgba(0, 0, 0, 0.1);
   --shadow-container: 0 2px 16px rgba(0, 0, 0, 0.06);
 
   /* Border radius */
@@ -793,9 +793,10 @@ body {
     left: var(--space-sm);
     bottom: var(--space-sm);
     width: min(78vw, 320px);
-    height: auto;
     margin: 0;
+    height: 97.9%;
     transform: translateX(-110%);
+    margin-top: -6px;
     transition: transform 0.3s ease;
     z-index: 1100; /* above chat content while open */
   }
