@@ -217,69 +217,30 @@
       return doc.splitTextToSize(text, maxWidth);
     }
     
-    // Handle bold text inline - return array of objects with text and formatting info
-    const parts = text.split(/(\*\*[^*]+\*\*)/);
+    // For text with bold, just split into lines and preserve ** markers for later processing
+    const words = text.split(' ');
     const lines = [];
     let currentLine = '';
-    let currentWidth = 0;
-    let currentFormats = []; // Track bold segments in current line
     
-    for (const part of parts) {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        const boldText = part.slice(2, -2);
-        doc.setFont('helvetica', 'bold');
-        const boldWidth = doc.getTextWidth(boldText);
-        doc.setFont('helvetica', style);
-        
-        if (currentWidth + boldWidth > maxWidth && currentLine) {
-          lines.push({ 
-            text: currentLine.trim(), 
-            formats: currentFormats,
-            hasBold: currentFormats.some(f => f.bold)
-          });
-          currentLine = boldText;
-          currentWidth = boldWidth;
-          currentFormats = [{ text: boldText, bold: true, start: 0 }];
-        } else {
-          const start = currentLine.length;
-          currentLine += boldText;
-          currentWidth += boldWidth;
-          currentFormats.push({ text: boldText, bold: true, start });
-        }
+    for (const word of words) {
+      const testLine = currentLine ? currentLine + ' ' + word : word;
+      
+      // Calculate width by temporarily removing ** markers for measurement
+      const measureText = testLine.replace(/\*\*/g, '');
+      doc.setFont('helvetica', 'normal');
+      const normalWidth = doc.getTextWidth(measureText);
+      doc.setFont('helvetica', style);
+      
+      if (normalWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
       } else {
-        const words = part.split(' ');
-        for (const word of words) {
-          if (!word) continue;
-          const wordText = word + ' ';
-          const wordWidth = doc.getTextWidth(wordText);
-          
-          if (currentWidth + wordWidth > maxWidth && currentLine) {
-            lines.push({ 
-              text: currentLine.trim(), 
-              formats: currentFormats,
-              hasBold: currentFormats.some(f => f.bold)
-            });
-            currentLine = wordText;
-            currentWidth = wordWidth;
-            currentFormats = word ? [{ text: wordText, bold: false, start: 0 }] : [];
-          } else {
-            const start = currentLine.length;
-            currentLine += wordText;
-            currentWidth += wordWidth;
-            if (word) {
-              currentFormats.push({ text: wordText, bold: false, start });
-            }
-          }
-        }
+        currentLine = testLine;
       }
     }
     
-    if (currentLine.trim()) {
-      lines.push({ 
-        text: currentLine.trim(), 
-        formats: currentFormats,
-        hasBold: currentFormats.some(f => f.bold)
-      });
+    if (currentLine) {
+      lines.push(currentLine);
     }
     
     return lines;
@@ -550,16 +511,7 @@
                 // Draw text lines with proper formatting
                 let lineY = cursorY;
                 for (const line of lines) {
-                  if (typeof line === 'object' && line.hasBold) {
-                    renderFormattedLine(doc, line, indent + bulletWidth, lineY);
-                  } else {
-                    const lineText = typeof line === 'string' ? line : line.text;
-                    if (lineText.includes('**')) {
-                      renderBoldText(doc, lineText, indent + bulletWidth, lineY);
-                    } else {
-                      doc.text(lineText, indent + bulletWidth, lineY);
-                    }
-                  }
+                  renderFormattedLine(doc, line, indent + bulletWidth, lineY);
                   lineY += ai.lineH;
                 }
                 
@@ -579,16 +531,7 @@
               addPageIfNeeded(blockHeight);
               
               for (const line of lines) {
-                if (typeof line === 'object' && line.hasBold) {
-                  renderFormattedLine(doc, line, margin.left, cursorY);
-                } else {
-                  const lineText = typeof line === 'string' ? line : line.text;
-                  if (element.hasBold && lineText.includes('**')) {
-                    renderBoldText(doc, lineText, margin.left, cursorY);
-                  } else {
-                    doc.text(lineText, margin.left, cursorY);
-                  }
-                }
+                renderFormattedLine(doc, line, margin.left, cursorY);
                 cursorY += ai.lineH;
               }
               cursorY += 4; // More spacing after paragraph
@@ -603,16 +546,25 @@
 
       function renderBoldText(doc, text, x, y) {
         // Handle mixed bold/normal text with proper spacing and font switching
+        if (!text.includes('**')) {
+          doc.text(text, x, y);
+          return;
+        }
+        
         const parts = text.split(/(\*\*[^*]+\*\*)/);
         let currentX = x;
         
         for (const part of parts) {
+          if (!part) continue;
+          
           if (part.startsWith('**') && part.endsWith('**')) {
-            doc.setFont('helvetica', 'bold');
+            // Bold text
             const boldText = part.slice(2, -2);
+            doc.setFont('helvetica', 'bold');
             doc.text(boldText, currentX, y);
             currentX += doc.getTextWidth(boldText);
           } else if (part.trim()) {
+            // Normal text
             doc.setFont('helvetica', 'normal');
             doc.text(part, currentX, y);
             currentX += doc.getTextWidth(part);
@@ -623,21 +575,22 @@
       }
 
       // Enhanced function to render text with mixed formatting
-      function renderFormattedLine(doc, lineObj, x, y) {
-        if (typeof lineObj === 'string') {
-          // Simple string, no formatting
-          doc.text(lineObj, x, y);
-          return;
+      function renderFormattedLine(doc, line, x, y) {
+        if (typeof line === 'string') {
+          if (line.includes('**')) {
+            renderBoldText(doc, line, x, y);
+          } else {
+            doc.text(line, x, y);
+          }
+        } else {
+          // Legacy support for line objects
+          const text = line.text || line;
+          if (text.includes('**')) {
+            renderBoldText(doc, text, x, y);
+          } else {
+            doc.text(text, x, y);
+          }
         }
-        
-        if (!lineObj.hasBold) {
-          // No bold text, render normally
-          doc.text(lineObj.text, x, y);
-          return;
-        }
-        
-        // Render line with mixed formatting
-        renderBoldText(doc, lineObj.text, x, y);
       }
 
       if (transcript.length === 0) {
@@ -809,6 +762,19 @@
           return { error: 'unavailable' };
         }
       },
+      // Debug function to test bold rendering
+      testBoldRendering: () => {
+        console.log('Testing bold text rendering...');
+        const testText = 'This is **bold text** and this is normal text with **more bold**.';
+        console.log('Test text:', testText);
+        console.log('Bold markers detected:', testText.includes('**'));
+        
+        // Test the parsing
+        const elements = parseMarkdownForPdf(testText);
+        console.log('Parsed elements:', elements);
+        
+        return { testText, elements, hasBold: testText.includes('**') };
+      }
     });
   } catch {}
 
