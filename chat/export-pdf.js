@@ -1,47 +1,39 @@
 /**
- * Chat PDF Export - Uses jsPDF and html2canvas for reliable PDF generation
- * Required libraries:
- * - jspdf (https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js)
- * - html2canvas (https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js)
+ * Chat PDF Export (Vector) - Uses jsPDF only, no html2canvas
+ * Required library:
+ * - jsPDF UMD (https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js)
  */
 
 (function () {
   // Track if export is in progress to prevent multiple simultaneous exports
   let exportInProgress = false;
   let librariesLoaded = false;
+
   // Status flags for reachability and source selection
   const status = {
     jspdf: { loaded: false, source: null, url: null, error: null },
-    html2canvas: { loaded: false, source: null, url: null, error: null },
     cdn: { tested: false, reachable: null, lastUrl: null, error: null },
   };
 
-  // Load required libraries dynamically
+  // Load required library dynamically (jsPDF only)
   async function loadLibraries(options = {}) {
     const { preferCdn = false, reload = false } = options || {};
     if (librariesLoaded && !reload) return true;
 
     try {
-      // Check if libraries are already loaded when not reloading
+      // Check if library is already loaded when not reloading
       if (!reload) {
-        if (
-          typeof jspdf !== 'undefined' &&
-          typeof html2canvas !== 'undefined'
-        ) {
+        if (typeof jspdf !== 'undefined') {
           librariesLoaded = true;
           status.jspdf.loaded = true;
-          status.html2canvas.loaded = true;
           status.jspdf.source = status.jspdf.source || 'preloaded';
-          status.html2canvas.source = status.html2canvas.source || 'preloaded';
           return true;
         }
       }
 
-      console.log('Loading PDF export libraries...');
-
       // Function to load a script
-      const loadScript = (src) => {
-        return new Promise((resolve, reject) => {
+      const loadScript = (src) =>
+        new Promise((resolve, reject) => {
           const script = document.createElement('script');
           script.src = src;
           script.async = true;
@@ -50,21 +42,13 @@
           script.onerror = () => reject(new Error(`Failed to load: ${src}`));
           document.head.appendChild(script);
         });
-      };
 
-      // Prefer vendored UMD bundles in repo; fallback to local node_modules, then CDN
-      const vendorCandidates = [
-        './vendor/jspdf.umd.min.js',
-        './vendor/html2canvas.min.js',
-      ];
+      // Prefer vendored UMD bundle in repo; fallback to local node_modules, then CDN
+      const vendorCandidates = ['./vendor/jspdf.umd.min.js'];
       const base = './node_modules'; // relative to /chat
-      const localCandidates = [
-        `${base}/jspdf/dist/jspdf.umd.min.js`,
-        `${base}/html2canvas/dist/html2canvas.min.js`,
-      ];
+      const localCandidates = [`${base}/jspdf/dist/jspdf.umd.min.js`];
       const cdnCandidates = [
         'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
       ];
 
       async function tryLoadFrom(urls, sourceLabel) {
@@ -74,28 +58,21 @@
         if (toLoad.length) {
           await Promise.all(toLoad.map((u) => loadScript(u)));
         }
-        // Update sources if libs are now present
         if (typeof jspdf !== 'undefined') {
           status.jspdf.loaded = true;
           status.jspdf.source = sourceLabel;
           status.jspdf.url = urls.find((u) => /jspdf/i.test(u)) || null;
         }
-        if (typeof html2canvas !== 'undefined') {
-          status.html2canvas.loaded = true;
-          status.html2canvas.source = sourceLabel;
-          status.html2canvas.url =
-            urls.find((u) => /html2canvas/i.test(u)) || null;
-        }
       }
 
-      // Loading strategy: prefer vendor first (checked-in), then node_modules, then CDN
-      // If preferCdn=true, try CDN first, then vendor, then node_modules
+      // Loading strategy
       const order = preferCdn
         ? [cdnCandidates, vendorCandidates, localCandidates]
         : [vendorCandidates, localCandidates, cdnCandidates];
       let loadedFrom = null;
       let lastErr = null;
-      for (const [idx, urls] of order.entries()) {
+
+      for (const urls of order) {
         const label =
           urls === cdnCandidates
             ? 'cdn'
@@ -104,33 +81,31 @@
             : 'vendor';
         try {
           await tryLoadFrom(urls, label);
-          loadedFrom = label;
-          break;
+          if (typeof jspdf !== 'undefined') {
+            loadedFrom = label;
+            break;
+          }
         } catch (err) {
           lastErr = err;
           if (label === 'cdn') status.cdn.error = status.cdn.error || err;
         }
       }
+
       if (!loadedFrom)
         throw lastErr || new Error('No library source succeeded');
 
-      // Verify libraries loaded correctly
-      if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
-        throw new Error('Libraries not available after loading');
+      if (typeof jspdf === 'undefined') {
+        throw new Error('jsPDF not available after loading');
       }
 
       librariesLoaded = true;
-      console.log('PDF libraries loaded successfully from', loadedFrom);
       return true;
     } catch (error) {
-      console.error('Failed to load PDF libraries:', error);
+      console.error('Failed to load PDF library:', error);
       status.jspdf.error = status.jspdf.error || error;
-      status.html2canvas.error = status.html2canvas.error || error;
       return false;
     }
   }
-
-  // (notification formatting helper removed; not needed for inline messages)
 
   // Inline chat helpers for export status
   function showExportTypingIndicator() {
@@ -175,17 +150,14 @@
     chat.scrollTop = chat.scrollHeight;
   }
 
-  // Main export function that generates a PDF from the chat content
+  // Vector export: generate a PDF from text only (no DOM rasterization)
   async function exportChat() {
-    // Prevent multiple exports running simultaneously
     if (exportInProgress) return;
     exportInProgress = true;
-
-    // Show typing dots in the chat area
     showExportTypingIndicator();
 
     try {
-      // Decide default source: CDN on production (no node_modules on live), local on localhost
+      // Decide default source: CDN on production, local on localhost
       const host = (window.location && window.location.hostname) || '';
       const isLocalHost =
         host === 'localhost' ||
@@ -194,22 +166,17 @@
         (window.location && window.location.protocol === 'file:');
       const preferCdnDefault = !isLocalHost;
 
-      // Load libraries with environment-aware preference, then fallback
-      let loaded = await loadLibraries({
+      const loaded = await loadLibraries({
         preferCdn: preferCdnDefault,
         reload: false,
       });
       if (!loaded) {
-        console.warn('Local libraries unavailable; trying CDN...');
-        loaded = await loadLibraries({ preferCdn: true, reload: true });
-      }
-      if (!loaded) {
-        throw new Error(
-          'Required libraries (jsPDF or html2canvas) could not be loaded'
-        );
+        const retry = await loadLibraries({ preferCdn: true, reload: true });
+        if (!retry) {
+          throw new Error('jsPDF could not be loaded');
+        }
       }
 
-      // Create a PDF document (A4 portrait)
       const { jsPDF } = jspdf;
       const doc = new jsPDF({
         orientation: 'portrait',
@@ -217,249 +184,174 @@
         format: 'a4',
       });
 
-      // Add header with contact information
+      // Page metrics
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = { top: 18, right: 15, bottom: 18, left: 15 };
+
+      // Header
       addHeaderToDocument(doc);
+      let cursorY = margin.top + 15;
 
-      // Get the chat messages container
+      // Styles
+      const bubble = {
+        padX: 4,
+        padY: 4,
+        radius: 4,
+        maxWidth: 140, // mm
+        fillR: 0,
+        fillG: 120,
+        fillB: 215,
+        textR: 255,
+        textG: 255,
+        textB: 255,
+        lineH: 5, // mm per line in bubble
+        fontSize: 11,
+      };
+      const ai = {
+        textR: 20,
+        textG: 20,
+        textB: 20,
+        lineH: 5.2, // mm per line
+        fontSize: 11,
+      };
+
+      // Read transcript from DOM
       const chatContainer = document.getElementById('chat-messages');
-      if (!chatContainer) {
-        throw new Error('Chat messages container not found');
-      }
+      if (!chatContainer) throw new Error('Chat messages container not found');
 
-      // Prevent horizontal scroll/shift while we add an offscreen render node
-      const htmlEl = document.documentElement;
-      const bodyEl = document.body;
-      const prevHtmlOverflowX = htmlEl.style.overflowX;
-      const prevBodyOverflowX = bodyEl.style.overflowX;
-      htmlEl.style.overflowX = 'hidden';
-      bodyEl.style.overflowX = 'hidden';
-
-      // Create a container for the cloned content with chat-like styling
-      const pdfContent = document.createElement('div');
-      pdfContent.id = 'pdf-export-content';
-      // Use px instead of mm to avoid odd reflow/zoom on Safari iOS
-      // Optimize width & padding to reduce render surface (performance on mobile Safari)
-      pdfContent.style.width = '760px';
-      pdfContent.style.padding = '40px';
-      pdfContent.style.backgroundColor = '#fff';
-      // Keep it offscreen and invisible, but still renderable for html2canvas
-      // Avoid visibility:hidden (html2canvas skips it). Use opacity:0 and off-canvas position.
-      pdfContent.style.position = 'absolute';
-      pdfContent.style.left = '-10000px';
-      pdfContent.style.top = '0';
-      pdfContent.style.pointerEvents = 'none';
-      pdfContent.style.overflow = 'hidden';
-      pdfContent.style.contain = 'content';
-      pdfContent.style.willChange = 'transform';
-      pdfContent.style.transform = 'translateZ(0)';
-      pdfContent.style.fontFamily =
-        'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
-      pdfContent.style.fontSize = '14px';
-      pdfContent.style.color = '#333';
-      pdfContent.style.display = 'flex';
-      pdfContent.style.flexDirection = 'column';
-
-      // Process each message and add to the PDF content container
-      const messages = Array.from(chatContainer.children).filter(
+      const nodes = Array.from(chatContainer.children).filter(
         (el) =>
           el.classList.contains('message') &&
           !el.classList.contains('typing-message') &&
           !el.classList.contains('welcome-message')
       );
 
-      // Prepare a text-only transcript fallback in case rendering fails or times out
-      const messageTexts = messages.map((m) => {
-        const isUser = m.classList.contains('user');
-        const contentEl = m.querySelector('.message-content');
-        const text = contentEl
-          ? (contentEl.innerText || contentEl.textContent || '').trim()
-          : '';
-        return { role: isUser ? 'You' : 'Assistant', text };
+      const transcript = nodes.map((el) => {
+        const role = el.classList.contains('user') ? 'user' : 'ai';
+        const text = (
+          el.querySelector('.message-content')?.innerText || ''
+        ).trim();
+        return { role, text };
       });
 
-      if (messages.length === 0) {
-        pdfContent.innerHTML =
-          '<p style="text-align:center;color:#666;padding:20px;">No messages to export.</p>';
-      } else {
-        messages.forEach((message, index) => {
-          const messageClone = createMessageElement(message);
-          if (messageClone) {
-            pdfContent.appendChild(messageClone);
-          }
-        });
-      }
-
-      // Add to document temporarily
-      document.body.appendChild(pdfContent);
-
-      // Helper to attempt rendering the entire cloned chat to a canvas with a timeout
-      async function attemptRenderCanvas(scale, timeoutMs) {
-        try {
-          const renderPromise = html2canvas(pdfContent, {
-            scale,
-            useCORS: true,
-            backgroundColor: '#FFFFFF',
-            logging: false,
-            // Trim large shadow/overflow computations for speed
-            removeContainer: true,
-          });
-          const canvas = await Promise.race([
-            renderPromise,
-            new Promise((_, reject) =>
-              setTimeout(() => reject(new Error('render-timeout')), timeoutMs)
-            ),
-          ]);
-          return canvas || null;
-        } catch (e) {
-          return null;
-        }
-      }
-
-      // Wait a moment for rendering and fonts, but never hang
-      const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-      await delay(300);
-      if (
-        document.fonts &&
-        document.fonts.ready &&
-        typeof document.fonts.ready.then === 'function'
-      ) {
-        // Race with timeout to avoid Safari hanging on fonts.ready
-        await Promise.race([document.fonts.ready, delay(200)]);
-      }
-      // Force a reflow to ensure layout is committed
-      void pdfContent.offsetHeight;
-
-      // Strategy: High-quality first attempt; if it fails/timeouts, retry with lower scale.
-      const viewportWidth = window.innerWidth || 0;
-      const firstScale = viewportWidth <= 480 ? 1.05 : 1.3; // lower than before
-      const secondScale = viewportWidth <= 480 ? 0.95 : 1.05; // fallback smaller scale
-      let canvas = await attemptRenderCanvas(firstScale, 2000);
-      if (!canvas) {
-        // Reduce padding & width further for retry to shrink surface area
-        pdfContent.style.padding = '32px';
-        pdfContent.style.width = '700px';
-        // Force reflow before second attempt
-        void pdfContent.offsetHeight;
-        canvas = await attemptRenderCanvas(secondScale, 3000);
-      }
-
-      // If rendering failed or timed out after retries, attempt a CDN-powered retry before transcript
-      if (!canvas) {
-        try {
-          const needCdnReload =
-            status.jspdf.source !== 'cdn' ||
-            status.html2canvas.source !== 'cdn';
-          if (needCdnReload) {
-            console.warn(
-              'Render failed; reloading libraries from CDN and retrying...'
-            );
-            await loadLibraries({ preferCdn: true, reload: true });
-            // Slight delay to ensure parse/ready
-            await new Promise((r) => setTimeout(r, 150));
-            // Reflow prior to retry
-            void pdfContent.offsetHeight;
-            canvas = await attemptRenderCanvas(1.05, 3000);
-          }
-        } catch (retryErr) {
-          console.warn('CDN retry failed:', retryErr);
-        }
-      }
-
-      // If still no canvas, fallback to text-only transcript
-      if (!canvas) {
-        addTranscriptToPdf(doc, messageTexts);
-      } else {
-        // Replace the previous single-image + broken multipage block with reliable slicing
-        // Page metrics and margins
-        const pageWidth = doc.internal.pageSize.getWidth();
-        const pageHeight = doc.internal.pageSize.getHeight();
-        const margins = { top: 15, right: 15, bottom: 15, left: 15 };
-
-        // Header is already drawn; reserve extra top space on page 1 so content starts below it
-        const firstPageContentTop = 30; // matches header layout
-        const contentWidthMm = pageWidth - margins.left - margins.right;
-
-        // Canvas dimensions (px)
-        const srcWidthPx = canvas.width;
-        const srcHeightPx = canvas.height;
-
-        // Convert px <-> mm for consistent scaling
-        const mmPerPx = contentWidthMm / srcWidthPx;
-
-        // Compute how many source pixels fit on a page
-        const firstPageContentHeightMm =
-          pageHeight - firstPageContentTop - margins.bottom;
-        const nextPageContentHeightMm =
-          pageHeight - margins.top - margins.bottom;
-
-        const firstSliceHeightPx = Math.floor(
-          firstPageContentHeightMm / mmPerPx
-        );
-        const sliceHeightPx = Math.floor(nextPageContentHeightMm / mmPerPx);
-
-        // Helper: add a slice of the big canvas as an image to the PDF
-        function addSliceToPdf(srcCanvas, srcY, slicePxHeight, isFirstPage) {
-          const sliceCanvas = document.createElement('canvas');
-          sliceCanvas.width = srcCanvas.width;
-          sliceCanvas.height = slicePxHeight;
-          const ctx = sliceCanvas.getContext('2d');
-          ctx.drawImage(
-            srcCanvas,
-            0,
-            srcY,
-            srcCanvas.width,
-            slicePxHeight, // src crop
-            0,
-            0,
-            sliceCanvas.width,
-            sliceCanvas.height // dst
-          );
-          const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
-
-          const drawYmm = isFirstPage ? firstPageContentTop : margins.top;
-          const sliceHeightMm = slicePxHeight * mmPerPx;
-
-          doc.addImage(
-            imgData,
-            'JPEG',
-            margins.left,
-            drawYmm,
-            contentWidthMm,
-            sliceHeightMm
-          );
-        }
-
-        // Add first page content slice
-        let offsetPx = 0;
-        const firstHeight = Math.min(firstSliceHeightPx, srcHeightPx);
-        addSliceToPdf(canvas, offsetPx, firstHeight, true);
-        offsetPx += firstHeight;
-
-        // Remaining pages
-        while (offsetPx < srcHeightPx) {
+      // Helpers
+      function addPageIfNeeded(blockHeight) {
+        if (cursorY + blockHeight > pageH - margin.bottom) {
           doc.addPage();
-          const remainingPx = srcHeightPx - offsetPx;
-          const thisSlicePx = Math.min(sliceHeightPx, remainingPx);
-          addSliceToPdf(canvas, offsetPx, thisSlicePx, false);
-          offsetPx += thisSlicePx;
+          // no header on subsequent pages
+          cursorY = margin.top;
         }
       }
 
-      // Create a Blob URL and post a chat message with a text download link (desktop + mobile)
+      function drawUserBubble(text) {
+        if (!text) return;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(bubble.fontSize);
+
+        // Max inner width for wrapping
+        const innerMax = bubble.maxWidth - 2 * bubble.padX;
+
+        // Wrap to innerMax so long messages break, short ones stay narrow
+        const lines = doc.splitTextToSize(text, innerMax);
+
+        // Measure the longest wrapped line to size the bubble up to max
+        let maxLineW = 0;
+        for (let i = 0; i < lines.length; i++) {
+          const w = doc.getTextWidth(lines[i]);
+          if (w > maxLineW) maxLineW = w;
+        }
+
+        // Inner width is the measured longest line, but never over innerMax
+        const rectInnerW = Math.min(maxLineW, innerMax);
+        // Bubble width fits content + padding, capped at maxWidth
+        const rectW = Math.min(bubble.maxWidth, rectInnerW + 2 * bubble.padX);
+
+        // Height from wrapped lines
+        const textH = lines.length * bubble.lineH;
+        const rectH = textH + 2 * bubble.padY;
+
+        // Page break if needed
+        addPageIfNeeded(rectH);
+
+        // Right-align the bubble box
+        const xRight = pageW - margin.right;
+        const rectX = xRight - rectW;
+        const rectY = cursorY;
+
+        // Bubble shape
+        doc.setFillColor(bubble.fillR, bubble.fillG, bubble.fillB);
+        if (doc.roundedRect) {
+          doc.roundedRect(
+            rectX,
+            rectY,
+            rectW,
+            rectH,
+            bubble.radius,
+            bubble.radius,
+            'F'
+          );
+        } else {
+          doc.rect(rectX, rectY, rectW, rectH, 'F');
+        }
+
+        // Text inside (left aligned within the bubble)
+        doc.setTextColor(bubble.textR, bubble.textG, bubble.textB);
+        let ty = rectY + bubble.padY + 3.6;
+        const tx = rectX + bubble.padX;
+        for (let i = 0; i < lines.length; i++) {
+          doc.text(lines[i], tx, ty);
+          ty += bubble.lineH;
+        }
+
+        // Space after the bubble
+        cursorY = rectY + rectH + 12;
+      }
+
+      function drawAiBlock(text) {
+        if (!text) return;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(ai.fontSize);
+        doc.setTextColor(ai.textR, ai.textG, ai.textB);
+
+        const maxWidth = pageW - margin.left - margin.right;
+        const lines = doc.splitTextToSize(text, maxWidth);
+
+        lines.forEach((line) => {
+          addPageIfNeeded(ai.lineH);
+          doc.text(line, margin.left, cursorY);
+          cursorY += ai.lineH;
+        });
+
+        cursorY += 2; // small gap after AI block
+      }
+
+      if (transcript.length === 0) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(11);
+        doc.text('No messages to export.', margin.left, cursorY);
+      } else {
+        for (const m of transcript) {
+          if (m.role === 'user') drawUserBubble(m.text);
+          else drawAiBlock(m.text);
+        }
+      }
+
+      // Footer page numbers
+      addPageNumbers(doc, pageW, pageH, margin);
+
+      // Create a Blob URL and post a chat message with a text download link
       const date = new Date().toISOString().slice(0, 10);
       const filename = `Chat-Corey-Lawrence-${date}.pdf`;
       try {
         const blob = doc.output('blob');
         const url = URL.createObjectURL(blob);
 
-        // Hide typing dots
         hideExportTypingIndicator();
 
-        // Add inline AI message with a plain text download link
         const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}">Download PDF</a>`;
         appendChatMessage(linkHtml);
 
-        // Revoke URL shortly after the user clicks; also set a long-timeout safeguard
         const chat = document.getElementById('chat-messages');
         if (chat) {
           const lastLink = chat.querySelector(
@@ -469,7 +361,7 @@
             lastLink.addEventListener(
               'click',
               () => {
-                setTimeout(() => URL.revokeObjectURL(url), 3000);
+                setTimeout(() => URL.revokeObjectURL(url), 60_000);
               },
               { once: true }
             );
@@ -477,7 +369,6 @@
         }
         setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
       } catch (e) {
-        // Final fallback: show error in chat
         hideExportTypingIndicator();
         appendChatMessage('PDF export failed. Please try again.');
       }
@@ -488,167 +379,11 @@
       hideExportTypingIndicator();
       appendChatMessage('PDF export failed. Please try again.');
     } finally {
-      // Always clean up the offscreen node and any temporary style changes
-      try {
-        const temp = document.getElementById('pdf-export-content');
-        if (temp && temp.parentNode) temp.parentNode.removeChild(temp);
-      } catch {}
-      try {
-        if (typeof prevHtmlOverflowX !== 'undefined') {
-          document.documentElement.style.overflowX = prevHtmlOverflowX;
-        }
-        if (typeof prevBodyOverflowX !== 'undefined') {
-          document.body.style.overflowX = prevBodyOverflowX;
-        }
-      } catch {}
       exportInProgress = false;
     }
   }
 
-  // Fallback: write a simple transcript into the PDF to guarantee an output
-  function addTranscriptToPdf(doc) {
-    const args = arguments;
-    // Support previous signature addTranscriptToPdf(doc, messageTexts)
-    const messageTexts = args[1] || [];
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 15;
-    const maxWidth = pageWidth - margin * 2;
-    const lineHeight = 6; // in mm
-    let cursorY = 30; // below header line
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-
-    const drawLines = (text, isUser) => {
-      doc.setFont('helvetica', isUser ? 'bold' : 'normal');
-      doc.setFontSize(11);
-      doc.setTextColor(isUser ? 10 : 30, isUser ? 102 : 30, isUser ? 194 : 30);
-      const lines = doc.splitTextToSize(text, maxWidth);
-      lines.forEach((ln) => {
-        if (cursorY + lineHeight > pageHeight - margin) {
-          doc.addPage();
-          // redraw header separator
-          doc.setDrawColor(200, 200, 200);
-          doc.line(15, 28, pageWidth - 15, 28);
-          cursorY = 30;
-        }
-        doc.text(ln, margin, cursorY);
-        cursorY += lineHeight;
-      });
-      // spacing between messages
-      cursorY += 2;
-    };
-
-    messageTexts.forEach((m) => {
-      const prefix = m.role === 'You' ? 'You: ' : 'Assistant: ';
-      drawLines(prefix + (m.text || ''), m.role === 'You');
-    });
-  }
-
-  // Create a styled message element for the PDF that matches the chat window appearance
-  function createMessageElement(originalMessage) {
-    const isUser = originalMessage.classList.contains('user');
-    const isAI = originalMessage.classList.contains('ai');
-
-    // Skip if not a message we recognize
-    if (!isUser && !isAI) return null;
-
-    // Get the content
-    const contentEl = originalMessage.querySelector('.message-content');
-    if (!contentEl) return null;
-
-    // Create styled message box
-    const messageBox = document.createElement('div');
-    messageBox.style.marginBottom = '16px';
-    messageBox.style.maxWidth = '100%';
-
-    // Style differently based on message type to match chat window
-    if (isUser) {
-      // User message: blue bubble, right-aligned
-      messageBox.style.padding = '12px 16px';
-      messageBox.style.borderRadius = '18px';
-      messageBox.style.backgroundColor = '#0078d7'; // Blue background like chat
-      messageBox.style.color = '#fff'; // White text
-      messageBox.style.alignSelf = 'flex-end';
-      messageBox.style.width = 'auto';
-      messageBox.style.maxWidth = '80%';
-      messageBox.style.marginLeft = 'auto'; // Right align
-      messageBox.style.boxShadow = '0 1px 2px rgba(0,0,0,0.1)';
-    } else {
-      // AI message: no bubble, full width
-      messageBox.style.padding = '12px 16px';
-      messageBox.style.backgroundColor = '#fff'; // Match background color (no visible bubble)
-      messageBox.style.color = '#333'; // Dark text
-      messageBox.style.width = '98%'; // Almost full width
-      messageBox.style.borderBottom = '1px solid #f0f0f0'; // Light separator
-    }
-
-    // Create content container
-    const messageContent = document.createElement('div');
-    messageContent.style.lineHeight = '1.5';
-    messageContent.style.wordBreak = 'break-word';
-
-    // Handle content differently based on sender
-    if (isUser) {
-      // For user messages, use plain text (no sender label needed)
-      messageContent.textContent = contentEl.textContent;
-    } else {
-      // For AI messages, preserve HTML formatting (no sender label needed)
-      messageContent.innerHTML = contentEl.innerHTML;
-
-      // Style specific elements within AI responses to match chat window
-      messageContent.style.fontSize = '14px';
-
-      // Style code blocks and other formatted elements
-      const styleTag = document.createElement('style');
-      styleTag.textContent = `
-        #pdf-export-content pre {
-          background-color: #f6f8fa;
-          border-radius: 6px;
-          padding: 12px;
-          overflow-x: auto;
-          font-family: monospace;
-          font-size: 13px;
-          line-height: 1.45;
-          margin: 10px 0;
-        }
-        #pdf-export-content code {
-          background-color: #f6f8fa;
-          padding: 2px 4px;
-          border-radius: 3px;
-          font-family: monospace;
-          font-size: 13px;
-        }
-        #pdf-export-content ul, #pdf-export-content ol {
-          padding-left: 20px;
-          margin: 8px 0;
-        }
-        #pdf-export-content li {
-          margin-bottom: 6px;
-        }
-        #pdf-export-content p {
-          margin: 0 0 10px 0;
-        }
-        #pdf-export-content a {
-          color: #0366d6;
-          text-decoration: underline;
-        }
-      `;
-      document.head.appendChild(styleTag);
-
-      // Remove the style tag after PDF generation
-      setTimeout(() => styleTag.remove(), 2000);
-    }
-
-    messageBox.appendChild(messageContent);
-    return messageBox;
-  }
-
-  // Add header with contact information to the PDF
   function addHeaderToDocument(doc) {
-    // Get contact information from the DOM
     const emailHref = document.getElementById('profile-email')?.href || '';
     const email =
       emailHref && emailHref.startsWith('mailto:')
@@ -661,10 +396,8 @@
       document.querySelector('link[rel="canonical"]')?.href ||
       window.location.origin + '/';
 
-    // Page metrics
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Title
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(17);
     doc.setTextColor(0, 0, 0);
@@ -672,11 +405,10 @@
       align: 'center',
     });
 
-    // Contact links (slightly larger font)
+    // Contact links row
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
 
-    // Prepare items: email shows the address; others show a word label
     const items = [];
     if (email) items.push({ text: email, url: `mailto:${email}` });
     if (linkedinHref) items.push({ text: 'LinkedIn', url: linkedinHref });
@@ -685,9 +417,8 @@
 
     const sep = ' | ';
     const sepColor = [120, 120, 120];
-    const linkColor = [10, 102, 194]; // link blue
+    const linkColor = [10, 102, 194];
 
-    // Compute total line width to center it
     const sepWidth = doc.getTextWidth(sep);
     const linksWidth = items.reduce(
       (sum, it) => sum + doc.getTextWidth(it.text),
@@ -695,7 +426,6 @@
     );
     const totalWidth = linksWidth + Math.max(0, items.length - 1) * sepWidth;
 
-    // Draw centered at y
     const y = 24;
     let x = (pageWidth - totalWidth) / 2;
 
@@ -706,11 +436,9 @@
         x += sepWidth;
       }
       doc.setTextColor(...linkColor);
-      // Render the word with a proper hyperlink
       if (typeof doc.textWithLink === 'function') {
         doc.textWithLink(it.text, x, y, { url: it.url });
       } else {
-        // Fallback: draw text then attach a link rectangle
         const w = doc.getTextWidth(it.text);
         doc.text(it.text, x, y);
         doc.link(x, y - 4, w, 6, { url: it.url });
@@ -718,9 +446,21 @@
       x += doc.getTextWidth(it.text);
     });
 
-    // Separator line under header
+    // Separator line
     doc.setDrawColor(200, 200, 200);
     doc.line(15, 28, pageWidth - 15, 28);
+  }
+
+  function addPageNumbers(doc, pageW, pageH, margin) {
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(120, 120, 120);
+      const label = `Page ${i} of ${pageCount}`;
+      doc.text(label, pageW - margin.right, pageH - 6, { align: 'right' });
+    }
   }
 
   // Initialize the export button
@@ -730,23 +470,28 @@
       console.warn('PDF export button not found');
       return;
     }
-
     // Replace button to remove any existing listeners
     const newButton = exportButton.cloneNode(true);
     if (exportButton.parentNode) {
       exportButton.parentNode.replaceChild(newButton, exportButton);
     }
-
     // Add click handler
     newButton.addEventListener('click', exportChat);
-    console.log('PDF export initialized with jsPDF implementation');
+    console.log('PDF export initialized with jsPDF vector implementation');
   }
 
-  // Expose a tiny global API so other scripts (chat-interface) can trigger export
+  // Expose a tiny global API so other scripts can trigger export
   try {
     window.ChatExport = Object.assign({}, window.ChatExport, {
       exportChat,
       isExporting: () => !!exportInProgress,
+      getStatus: () => {
+        try {
+          return JSON.parse(JSON.stringify(status));
+        } catch {
+          return { error: 'unavailable' };
+        }
+      },
     });
   } catch {}
 
