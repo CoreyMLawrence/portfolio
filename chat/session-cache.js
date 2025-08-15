@@ -14,7 +14,17 @@
       const role = msg.classList.contains('user') ? 'user' : 'model';
       const contentEl = msg.querySelector('.message-content');
       const text = (contentEl?.textContent || '').trim();
-      if (text) history.push({ role, text });
+      if (text) {
+        const entry = { role, text };
+        // Include markdown for AI messages if available
+        if (role === 'model') {
+          const markdown = msg.getAttribute('data-markdown');
+          if (markdown) {
+            entry.markdown = markdown;
+          }
+        }
+        history.push(entry);
+      }
     });
     return history;
   }
