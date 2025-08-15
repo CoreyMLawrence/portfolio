@@ -355,38 +355,29 @@
         fontSize: 11,
       };
 
-      // Read transcript from enhanced history (with markdown) or fallback to DOM
+      // Read transcript directly from session cache (same source as chat display)
       let transcript = [];
       
-      // Try to get enhanced history with markdown first
-      if (window.ChatExport && Array.isArray(window.ChatExport.enhancedHistory)) {
-        transcript = window.ChatExport.enhancedHistory.map(item => ({
+      // Get the cached history with markdown - this is the single source of truth
+      if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
+        const cachedHistory = window.ChatSessionCache.getCachedHistory();
+        console.log('PDF Export: Using cached history as single source of truth:', cachedHistory.length, 'messages');
+        
+        transcript = cachedHistory.map(item => ({
           role: item.role === 'model' ? 'ai' : item.role,
           text: item.text,
           markdown: item.markdown || item.text
         }));
-      }
-      
-      // Fallback to DOM parsing if no enhanced history
-      if (transcript.length === 0) {
-        const chatContainer = document.getElementById('chat-messages');
-        if (!chatContainer) throw new Error('Chat messages container not found');
-
-        const nodes = Array.from(chatContainer.children).filter(
-          (el) =>
-            el.classList.contains('message') &&
-            !el.classList.contains('typing-message') &&
-            !el.classList.contains('welcome-message')
-        );
-
-        transcript = nodes.map((el) => {
-          const role = el.classList.contains('user') ? 'user' : 'ai';
-          const text = (
-            el.querySelector('.message-content')?.innerText || ''
-          ).trim();
-          const markdown = el.getAttribute('data-markdown') || text;
-          return { role, text, markdown: role === 'ai' ? markdown : text };
-        });
+        
+        // Log markdown content for debugging
+        const aiMessages = transcript.filter(t => t.role === 'ai');
+        console.log('PDF Export: AI messages with markdown:', aiMessages.length);
+        if (aiMessages.length > 0) {
+          console.log('PDF Export: Sample markdown:', aiMessages[0].markdown?.substring(0, 100) + '...');
+        }
+      } else {
+        console.error('PDF Export: ChatSessionCache not available - cannot export without cached data');
+        throw new Error('Session cache not available. Please refresh and try again.');
       }
 
       // Helpers
@@ -762,9 +753,11 @@
           return { error: 'unavailable' };
         }
       },
-      // Debug function to test bold rendering
+      // Debug function to test bold rendering and session cache
       testBoldRendering: () => {
-        console.log('Testing bold text rendering...');
+        console.log('=== PDF Export Debug Test ===');
+        
+        // Test basic markdown parsing
         const testText = 'This is **bold text** and this is normal text with **more bold**.';
         console.log('Test text:', testText);
         console.log('Bold markers detected:', testText.includes('**'));
@@ -773,7 +766,37 @@
         const elements = parseMarkdownForPdf(testText);
         console.log('Parsed elements:', elements);
         
-        return { testText, elements, hasBold: testText.includes('**') };
+        // Test session cache (primary source)
+        if (window.ChatSessionCache && typeof window.ChatSessionCache.getCachedHistory === 'function') {
+          const cachedHistory = window.ChatSessionCache.getCachedHistory();
+          console.log('Session cache history length:', cachedHistory.length);
+          
+          if (cachedHistory.length > 0) {
+            const lastItem = cachedHistory[cachedHistory.length - 1];
+            console.log('Last cached item:', lastItem);
+            if (lastItem.markdown) {
+              console.log('Last cached markdown:', lastItem.markdown.substring(0, 100) + '...');
+            }
+          }
+          
+          // Show AI messages with markdown
+          const aiMessages = cachedHistory.filter(item => item.role === 'model');
+          console.log('AI messages in cache:', aiMessages.length);
+          aiMessages.forEach((msg, i) => {
+            if (msg.markdown && msg.markdown.includes('**')) {
+              console.log(`AI message ${i + 1} has bold text:`, msg.markdown.substring(0, 50) + '...');
+            }
+          });
+        } else {
+          console.error('Session cache not available!');
+        }
+        
+        return { 
+          testText, 
+          elements, 
+          hasBold: testText.includes('**'),
+          cacheAvailable: !!(window.ChatSessionCache && window.ChatSessionCache.getCachedHistory)
+        };
       }
     });
   } catch {}

@@ -48,8 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chat integration (migrated to /chat)
   let resumeData = null;
   let history = [];
-  // Enhanced history to store both text and markdown for AI messages
-  let enhancedHistory = [];
   // Markdown renderer holder (set on window for global access)
   let snarkdown = null;
 
@@ -330,6 +328,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           // While streaming, render but suppress a trailing hidden token if it appears
           const { visibleText } = stripHiddenAction(buffer);
           contentEl.innerHTML = markdownToHtml(visibleText);
+          // Update data-markdown attribute with the raw markdown
+          aiDiv.setAttribute('data-markdown', visibleText);
           if (shouldAutoScroll) {
             scroller.start();
           } else {
@@ -415,6 +415,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!t) continue;
             answer += t;
             contentEl.innerHTML = markdownToHtml(answer);
+            // Update data-markdown attribute with the raw markdown
+            aiDiv.setAttribute('data-markdown', answer);
             if (shouldAutoScroll) {
               scroller.start();
             } else {
@@ -440,6 +442,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Detect and handle hidden actions; remove tokens from display
       const { visibleText, actions } = stripHiddenAction(answer);
       contentEl.innerHTML = markdownToHtml(visibleText);
+      // Update data-markdown attribute with the final raw markdown
+      aiDiv.setAttribute('data-markdown', visibleText);
       // If model requested a PDF export, trigger it without showing the token
       if (actions.includes('EXPORT_PDF') && window.ChatExport?.exportChat) {
         try {
@@ -460,14 +464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Persist only the visible text (without hidden tokens)
       history.push({ role: 'model', text: visibleText });
       
-      // Store enhanced history with markdown for PDF export
-      enhancedHistory.push({ role: 'user', text: textToStore });
-      enhancedHistory.push({ role: 'model', text: visibleText, markdown: visibleText });
-      
-      // Expose enhanced history for PDF export
-      if (window.ChatExport) {
-        window.ChatExport.enhancedHistory = enhancedHistory;
-      }
+      // Note: Session cache automatically saves markdown via data-markdown attributes
     } catch (err) {
       console.error('Gemini API error:', err);
       hideTypingIndicator();
@@ -693,52 +690,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         chatMessages.scrollTop = 0;
         // Reset in-memory history
         history = [];
-        enhancedHistory = [];
-        // Update ChatExport reference
-        if (window.ChatExport) {
-          window.ChatExport.enhancedHistory = enhancedHistory;
-        }
+        // Note: Session cache clears automatically when clear button is clicked
         // Delegated listener covers newly created chips automatically
       }
     });
   }
 
   // Download PDF functionality moved to export-pdf.js
-
-  // Initialize enhanced history reference for PDF export
-  if (window.ChatExport) {
-    window.ChatExport.enhancedHistory = enhancedHistory;
-  }
+  // PDF export now uses session cache directly as single source of truth
 
   // Hydrate in-memory history when session-cache restores a previous session
   document.addEventListener('chat:session-restored', (e) => {
     const restored = Array.isArray(e?.detail?.history) ? e.detail.history : [];
     if (restored.length) {
-      history = restored;
-      // Rebuild enhanced history from DOM data attributes and session
-      enhancedHistory = [];
-      const messages = chatMessages.querySelectorAll('.message');
-      messages.forEach((msg) => {
-        const role = msg.classList.contains('user') ? 'user' : 'model';
-        const text = (msg.querySelector('.message-content')?.textContent || '').trim();
-        if (text) {
-          if (role === 'model') {
-            const markdown = msg.getAttribute('data-markdown') || text;
-            enhancedHistory.push({ role, text, markdown });
-          } else {
-            enhancedHistory.push({ role, text });
-          }
-        }
-      });
-      // Update ChatExport reference
-      if (window.ChatExport) {
-        window.ChatExport.enhancedHistory = enhancedHistory;
-      }
+      // Use the restored history for basic chat functionality
+      history = restored.map(item => ({ role: item.role, text: item.text }));
+      
       // Remove welcome message if present, since we have history
       const welcome = chatMessages.querySelector('.welcome-message');
       if (welcome) welcome.remove();
       // Ensure scroll is at bottom after hydration
       chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      console.log('Session restored with history:', history.length, 'messages');
+      console.log('PDF export will use session cache directly');
     }
     // Delegated listener covers chips after restore as well
   });

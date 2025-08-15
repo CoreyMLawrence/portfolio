@@ -99,6 +99,17 @@
       saveNow: () => serialize(container),
       restore: () => restore(container),
       clear,
+      getCachedHistory: () => {
+        try {
+          const raw = sessionStorage.getItem(KEY);
+          if (!raw) return [];
+          const data = JSON.parse(raw);
+          return Array.isArray(data?.history) ? data.history : [];
+        } catch (e) {
+          console.warn('Failed to get cached history:', e);
+          return [];
+        }
+      }
     };
   }
 

@@ -700,7 +700,7 @@ body {
   min-height: 50px;
   max-height: 200px; /* ~4 lines at 20px line height */
   overflow-y: auto;
-  padding: var(--space-sm) 4px;
+  padding: 14px 4px 0;
   margin: 0;
 }
 
@@ -774,6 +774,7 @@ body {
 
   #chat-input {
     font-size: 16px;
+    padding: 12px 4px 0;
   }
 
   .message.ai .message-content {
