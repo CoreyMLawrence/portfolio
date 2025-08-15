@@ -118,47 +118,48 @@
     let currentList = null;
     
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      const line = lines[i];
+      const trimmedLine = line.trim();
       
-      if (!line) {
-        // Empty line - close current list if any
+      if (!trimmedLine) {
+        // Empty line - close current list if any and add spacing
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'spacing', height: 2 });
+        elements.push({ type: 'spacing', height: 3 });
         continue;
       }
       
-      // Headers
-      if (line.startsWith('### ')) {
+      // Headers (with proper spacing)
+      if (trimmedLine.startsWith('### ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header3', text: line.substring(4), style: 'bold', fontSize: 12 });
-      } else if (line.startsWith('## ')) {
+        elements.push({ type: 'header3', text: trimmedLine.substring(4), style: 'bold', fontSize: 12 });
+      } else if (trimmedLine.startsWith('## ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header2', text: line.substring(3), style: 'bold', fontSize: 13 });
-      } else if (line.startsWith('# ')) {
+        elements.push({ type: 'header2', text: trimmedLine.substring(3), style: 'bold', fontSize: 13 });
+      } else if (trimmedLine.startsWith('# ')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'header1', text: line.substring(2), style: 'bold', fontSize: 14 });
+        elements.push({ type: 'header1', text: trimmedLine.substring(2), style: 'bold', fontSize: 14 });
       }
-      // Lists
-      else if (line.match(/^[-*+]\s+/)) {
-        const text = line.replace(/^[-*+]\s+/, '');
+      // Lists with better nesting support
+      else if (trimmedLine.match(/^[-*+]\s+/)) {
+        const text = trimmedLine.replace(/^[-*+]\s+/, '');
         if (!currentList) {
           currentList = { type: 'list', items: [] };
         }
         currentList.items.push({ text, level: 0 });
-      } else if (line.match(/^\d+\.\s+/)) {
-        const text = line.replace(/^\d+\.\s+/, '');
+      } else if (trimmedLine.match(/^\d+\.\s+/)) {
+        const text = trimmedLine.replace(/^\d+\.\s+/, '');
         if (!currentList) {
           currentList = { type: 'orderedList', items: [] };
         }
@@ -169,22 +170,34 @@
           currentList = { type: 'list', items: [] };
         }
         currentList.items.push({ text, level: 1 });
+      } else if (line.match(/^    [-*+]\s+/)) {
+        const text = line.replace(/^    [-*+]\s+/, '');
+        if (!currentList) {
+          currentList = { type: 'list', items: [] };
+        }
+        currentList.items.push({ text, level: 2 });
+      } else if (line.match(/^  \d+\.\s+/)) {
+        const text = line.replace(/^  \d+\.\s+/, '');
+        if (!currentList) {
+          currentList = { type: 'orderedList', items: [] };
+        }
+        currentList.items.push({ text, level: 1 });
       }
-      // Bold text
-      else if (line.includes('**')) {
+      // Bold text paragraphs
+      else if (trimmedLine.includes('**')) {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'paragraph', text: line, hasBold: true });
+        elements.push({ type: 'paragraph', text: trimmedLine, hasBold: true });
       }
-      // Regular paragraph
+      // Regular paragraphs
       else {
         if (currentList) {
           elements.push(currentList);
           currentList = null;
         }
-        elements.push({ type: 'paragraph', text: line });
+        elements.push({ type: 'paragraph', text: trimmedLine });
       }
     }
     
@@ -204,11 +217,12 @@
       return doc.splitTextToSize(text, maxWidth);
     }
     
-    // Handle bold text inline
+    // Handle bold text inline - return array of objects with text and formatting info
     const parts = text.split(/(\*\*[^*]+\*\*)/);
     const lines = [];
     let currentLine = '';
     let currentWidth = 0;
+    let currentFormats = []; // Track bold segments in current line
     
     for (const part of parts) {
       if (part.startsWith('**') && part.endsWith('**')) {
@@ -218,36 +232,57 @@
         doc.setFont('helvetica', style);
         
         if (currentWidth + boldWidth > maxWidth && currentLine) {
-          lines.push({ text: currentLine, hasBold: false });
+          lines.push({ 
+            text: currentLine.trim(), 
+            formats: currentFormats,
+            hasBold: currentFormats.some(f => f.bold)
+          });
           currentLine = boldText;
           currentWidth = boldWidth;
+          currentFormats = [{ text: boldText, bold: true, start: 0 }];
         } else {
+          const start = currentLine.length;
           currentLine += boldText;
           currentWidth += boldWidth;
+          currentFormats.push({ text: boldText, bold: true, start });
         }
       } else {
         const words = part.split(' ');
         for (const word of words) {
           if (!word) continue;
-          const wordWidth = doc.getTextWidth(word + ' ');
+          const wordText = word + ' ';
+          const wordWidth = doc.getTextWidth(wordText);
           
           if (currentWidth + wordWidth > maxWidth && currentLine) {
-            lines.push({ text: currentLine.trim(), hasBold: currentLine.includes('**') });
-            currentLine = word + ' ';
+            lines.push({ 
+              text: currentLine.trim(), 
+              formats: currentFormats,
+              hasBold: currentFormats.some(f => f.bold)
+            });
+            currentLine = wordText;
             currentWidth = wordWidth;
+            currentFormats = word ? [{ text: wordText, bold: false, start: 0 }] : [];
           } else {
-            currentLine += word + ' ';
+            const start = currentLine.length;
+            currentLine += wordText;
             currentWidth += wordWidth;
+            if (word) {
+              currentFormats.push({ text: wordText, bold: false, start });
+            }
           }
         }
       }
     }
     
     if (currentLine.trim()) {
-      lines.push({ text: currentLine.trim(), hasBold: currentLine.includes('**') });
+      lines.push({ 
+        text: currentLine.trim(), 
+        formats: currentFormats,
+        hasBold: currentFormats.some(f => f.bold)
+      });
     }
     
-    return lines.map(line => line.text);
+    return lines;
   }
 
   // Inline chat helpers for export status
@@ -355,7 +390,7 @@
         textR: 20,
         textG: 20,
         textB: 20,
-        lineH: 5.2, // mm per line
+        lineH: 5.5, // Increased line height for better readability
         fontSize: 11,
       };
 
@@ -480,28 +515,31 @@
             case 'header1':
             case 'header2':
             case 'header3':
-              addPageIfNeeded(element.fontSize * 1.2);
+              addPageIfNeeded(element.fontSize * 1.5);
               doc.setFont('helvetica', element.style || 'bold');
               doc.setFontSize(element.fontSize || ai.fontSize);
               doc.setTextColor(ai.textR, ai.textG, ai.textB);
               doc.text(element.text, margin.left, cursorY);
-              cursorY += (element.fontSize || ai.fontSize) * 1.2;
+              cursorY += (element.fontSize || ai.fontSize) * 1.5 + 4; // More spacing after headers
               break;
               
             case 'list':
             case 'orderedList':
+              // Add spacing before list
+              cursorY += 3;
+              
               for (let i = 0; i < element.items.length; i++) {
                 const item = element.items[i];
-                const indent = margin.left + (item.level * 8);
-                const bulletWidth = element.type === 'orderedList' ? 10 : 6;
-                const textMaxWidth = maxWidth - (item.level * 8) - bulletWidth;
+                const indent = margin.left + (item.level * 10); // Increased indent
+                const bulletWidth = element.type === 'orderedList' ? 12 : 8; // More space for bullets
+                const textMaxWidth = maxWidth - (item.level * 10) - bulletWidth;
                 
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(ai.fontSize);
                 doc.setTextColor(ai.textR, ai.textG, ai.textB);
                 
                 const lines = renderMarkdownText(doc, item.text, indent + bulletWidth, textMaxWidth);
-                const blockHeight = lines.length * ai.lineH;
+                const blockHeight = lines.length * ai.lineH + 1; // Add small spacing between items
                 
                 addPageIfNeeded(blockHeight);
                 
@@ -509,21 +547,25 @@
                 const bullet = element.type === 'orderedList' ? `${i + 1}.` : '•';
                 doc.text(bullet, indent, cursorY);
                 
-                // Draw text lines
+                // Draw text lines with proper formatting
                 let lineY = cursorY;
                 for (const line of lines) {
-                  // Handle bold text within lines
-                  if (line.includes('**')) {
-                    renderBoldText(doc, line, indent + bulletWidth, lineY);
+                  if (typeof line === 'object' && line.hasBold) {
+                    renderFormattedLine(doc, line, indent + bulletWidth, lineY);
                   } else {
-                    doc.text(line, indent + bulletWidth, lineY);
+                    const lineText = typeof line === 'string' ? line : line.text;
+                    if (lineText.includes('**')) {
+                      renderBoldText(doc, lineText, indent + bulletWidth, lineY);
+                    } else {
+                      doc.text(lineText, indent + bulletWidth, lineY);
+                    }
                   }
                   lineY += ai.lineH;
                 }
                 
-                cursorY = lineY;
+                cursorY = lineY + 1; // Small spacing between list items
               }
-              cursorY += 2; // spacing after list
+              cursorY += 5; // More spacing after list
               break;
               
             case 'paragraph':
@@ -532,29 +574,35 @@
               doc.setTextColor(ai.textR, ai.textG, ai.textB);
               
               const lines = renderMarkdownText(doc, element.text, margin.left, maxWidth);
-              const blockHeight = lines.length * ai.lineH;
+              const blockHeight = lines.length * ai.lineH + 4;
               
               addPageIfNeeded(blockHeight);
               
               for (const line of lines) {
-                if (element.hasBold && line.includes('**')) {
-                  renderBoldText(doc, line, margin.left, cursorY);
+                if (typeof line === 'object' && line.hasBold) {
+                  renderFormattedLine(doc, line, margin.left, cursorY);
                 } else {
-                  doc.text(line, margin.left, cursorY);
+                  const lineText = typeof line === 'string' ? line : line.text;
+                  if (element.hasBold && lineText.includes('**')) {
+                    renderBoldText(doc, lineText, margin.left, cursorY);
+                  } else {
+                    doc.text(lineText, margin.left, cursorY);
+                  }
                 }
                 cursorY += ai.lineH;
               }
-              cursorY += 2; // spacing after paragraph
+              cursorY += 4; // More spacing after paragraph
               break;
               
             case 'spacing':
-              cursorY += element.height || 2;
+              cursorY += element.height || 4; // Increased default spacing
               break;
           }
         }
       }
 
       function renderBoldText(doc, text, x, y) {
+        // Handle mixed bold/normal text with proper spacing and font switching
         const parts = text.split(/(\*\*[^*]+\*\*)/);
         let currentX = x;
         
@@ -564,12 +612,32 @@
             const boldText = part.slice(2, -2);
             doc.text(boldText, currentX, y);
             currentX += doc.getTextWidth(boldText);
+          } else if (part.trim()) {
             doc.setFont('helvetica', 'normal');
-          } else {
             doc.text(part, currentX, y);
             currentX += doc.getTextWidth(part);
           }
         }
+        // Reset to normal font after rendering
+        doc.setFont('helvetica', 'normal');
+      }
+
+      // Enhanced function to render text with mixed formatting
+      function renderFormattedLine(doc, lineObj, x, y) {
+        if (typeof lineObj === 'string') {
+          // Simple string, no formatting
+          doc.text(lineObj, x, y);
+          return;
+        }
+        
+        if (!lineObj.hasBold) {
+          // No bold text, render normally
+          doc.text(lineObj.text, x, y);
+          return;
+        }
+        
+        // Render line with mixed formatting
+        renderBoldText(doc, lineObj.text, x, y);
       }
 
       if (transcript.length === 0) {
