@@ -439,10 +439,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  padding: 0 var(--space-sm) 20px;
-  margin-bottom: -20px;
+  padding: 0 var(--space-sm);
   min-height: 0; /* Allows flex shrinking */
   max-width: 860px;
+  z-index: 1;
 }
 
 /* Welcome Message - Properly centered without affecting layout */
@@ -627,6 +627,7 @@ body {
   padding: 0;
   /* allow growth: floor, not ceiling */
   min-height: 45px;
+  z-index: 2;
 }
 
 @keyframes typingPulse {
@@ -773,6 +774,7 @@ body {
   .chat-input-container {
     /* keep anchored at the very bottom without extra gap to prevent drift */
     margin-bottom: 0;
+    background: transparent;
   }
 
   #chat-input {
@@ -850,7 +852,6 @@ body {
   }
 
   .chat-messages {
-    padding: 0;
     max-height: calc(
       100svh - 140px
     ); /* leave room for header + input on mobile */
