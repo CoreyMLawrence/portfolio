@@ -668,7 +668,7 @@
             }
           }
           setTimeout(() => URL.revokeObjectURL(url), 10 * 60 * 1000);
-        }, 700);
+        }, 0);
       } catch (e) {
         hideExportTypingIndicator();
         appendChatMessage('PDF export failed. Please try again.');
@@ -775,7 +775,13 @@
       exportButton.parentNode.replaceChild(newButton, exportButton);
     }
     // Add click handler
-    newButton.addEventListener('click', exportChat);
+    newButton.addEventListener('click', () => {
+      showExportTypingIndicator();
+      setTimeout(() => {
+        hideExportTypingIndicator();
+        exportChat();
+      }, 750);
+    });
   }
 
   // Expose a tiny global API so other scripts can trigger export

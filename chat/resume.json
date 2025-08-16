@@ -7,6 +7,9 @@
     "email": "cmlawrence445@gmail.com",
     "phone": "(828) 773-2391"
   },
+  "location": "Winston-Salem, NC",
+  "timezone": "America/New_York (US Eastern)",
+  "preferred_contact": "Any (no preference)",
   "education": [
     {
       "degree": "Bachelor of Science",
@@ -114,7 +117,8 @@
         "Node.js",
         "GitHub Actions",
         "SEO Optimization"
-      ]
+      ],
+      "proud_of": "I’m especially proud of this Ashton Gray project because it’s been a full-circle kind of challenge. It let me merge my marketing background—like crafting a strong brand story and user flow—with my design and technical skills. It’s been the biggest technical challenge I’ve taken on, spanning backend, frontend, hosting, automated builds, and CMS integration. It pulls together all the areas I enjoy working in."
     }
   ],
   "skills_overview": {
@@ -145,6 +149,16 @@
       "Stakeholder Alignment",
       "Project Management"
     ]
+  },
+  "learning_and_growth": {
+    "industry_trends": "I stay up to date by following AI and web dev news closely and testing new tools as soon as they come out. Recently, I’ve been experimenting with in-browser AI models like Xenova/Mistral to explore lighter, faster user-facing integrations."
+  },
+  "dream_project": {
+    "description": "A personal dream project would be an AI-driven storytelling platform for kids. Users could pick a themed world and become characters in interactive stories. Over time it could scale into longer tales with visuals and voice, making storytelling more playful and personal."
+  },
+  "dream_collaborator": {
+    "choice": "Alan Turing",
+    "reason": "Turing laid the foundation for modern computing. It would be incredible to show him how far things have come in programming and AI, and to learn from how he might approach today’s challenges."
   },
   "professional_traits": {
     "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as if it were his own brand. He is detail-oriented but understands how to prioritize and deliver on time in fast-paced environments.",

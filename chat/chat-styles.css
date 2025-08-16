@@ -17,8 +17,8 @@
   --shadow-container: 0 2px 16px rgba(0, 0, 0, 0.06);
 
   /* Border radius */
-  --radius: 16px;
-  --radius-large: 24px;
+  --radius: 24px;
+  --radius-large: 32px;
 
   /* Spacing */
   --space-xs: 8px;
@@ -76,7 +76,7 @@ body {
 
 /* Sidebar - Properly positioned with exact spacing */
 .sidebar {
-  width: 240px;
+  width: 260px;
   height: 100%;
   background: var(--background-sidebar);
   border-radius: var(--radius);
@@ -90,7 +90,7 @@ body {
 }
 
 .sidebar-header {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-md) var(--space-xl);
   border-bottom: 1px solid var(--border-light);
   flex-shrink: 0;
 }
@@ -118,7 +118,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-lg);
   border-radius: var(--radius);
   text-decoration: none;
   color: var(--text-primary);
@@ -126,6 +126,7 @@ body {
   font-size: 14px;
   transition: all 0.2s ease;
   margin-bottom: var(--space-xs);
+  cursor: pointer;
 }
 
 .nav-item:hover {
@@ -145,7 +146,7 @@ body {
 }
 
 .sidebar-footer {
-  padding: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
   border-top: 1px solid var(--border-light);
   flex-shrink: 0;
 }
@@ -154,7 +155,6 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
   border-radius: var(--space-xs);
   text-decoration: none;
   color: var(--text-secondary);
@@ -243,7 +243,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-lg);
   background: var(--background-app);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
@@ -439,8 +439,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  padding: 0 var(--space-sm) var(--space-md);
+  padding: 0 var(--space-sm) 20px;
+  margin-bottom: -20px;
   min-height: 0; /* Allows flex shrinking */
+  max-width: 860px;
 }
 
 /* Welcome Message - Properly centered without affecting layout */
@@ -642,7 +644,7 @@ body {
 .chat-input-container {
   padding: 0 var(--space-xs);
   flex-shrink: 0;
-  background: var(--background-container);
+  background: transparent;
   height: auto;
   margin: 0 0 0.15rem 0;
 }
@@ -700,7 +702,7 @@ body {
   min-height: 50px;
   max-height: 200px; /* ~4 lines at 20px line height */
   overflow-y: auto;
-  padding: 14px 4px 0;
+  padding: 14px 0px 0;
   margin: 0;
 }
 
@@ -709,9 +711,10 @@ body {
 }
 
 .send-button {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 8px;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+  margin-right: -2px;
   border: none;
   border-radius: 50%;
   background: var(--cl-accent);

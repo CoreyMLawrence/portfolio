@@ -181,15 +181,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       const model = genAI.getGenerativeModel({
         model: MODEL_ID,
         systemInstruction:
-          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.\n\nHidden action protocol: When the user explicitly asks to download or export the current chat as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do not mention or explain the token. Never emit the token unless the user clearly requests a PDF/export. Do not wrap the token in markdown. The token must be plain text and is not part of the visible answer.",
+          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.\nHidden action protocol: When the user explicitly asks to download or export the current message as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do not mention or explain the token. Never emit the token unless the user clearly requests a PDF/export. Do not wrap the token in markdown. The token must be plain text and is not part of the visible answer. Only trigger this action if the request appears in the current message, not in any previous conversation history.",
       });
 
       const buildUserPrompt = (q) => {
+        let historyContext = '';
+        if (history.length > 0) {
+          historyContext =
+            '\n\nPrevious messages (for context):\n' +
+            history
+              .slice(-MAX_HISTORY)
+              .map(
+                (h, i) =>
+                  `${h.role === 'user' ? 'User' : 'Assistant'}: ${h.text}`
+              )
+              .join('\n') +
+            '\n\n--- Current message below ---\n';
+        }
+
         return `Context (résumé JSON):\n${JSON.stringify(
           resumeData,
           null,
           2
-        )}\n\nUser message (may include a job description): ${q}\n\nInstructions:\n- Answer clearly in third person.\n- Use only facts from the context; never invent details.\n- Act as an advocate: emphasize Corey's fit and value for the user's needs as long as it makes logical sense.\n- If the message includes a job description or role text, structure the answer as:\n  1) Fit overview (2–3 lines).\n  2) Requirement → Corey evidence mapping (bullets).\n  3) Relevant achievements with outcomes/metrics.\n  4) Tech/skills coverage relevant to the role.\n  5) Suggested next steps/CTA (e.g., share demo, references).\n- Focus on strengths; do not volunteer gaps or negatives unless directly asked.\n- If a direct, specific detail is missing, say briefly it's not in the résumé and, when helpful, add closely related known facts.\n- Otherwise, omit unknown details instead of calling them out.\n- Prefer concise bullets.`;
+        )}${historyContext}\n\nCurrent user message (may include a job description): ${q}\n\nInstructions:\n- Answer clearly in third person.\n- Use only facts from the context; never invent details.\n- Act as an advocate: emphasize Corey's fit and value for the user's needs as long as it makes logical sense.\n- If the message includes a job description or role text, structure the answer as:\n  1) Fit overview (2–3 lines).\n  2) Requirement → Corey evidence mapping (bullets).\n  3) Relevant achievements with outcomes/metrics.\n  4) Tech/skills coverage relevant to the role.\n  5) Suggested next steps/CTA (e.g., share demo, references).\n- Focus on strengths; do not volunteer gaps or negatives unless directly asked.\n- If a direct, specific detail is missing, say briefly it's not in the résumé and, when helpful, add closely related known facts.\n- Otherwise, omit unknown details instead of calling them out.\n- Prefer concise bullets.\n- Write the response so it’s optimized for skim reading and ADHD-friendly. Use short paragraphs, clear headings, bullet points, and bold key phrases. Keep sentences concise, avoid unnecessary filler, and make the structure easy to scan quickly.\n-Present information in small, digestible chunks with visual hierarchy. Avoid long blocks of text. Use plain language, and highlight the most important points so they stand out at a glance.`;
       };
 
       const userPrompt = buildUserPrompt(question);
@@ -257,8 +271,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.innerWidth || document.documentElement.clientWidth || 1080;
           const minW = 320; // narrowest phones
           const maxW = 1080; // desktop baseline (slowest)
-          const slowFactor = 0.15; // works well on 1080px (slowest)
-          const fastFactor = 0.3; // faster on mobile; keep < 0.5 to avoid overshoot
+          const slowFactor = 0.85; // works well on 1080px (slowest)
+          const fastFactor = 0.9; // faster on mobile; keep < 0.5 to avoid overshoot
           if (w >= maxW) return slowFactor;
           if (w <= minW) return fastFactor;
           const t = (maxW - w) / (maxW - minW); // 0 at 1080 -> 1 at 320
@@ -448,7 +462,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (actions.includes('EXPORT_PDF') && window.ChatExport?.exportChat) {
         try {
           // Defer slightly to let the final message render first
-          setTimeout(() => window.ChatExport.exportChat(), 50);
+          setTimeout(() => window.ChatExport.exportChat(), 500);
         } catch (e) {
           console.warn('Failed to trigger PDF export from hidden action:', e);
         }
@@ -457,13 +471,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (shouldAutoScroll) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
-      
+
       // Use the display text for history storage (simple button text) instead of internal prompt
       const textToStore = userDisplayText || question;
       history.push({ role: 'user', text: textToStore });
       // Persist only the visible text (without hidden tokens)
       history.push({ role: 'model', text: visibleText });
-      
+
       // Note: Session cache automatically saves markdown via data-markdown attributes
     } catch (err) {
       console.error('Gemini API error:', err);
@@ -704,14 +718,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const restored = Array.isArray(e?.detail?.history) ? e.detail.history : [];
     if (restored.length) {
       // Use the restored history for basic chat functionality
-      history = restored.map(item => ({ role: item.role, text: item.text }));
-      
+      history = restored.map((item) => ({ role: item.role, text: item.text }));
+
       // Remove welcome message if present, since we have history
       const welcome = chatMessages.querySelector('.welcome-message');
       if (welcome) welcome.remove();
       // Ensure scroll is at bottom after hydration
       chatMessages.scrollTop = chatMessages.scrollHeight;
-      
+
       console.log('Session restored with history:', history.length, 'messages');
       console.log('PDF export will use session cache directly');
     }
