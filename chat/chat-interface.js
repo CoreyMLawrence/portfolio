@@ -48,8 +48,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chat integration (migrated to /chat)
   let resumeData = null;
   let history = [];
+  // Project cards manager
+  let projectCardsManager = null;
   // Markdown renderer holder (set on window for global access)
   let snarkdown = null;
+
+  // Initialize project cards manager
+  if (window.ProjectCardsManager) {
+    projectCardsManager = new window.ProjectCardsManager();
+  }
 
   // Load markdown renderer (snarkdown) dynamically
   try {
@@ -180,8 +187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
         model: MODEL_ID,
-        systemInstruction:
-          "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.\nHidden action protocol: When the user explicitly asks to download or export the current message as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do not mention or explain the token. Never emit the token unless the user clearly requests a PDF/export. Do not wrap the token in markdown. The token must be plain text and is not part of the visible answer. Only trigger this action if the request appears in the current message, not in any previous conversation history.",
+        systemInstruction: getSystemInstruction(),
       });
 
       const buildUserPrompt = (q) => {
@@ -339,8 +345,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           const t = chunk?.text?.() || '';
           if (!t) continue;
           buffer += t;
-          // While streaming, render but suppress a trailing hidden token if it appears
-          const { visibleText } = stripHiddenAction(buffer);
+          // While streaming, render but suppress any trailing tokens
+          let visibleText;
+          if (projectCardsManager) {
+            const result = projectCardsManager.processProjectTokens(buffer);
+            visibleText = stripHiddenActionForPDF(result.visibleText).visibleText;
+          } else {
+            visibleText = stripHiddenAction(buffer).visibleText;
+          }
           contentEl.innerHTML = markdownToHtml(visibleText);
           // Update data-markdown attribute with the raw markdown
           aiDiv.setAttribute('data-markdown', visibleText);
@@ -454,8 +466,36 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // Detect and handle hidden actions; remove tokens from display
-      const { visibleText, actions } = stripHiddenAction(answer);
+      let visibleText, actions, actionData;
+      
+      if (projectCardsManager) {
+        // Use the new project cards manager for processing
+        const result = projectCardsManager.processProjectTokens(answer);
+        visibleText = result.visibleText;
+        actions = result.actions;
+        actionData = result.actionData;
+        
+        // Also check for PDF export action
+        const pdfResult = stripHiddenActionForPDF(visibleText);
+        visibleText = pdfResult.visibleText;
+        if (pdfResult.actions.includes('EXPORT_PDF')) {
+          actions.push('EXPORT_PDF');
+        }
+      } else {
+        // Fallback to old method
+        const result = stripHiddenAction(answer);
+        visibleText = result.visibleText;
+        actions = result.actions;
+        actionData = result.actionData;
+      }
+      
       contentEl.innerHTML = markdownToHtml(visibleText);
+
+      // Handle project cards injection using the new manager
+      if (projectCardsManager && (actions.includes('SHOW_PROJECTS') || actions.includes('SHOW_PROJECT'))) {
+        projectCardsManager.injectProjectCards(contentEl, visibleText, actions, actionData);
+      }
+
       // Update data-markdown attribute with the final raw markdown
       aiDiv.setAttribute('data-markdown', visibleText);
       // If model requested a PDF export, trigger it without showing the token
@@ -489,25 +529,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Parse hidden action token(s) at the end of the text and return visible text + actions
-  // Syntax: token must appear at the very end of the message, on its own line
-  // Example: "...normal content...\n[[ACTION:EXPORT_PDF]]"
-  function stripHiddenAction(text) {
+  // Generate system instruction based on current session state
+  function getSystemInstruction() {
+    const baseInstruction = "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.";
+    
+    const pdfProtocol = "Hidden action protocol: When the user explicitly asks to download or export the current message as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line.";
+    
+    // Get project instructions from the manager
+    const projectInstructions = projectCardsManager ? projectCardsManager.getProjectInstructions() : "";
+    
+    const tokenClosing = " Do not mention or explain these tokens. The tokens must be plain text and are not part of the visible answer.";
+    
+    return baseInstruction + "\n\n" + pdfProtocol + projectInstructions + tokenClosing;
+  }
+
+  // PDF-only action parser (for use with new project manager)
+  function stripHiddenActionForPDF(text) {
     const actions = [];
     if (!text) return { visibleText: '', actions };
     let out = String(text);
+    // Only look for PDF export action at the end
+    const actionRe = /\n?\s*\[\[ACTION:EXPORT_PDF\]\]\s*$/;
+    if (actionRe.test(out)) {
+      actions.push('EXPORT_PDF');
+      out = out.replace(actionRe, '');
+    }
+    return { visibleText: out.trimEnd(), actions };
+  }
+
+  // Legacy action parser (fallback)
+  function stripHiddenAction(text) {
+    const actions = [];
+    const actionData = {};
+    if (!text) return { visibleText: '', actions, actionData };
+    let out = String(text);
     // Support multiple actions stacked at the end, each on its own line
     // Only match at the end of the string to avoid accidental capture in code blocks
-    const actionRe = /\n?\s*\[\[ACTION:([A-Z_]+)\]\]\s*$/;
+    // Updated regex to capture action parameters (e.g., project names)
+    const actionRe = /\n?\s*\[\[ACTION:([A-Z_]+)(?::([^\]]+))?\]\]\s*$/;
     let m;
     let guard = 0;
     while ((m = out.match(actionRe)) && guard < 5) {
       guard++;
       const action = m[1];
-      if (action && !actions.includes(action)) actions.push(action);
+      const param = m[2];
+      if (action && !actions.includes(action)) {
+        actions.push(action);
+        if (param) {
+          actionData[action] = param;
+        }
+      }
       out = out.replace(actionRe, '');
     }
-    return { visibleText: out.trimEnd(), actions };
+    return { visibleText: out.trimEnd(), actions, actionData };
   }
 
   function addMessage(sender, text) {
@@ -782,6 +856,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         chatMessages.scrollTop = 0;
         // Reset in-memory history
         history = [];
+        // Reset project cards manager
+        if (projectCardsManager) {
+          projectCardsManager.reset();
+        }
         // Note: Session cache clears automatically when clear button is clicked
         // Delegated listener covers newly created chips automatically
       }
