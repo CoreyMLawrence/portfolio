@@ -72,6 +72,11 @@ body {
   gap: var(--space-md);
   flex: 1;
   min-width: 0;
+  transform-origin: center;
+  will-change: transform, opacity;
+  /* Initial animation state */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
 }
 
 /* Sidebar - Properly positioned with exact spacing */
@@ -174,7 +179,7 @@ body {
   flex-direction: column;
   padding: var(--space-md);
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
   min-width: 0; /* Prevents flex item from growing beyond container */
 }
 
@@ -192,6 +197,11 @@ body {
   flex-direction: column;
   padding: var(--space-md);
   gap: 1rem;
+  transform-origin: center;
+  will-change: transform, opacity;
+  /* Initial animation state for desktop only */
+  opacity: 0;
+  transform: translateX(30px) scale(0.98);
 }
 
 .profile-header {
@@ -388,14 +398,15 @@ body {
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
-  max-width: 6px;
-  max-height: 6px;
-  min-width: 6px;
-  min-height: 6px;
+  width: 8px;
+  height: 8px;
+  max-width: 8px;
+  max-height: 8px;
+  min-width: 8px;
+  min-height: 8px;
   border-radius: 50%;
   background: #34c759;
+  transform-origin: center;
 }
 
 .chat-actions {
@@ -458,7 +469,7 @@ body {
 }
 
 .welcome-message h3 {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 var(--space-sm) 0;
@@ -470,6 +481,9 @@ body {
   line-height: 1.6;
   margin: 0 0 var(--space-lg) 0;
   max-width: 450px;
+  /* Initially hidden for animation */
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .suggestion-chips {
@@ -477,6 +491,9 @@ body {
   flex-wrap: wrap;
   gap: var(--space-xs);
   justify-content: center;
+  /* Initially hidden for animation */
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .suggestion-chip {
@@ -487,8 +504,10 @@ body {
   font-size: 13px;
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   font-weight: 500;
+  transform-origin: center;
+  will-change: transform;
 }
 
 .suggestion-chip:hover {
@@ -659,6 +678,9 @@ body {
   .chat-shell {
     flex: 1 1 auto;
     width: 100%;
+    /* Reset animation state for medium screens where profile is hidden */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
   }
 }
 
