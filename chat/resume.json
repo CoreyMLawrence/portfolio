@@ -19,6 +19,92 @@
       "honors": "Graduated cum laude"
     }
   ],
+  "featured_projects": [
+    {
+      "name": "Comfort Airlines",
+      "subtitle": "Airline Simulator",
+      "technologies": ["Python", "JavaScript", "HTML5", "CSS3"],
+      "github_url": "https://github.com/CoreyMLawrence/Comfort-Airlines",
+      "description": "A comprehensive airline management simulator that uses advanced algorithms to maximize profit in air scheduling operations. Features an intuitive user interface that makes complex data analysis accessible, allowing users to navigate ticketing systems, scheduling operations, and financial management effortlessly.",
+      "key_features": [
+        "Advanced profit optimization algorithms for airline scheduling",
+        "Comprehensive ticketing and reservation management system",
+        "Real-time financial operations tracking and reporting",
+        "User-friendly interface that simplifies complex airline data",
+        "Multi-faceted airline operations simulation including crew, aircraft, and route management"
+      ],
+      "technical_highlights": [
+        "Algorithm design for complex scheduling optimization",
+        "Data visualization for airline operations analytics",
+        "Full-stack implementation with Python backend and JavaScript frontend"
+      ]
+    },
+    {
+      "name": "Music Player PWA",
+      "subtitle": "Progressive Web App",
+      "technologies": ["JavaScript", "HTML5", "CSS3", "PWA", "Service Workers"],
+      "live_url": "https://coreylawrencemusic.duckdns.org",
+      "description": "A sophisticated Progressive Web App music player that offers efficient audio playbook with dynamic song management capabilities. Features intelligent audio preloading based on network connectivity, offline functionality, and seamless integration with device media controls.",
+      "key_features": [
+        "Offline capability - works without internet after initial load",
+        "Cross-platform installation on iOS and Android devices",
+        "Intelligent audio preloading based on network conditions",
+        "Integration with Media Session API for native device controls",
+        "Dynamic playlist management and audio library organization",
+        "Responsive design optimized for both mobile and desktop experiences"
+      ],
+      "technical_highlights": [
+        "Advanced JavaScript for audio management and buffering",
+        "Service Worker implementation for offline functionality",
+        "PWA architecture following modern web standards",
+        "Media Session API integration for system-level audio controls",
+        "Performance optimization for various network conditions"
+      ]
+    },
+    {
+      "name": "DevolveAI",
+      "subtitle": "AI-Powered Decompiler",
+      "technologies": ["Python", "Google Gemini AI", "JavaScript", "PHP"],
+      "description": "An innovative AI-powered tool that transforms compiled executables into readable, understandable source code through a simple web interface. Makes reverse engineering accessible to developers at all skill levels by eliminating the need for complex software installations and extensive training.",
+      "key_features": [
+        "AI-powered decompilation of executable files into readable code",
+        "Web-based interface accessible from any browser",
+        "Refine feature for code language conversion and comment addition",
+        "Beginner-friendly approach to reverse engineering",
+        "Support for multiple programming languages in output",
+        "Customizable code formatting and documentation generation"
+      ],
+      "technical_highlights": [
+        "Integration with Google Gemini AI for intelligent code analysis",
+        "Multi-language backend supporting Python and PHP",
+        "Advanced file processing and executable analysis",
+        "Real-time AI processing with user-friendly feedback",
+        "Cross-platform web deployment for universal accessibility"
+      ]
+    },
+    {
+      "name": "AdventureAI",
+      "subtitle": "AI-Powered Adventure Game",
+      "technologies": ["JavaScript", "Google Gemini AI", "HTML5", "CSS3"],
+      "live_url": "https://adventureai.duckdns.org/",
+      "description": "An engaging choose-your-own-adventure game powered by AI that creates dynamic, personalized storytelling experiences. Features vibrant visuals, responsive design, and intelligent narrative generation that ensures each playthrough offers a unique adventure with compelling story branches.",
+      "key_features": [
+        "Dynamic AI-generated storytelling with unique narratives each session",
+        "12 different adventure settings to shape narrative direction",
+        "Shared gameplay database allowing users to explore others' adventures",
+        "Fully responsive design optimized for both mobile and desktop",
+        "Humorous and engaging content with rich visual presentation",
+        "Real-time story adaptation based on player choices"
+      ],
+      "technical_highlights": [
+        "Advanced AI integration for dynamic content generation",
+        "Real-time story branching and narrative management",
+        "Database architecture for shared user experiences",
+        "Responsive web design with mobile-first approach",
+        "Performance optimization for real-time AI interactions"
+      ]
+    }
+  ],
   "career": [
     {
       "title": "Marketing Specialist",
@@ -96,9 +182,9 @@
       "location": "Remote",
       "start_date": "2025-03",
       "end_date": "Present",
-      "summary": "Leads the full rebuild and deployment of a real estate development company’s web platform, from architecture to front-end experience.",
+      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, from architecture to front-end experience.",
       "key_responsibilities": [
-        "Rebuilt Ashton Gray’s website from scratch using Eleventy, Sanity CMS, and modular design principles.",
+        "Rebuilt Ashton Gray's website from scratch using Eleventy, Sanity CMS, and modular design principles.",
         "Hand-coded responsive front-end with HTML, CSS, JavaScript, and GSAP animations.",
         "Connected Sanity CMS content to dynamic Nunjucks templates for maintainable rendering.",
         "Developed Node-based scripts for CMS data fetching, image caching, and automated build triggers.",
@@ -118,7 +204,7 @@
         "GitHub Actions",
         "SEO Optimization"
       ],
-      "proud_of": "I’m especially proud of this Ashton Gray project because it’s been a full-circle kind of challenge. It let me merge my marketing background—like crafting a strong brand story and user flow—with my design and technical skills. It’s been the biggest technical challenge I’ve taken on, spanning backend, frontend, hosting, automated builds, and CMS integration. It pulls together all the areas I enjoy working in."
+      "proud_of": "I'm especially proud of this Ashton Gray project because it's been a full-circle kind of challenge. It let me merge my marketing background—like crafting a strong brand story and user flow—with my design and technical skills. It's been the biggest technical challenge I've taken on, spanning backend, frontend, hosting, automated builds, and CMS integration. It pulls together all the areas I enjoy working in."
     }
   ],
   "skills_overview": {
@@ -151,14 +237,14 @@
     ]
   },
   "learning_and_growth": {
-    "industry_trends": "I stay up to date by following AI and web dev news closely and testing new tools as soon as they come out. Recently, I’ve been experimenting with in-browser AI models like Xenova/Mistral to explore lighter, faster user-facing integrations."
+    "industry_trends": "I stay up to date by following AI and web dev news closely and testing new tools as soon as they come out. Recently, I've been experimenting with in-browser AI models like Xenova/Mistral to explore lighter, faster user-facing integrations."
   },
   "dream_project": {
     "description": "A personal dream project would be an AI-driven storytelling platform for kids. Users could pick a themed world and become characters in interactive stories. Over time it could scale into longer tales with visuals and voice, making storytelling more playful and personal."
   },
   "dream_collaborator": {
     "choice": "Alan Turing",
-    "reason": "Turing laid the foundation for modern computing. It would be incredible to show him how far things have come in programming and AI, and to learn from how he might approach today’s challenges."
+    "reason": "Turing laid the foundation for modern computing. It would be incredible to show him how far things have come in programming and AI, and to learn from how he might approach today's challenges."
   },
   "professional_traits": {
     "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as if it were his own brand. He is detail-oriented but understands how to prioritize and deliver on time in fast-paced environments.",
