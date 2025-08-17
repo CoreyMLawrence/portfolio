@@ -71,6 +71,7 @@ class ChatIntroAnimations {
       gsap.set(contentElements, {
         opacity: 1,
         y: 0,
+        pointerEvents: 'auto',
       });
     }
 
@@ -136,18 +137,10 @@ class ChatIntroAnimations {
   }
   createTimeline() {
     this.isAnimating = true;
+    
     this.timeline = gsap.timeline({
       onComplete: () => {
         this.isAnimating = false;
-        // Re-enable interactions - with null checks
-        const welcomeP = document.querySelector('.welcome-message p');
-        const suggestionChips = document.querySelector('.suggestion-chips');
-        const elementsToEnable = [welcomeP, suggestionChips].filter((el) => el);
-        if (elementsToEnable.length > 0) {
-          gsap.set(elementsToEnable, {
-            pointerEvents: 'auto',
-          });
-        }
       },
     });
 
@@ -159,6 +152,14 @@ class ChatIntroAnimations {
     const statusDot = document.querySelector('.status-dot');
     const welcomeP = document.querySelector('.welcome-message p');
     const suggestionChips = document.querySelector('.suggestion-chips');
+
+    // Enable interactions immediately - don't wait for animation completion
+    const elementsToEnable = [welcomeP, suggestionChips].filter((el) => el);
+    if (elementsToEnable.length > 0) {
+      gsap.set(elementsToEnable, {
+        pointerEvents: 'auto',
+      });
+    }
 
     // 1. Main containers entrance (0s start) - only if element exists
     if (chatShell) {
