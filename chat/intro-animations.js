@@ -152,7 +152,6 @@ class ChatIntroAnimations {
     });
 
     const tl = this.timeline;
-    const isDesktop = window.innerWidth > 1050;
 
     // Query elements with null checks
     const chatShell = document.querySelector('.chat-shell');
@@ -177,7 +176,7 @@ class ChatIntroAnimations {
     }
 
     // 2. Profile shell (desktop only, overlapped) - only if element exists
-    if (profileShell && isDesktop) {
+    if (profileShell) {
       tl.to(
         profileShell,
         {
