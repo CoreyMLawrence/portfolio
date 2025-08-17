@@ -105,7 +105,6 @@ class ChatIntroAnimations {
       gsap.set(elementsToHide, {
         opacity: 0,
         y: 20,
-        pointerEvents: 'none',
       });
     }
   }
@@ -137,7 +136,7 @@ class ChatIntroAnimations {
   }
   createTimeline() {
     this.isAnimating = true;
-    
+
     this.timeline = gsap.timeline({
       onComplete: () => {
         this.isAnimating = false;
@@ -152,14 +151,6 @@ class ChatIntroAnimations {
     const statusDot = document.querySelector('.status-dot');
     const welcomeP = document.querySelector('.welcome-message p');
     const suggestionChips = document.querySelector('.suggestion-chips');
-
-    // Enable interactions immediately - don't wait for animation completion
-    const elementsToEnable = [welcomeP, suggestionChips].filter((el) => el);
-    if (elementsToEnable.length > 0) {
-      gsap.set(elementsToEnable, {
-        pointerEvents: 'auto',
-      });
-    }
 
     // 1. Main containers entrance (0s start) - only if element exists
     if (chatShell) {
@@ -198,7 +189,7 @@ class ChatIntroAnimations {
     tl.call(() => this.startTyping(), null, typingStartTime);
 
     // 5. Welcome content reveal (after typing completes) - only if elements exist
-    const contentStartTime = typingStartTime + typingDuration + 0.3;
+    const contentStartTime = typingStartTime + typingDuration - 0.1;
 
     if (welcomeP) {
       tl.to(
@@ -283,7 +274,7 @@ class ChatIntroAnimations {
           scale: 1.12,
           y: -2,
           filter: 'blur(0px)',
-          duration: 0.22,
+          duration: 0.3,
           ease: 'power3.out',
           onStart: () => {
             // Subtle fade-in shadow for premium effect
@@ -308,7 +299,7 @@ class ChatIntroAnimations {
     tl.to(
       welcomeH3,
       {
-        scale: 1.03,
+        scale: 1,
         duration: 0.18,
         ease: 'power2.out',
         yoyo: true,

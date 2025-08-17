@@ -546,6 +546,7 @@ body {
   /* Initially hidden for animation */
   opacity: 0;
   transform: translateY(20px);
+  max-width: 600px;
 }
 
 .suggestion-chip {

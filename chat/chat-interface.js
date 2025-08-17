@@ -708,10 +708,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function showDeleteConfirmation() {
     if (isConfirming) return;
-    
+
     isConfirming = true;
     deleteButton.classList.add('confirming');
-    
+
     // Auto-hide after 3 seconds
     deleteTimeout = setTimeout(() => {
       hideDeleteConfirmation();
@@ -720,10 +720,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function hideDeleteConfirmation() {
     if (!isConfirming) return;
-    
+
     isConfirming = false;
     deleteButton.classList.remove('confirming');
-    
+
     if (deleteTimeout) {
       clearTimeout(deleteTimeout);
       deleteTimeout = null;
@@ -735,7 +735,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Visual feedback - brief deletion state
     deleteButton.classList.add('deleting');
-    
+
     setTimeout(() => {
       // Remove all messages except welcome
       const messages = chatMessages.querySelectorAll('.message');
@@ -753,6 +753,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button class="suggestion-chip">Tell me about Corey's projects</button>
             <button class="suggestion-chip">What technologies does Corey use?</button>
             <button class="suggestion-chip">What is Corey's background?</button>
+            <button class="suggestion-chip">Show me his best work</button>
           </div>`;
         chatMessages.appendChild(wrap);
 
