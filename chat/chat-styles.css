@@ -1059,24 +1059,24 @@ body {
     gap: 0.75rem;
     margin: 0.75rem 0;
   }
-  
+
   .project-card {
     aspect-ratio: 4 / 3;
     border-width: 1px;
     max-width: 280px; /* Smaller max on mobile */
   }
-  
+
   /* Show overlay always on mobile */
   .project-card-overlay {
     transform: translateY(0);
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
     padding: 1.5rem 1rem 1rem;
   }
-  
+
   .project-card-title {
     font-size: 1rem;
   }
-  
+
   .project-card-subtitle {
     font-size: 0.85rem;
   }
@@ -1088,11 +1088,11 @@ body {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
-  
+
   .project-card {
     max-width: 100%; /* Full width on very small screens */
   }
-  
+
   .project-card-overlay {
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
   }

@@ -349,7 +349,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           let visibleText;
           if (projectCardsManager) {
             const result = projectCardsManager.processProjectTokens(buffer);
-            visibleText = stripHiddenActionForPDF(result.visibleText).visibleText;
+            visibleText = stripHiddenActionForPDF(
+              result.visibleText
+            ).visibleText;
           } else {
             visibleText = stripHiddenAction(buffer).visibleText;
           }
@@ -467,14 +469,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Detect and handle hidden actions; remove tokens from display
       let visibleText, actions, actionData;
-      
+
       if (projectCardsManager) {
         // Use the new project cards manager for processing
         const result = projectCardsManager.processProjectTokens(answer);
         visibleText = result.visibleText;
         actions = result.actions;
         actionData = result.actionData;
-        
+
         // Also check for PDF export action
         const pdfResult = stripHiddenActionForPDF(visibleText);
         visibleText = pdfResult.visibleText;
@@ -488,12 +490,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         actions = result.actions;
         actionData = result.actionData;
       }
-      
+
       contentEl.innerHTML = markdownToHtml(visibleText);
 
       // Handle project cards injection using the new manager
-      if (projectCardsManager && (actions.includes('SHOW_PROJECTS') || actions.includes('SHOW_PROJECT'))) {
-        projectCardsManager.injectProjectCards(contentEl, visibleText, actions, actionData);
+      if (
+        projectCardsManager &&
+        (actions.includes('SHOW_PROJECTS') || actions.includes('SHOW_PROJECT'))
+      ) {
+        projectCardsManager.injectProjectCards(
+          contentEl,
+          visibleText,
+          actions,
+          actionData
+        );
       }
 
       // Update data-markdown attribute with the final raw markdown
@@ -531,16 +541,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Generate system instruction based on current session state
   function getSystemInstruction() {
-    const baseInstruction = "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.";
-    
-    const pdfProtocol = "Hidden action protocol: When the user explicitly asks to download or export the current message as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line.";
-    
+    const baseInstruction =
+      "You are 'Corey Portfolio Assistant' — a concise, persuasive advocate for Corey when speaking to hiring managers. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone with no hedging or disclaimers. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, and tech stack when relevant.";
+
+    const pdfProtocol =
+      'Hidden action protocol: When the user explicitly asks to download or export the current message as a PDF, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line.';
+
     // Get project instructions from the manager
-    const projectInstructions = projectCardsManager ? projectCardsManager.getProjectInstructions() : "";
-    
-    const tokenClosing = " Do not mention or explain these tokens. The tokens must be plain text and are not part of the visible answer.";
-    
-    return baseInstruction + "\n\n" + pdfProtocol + projectInstructions + tokenClosing;
+    const projectInstructions = projectCardsManager
+      ? projectCardsManager.getProjectInstructions()
+      : '';
+
+    const tokenClosing =
+      ' Do not mention or explain these tokens. The tokens must be plain text and are not part of the visible answer.';
+
+    return (
+      baseInstruction +
+      '\n\n' +
+      pdfProtocol +
+      projectInstructions +
+      tokenClosing
+    );
   }
 
   // PDF-only action parser (for use with new project manager)

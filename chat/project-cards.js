@@ -15,49 +15,50 @@ class ProjectCardsManager {
         title: 'Comfort Airlines',
         subtitle: 'Airline Simulator',
         image: '../assets/images/comfort-airlines.webp',
-        description: 'Advanced airline scheduling simulator with profit optimization algorithms',
+        description:
+          'Advanced airline scheduling simulator with profit optimization algorithms',
         technologies: ['Python', 'JavaScript', 'HTML', 'CSS'],
-        link: 'https://github.com/CoreyMLawrence/Comfort-Airlines'
+        link: 'https://github.com/CoreyMLawrence/Comfort-Airlines',
       },
       {
         id: 'music-player',
         title: 'Music Player PWA',
         subtitle: 'Progressive Web App',
         image: '../assets/images/music-main.webp',
-        description: 'Offline-capable music player with dynamic preloading and Media Session API',
+        description:
+          'Offline-capable music player with dynamic preloading and Media Session API',
         technologies: ['JavaScript', 'HTML', 'CSS'],
-        link: 'https://coreylawrencemusic.duckdns.org'
+        link: 'https://coreylawrencemusic.duckdns.org',
       },
       {
         id: 'devolve',
         title: 'DevolveAI',
         subtitle: 'AI-Powered Decompiler',
         image: '../assets/images/devolveAI.webp',
-        description: 'AI tool that turns executables into readable code with simple web interface',
+        description:
+          'AI tool that turns executables into readable code with simple web interface',
         technologies: ['Python', 'Gemini AI', 'JavaScript', 'PHP'],
-        link: 'https://github.com/CoreyMLawrence'
+        link: 'https://github.com/CoreyMLawrence',
       },
       {
         id: 'adventureai-player',
         title: 'AdventureAI',
         subtitle: 'AI-Powered Adventure Game',
         image: '../assets/images/AdventureAI-full.webp',
-        description: 'Choose-your-own-adventure game with dynamic storytelling and AI integration',
+        description:
+          'Choose-your-own-adventure game with dynamic storytelling and AI integration',
         technologies: ['JavaScript', 'Gemini AI', 'HTML', 'CSS'],
-        link: 'https://adventureai.duckdns.org/'
-      }
+        link: 'https://adventureai.duckdns.org/',
+      },
     ];
   }
 
   // Generate the AI prompt instructions for project cards
   getProjectInstructions() {
-    if (this.projectCardsShown) {
-      return ""; // No project functionality after first use
-    }
+    // Always provide project functionality (no longer remove after first use)
+    const projectIds = this.projectsData.map((p) => p.id).join(', ');
+    const projectNames = this.projectsData.map((p) => p.title).join(', ');
 
-    const projectIds = this.projectsData.map(p => p.id).join(', ');
-    const projectNames = this.projectsData.map(p => p.title).join(', ');
-    
     return ` You can display interactive project cards anywhere in your response using these tokens:
 - [[ACTION:SHOW_PROJECTS]] - Shows all project cards
 - [[ACTION:SHOW_PROJECT:project-id]] - Shows a specific project card
@@ -73,19 +74,20 @@ Use these tokens anywhere in your response where you want cards to appear. For e
     const actions = [];
     const actionData = {};
     const validTokens = [];
-    
+
     if (!text) return { visibleText: '', actions, actionData, validTokens };
 
     let processedText = text;
-    
+
     // Find all project tokens in the text (not just at the end)
-    const projectTokenRegex = /\[\[ACTION:(SHOW_PROJECTS|SHOW_PROJECT):?([^\]]*)\]\]/g;
+    const projectTokenRegex =
+      /\[\[ACTION:(SHOW_PROJECTS|SHOW_PROJECT):?([^\]]*)\]\]/g;
     let match;
-    
+
     while ((match = projectTokenRegex.exec(text)) !== null) {
       const action = match[1];
       const param = match[2];
-      
+
       if (action === 'SHOW_PROJECTS') {
         if (!actions.includes('SHOW_PROJECTS')) {
           actions.push('SHOW_PROJECTS');
@@ -93,7 +95,7 @@ Use these tokens anywhere in your response where you want cards to appear. For e
         }
       } else if (action === 'SHOW_PROJECT') {
         // Validate project ID
-        if (param && this.projectsData.find(p => p.id === param)) {
+        if (param && this.projectsData.find((p) => p.id === param)) {
           if (!actions.includes('SHOW_PROJECT')) {
             actions.push('SHOW_PROJECT');
             actionData['SHOW_PROJECT'] = actionData['SHOW_PROJECT'] || [];
@@ -108,11 +110,11 @@ Use these tokens anywhere in your response where you want cards to appear. For e
     // Remove all project tokens from the visible text
     processedText = processedText.replace(projectTokenRegex, '').trim();
 
-    return { 
-      visibleText: processedText, 
-      actions, 
-      actionData, 
-      validTokens 
+    return {
+      visibleText: processedText,
+      actions,
+      actionData,
+      validTokens,
     };
   }
 
@@ -133,7 +135,9 @@ Use these tokens anywhere in your response where you want cards to appear. For e
 
   // Generate HTML for project cards grid
   createProjectCardsGrid(projects) {
-    const cardsHtml = projects.map(project => this.createProjectCard(project)).join('');
+    const cardsHtml = projects
+      .map((project) => this.createProjectCard(project))
+      .join('');
     return `
       <div class="project-cards-grid">
         ${cardsHtml}
@@ -143,7 +147,7 @@ Use these tokens anywhere in your response where you want cards to appear. For e
 
   // Generate HTML for individual cards (without grid wrapper)
   createProjectCardsOnly(projects) {
-    return projects.map(project => this.createProjectCard(project)).join('');
+    return projects.map((project) => this.createProjectCard(project)).join('');
   }
 
   // Inject project cards into message content
@@ -160,26 +164,32 @@ Use these tokens anywhere in your response where you want cards to appear. For e
 
     // Process the text to find where tokens were and replace with cards
     let processedHTML = contentEl.innerHTML;
-    
+
     if (actions.includes('SHOW_PROJECTS')) {
       const cardsHtml = this.createProjectCardsOnly(this.projectsData);
       // Add cards to the grid container
       gridContainer.insertAdjacentHTML('beforeend', cardsHtml);
       // Remove any token placeholders from the text
-      processedHTML = processedHTML.replace(/\[\[ACTION:SHOW_PROJECTS\]\]/g, '');
+      processedHTML = processedHTML.replace(
+        /\[\[ACTION:SHOW_PROJECTS\]\]/g,
+        ''
+      );
       this.projectCardsShown = true;
     }
 
     if (actions.includes('SHOW_PROJECT') && actionData.SHOW_PROJECT) {
-      actionData.SHOW_PROJECT.forEach(projectId => {
-        const project = this.projectsData.find(p => p.id === projectId);
+      actionData.SHOW_PROJECT.forEach((projectId) => {
+        const project = this.projectsData.find((p) => p.id === projectId);
         if (project) {
           const cardHtml = this.createProjectCard(project);
           // Add card to the grid container
           gridContainer.insertAdjacentHTML('beforeend', cardHtml);
           // Remove token placeholders from the text
           const tokenPattern = `\\[\\[ACTION:SHOW_PROJECT:${projectId}\\]\\]`;
-          processedHTML = processedHTML.replace(new RegExp(tokenPattern, 'g'), '');
+          processedHTML = processedHTML.replace(
+            new RegExp(tokenPattern, 'g'),
+            ''
+          );
         }
       });
       this.projectCardsShown = true;
@@ -190,10 +200,10 @@ Use these tokens anywhere in your response where you want cards to appear. For e
     tempDiv.innerHTML = processedHTML;
     // Remove any grid containers from the processed HTML to avoid duplicates
     const existingGrids = tempDiv.querySelectorAll('.project-cards-grid');
-    existingGrids.forEach(grid => {
+    existingGrids.forEach((grid) => {
       if (grid !== gridContainer) grid.remove();
     });
-    
+
     // Only update the text content, keeping our grid container
     const textContent = tempDiv.innerHTML;
     if (textContent.trim()) {
@@ -202,19 +212,21 @@ Use these tokens anywhere in your response where you want cards to appear. For e
     }
   }
 
-  // Reset the cards shown flag (called when chat is cleared)
+  // Reset any temporary state (called when chat is cleared)
   reset() {
+    // Note: We no longer disable functionality after first use
+    // This method is kept for future state management if needed
     this.projectCardsShown = false;
   }
 
-  // Check if cards have been shown
+  // Check if cards have been shown (for analytics/tracking)
   hasShownCards() {
     return this.projectCardsShown;
   }
 
   // Get all project IDs for validation
   getValidProjectIds() {
-    return this.projectsData.map(p => p.id);
+    return this.projectsData.map((p) => p.id);
   }
 
   // Add a new project (for future extensibility)
