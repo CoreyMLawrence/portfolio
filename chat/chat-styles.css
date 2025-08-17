@@ -428,13 +428,62 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s ease;
+  transition: background 0.25s ease;
   font-size: 16px;
+  position: relative;
+  overflow: hidden;
 }
 
 .action-btn:hover {
   background: var(--background-app);
   color: var(--cl-accent);
+}
+
+/* Delete button specific styling */
+.delete-btn {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.delete-btn .delete-text {
+  position: absolute;
+  right: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  pointer-events: none;
+}
+
+/* Delete confirmation expanded state */
+.delete-btn.confirming {
+  width: 84px;
+  border-radius: 16px;
+  background: #ff3b30;
+  color: white;
+  padding: 0 12px 0 8px;
+  justify-content: flex-start;
+}
+
+.delete-btn.confirming:hover {
+  background: #d70015;
+  color: white;
+}
+
+.delete-btn.confirming .delete-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.delete-btn.confirming i {
+  margin-right: 8px;
+}
+
+/* Delete success flash animation */
+.delete-btn.deleting {
+  background: #d70015;
+  transform: scale(0.95);
 }
 
 /* Chat Container - Exact height calculations */

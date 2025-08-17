@@ -679,10 +679,64 @@ document.addEventListener('DOMContentLoaded', async () => {
     handleSendMessage();
   });
 
-  // Clear chat functionality
-  const clearButton = document.querySelector('.action-btn[title="Clear Chat"]');
-  if (clearButton) {
-    clearButton.addEventListener('click', () => {
+  // Delete chat confirmation functionality
+  const deleteButton = document.getElementById('delete-chat-btn');
+  let deleteTimeout = null;
+  let isConfirming = false;
+
+  if (deleteButton) {
+    deleteButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!isConfirming) {
+        // First click - show confirmation
+        showDeleteConfirmation();
+      } else {
+        // Second click - execute deletion
+        executeDelete();
+      }
+    });
+
+    // Hide confirmation when clicking outside
+    document.addEventListener('click', (e) => {
+      if (isConfirming && !deleteButton.contains(e.target)) {
+        hideDeleteConfirmation();
+      }
+    });
+  }
+
+  function showDeleteConfirmation() {
+    if (isConfirming) return;
+    
+    isConfirming = true;
+    deleteButton.classList.add('confirming');
+    
+    // Auto-hide after 3 seconds
+    deleteTimeout = setTimeout(() => {
+      hideDeleteConfirmation();
+    }, 3000);
+  }
+
+  function hideDeleteConfirmation() {
+    if (!isConfirming) return;
+    
+    isConfirming = false;
+    deleteButton.classList.remove('confirming');
+    
+    if (deleteTimeout) {
+      clearTimeout(deleteTimeout);
+      deleteTimeout = null;
+    }
+  }
+
+  function executeDelete() {
+    if (!isConfirming) return;
+
+    // Visual feedback - brief deletion state
+    deleteButton.classList.add('deleting');
+    
+    setTimeout(() => {
       // Remove all messages except welcome
       const messages = chatMessages.querySelectorAll('.message');
       messages.forEach((message) => message.remove());
@@ -730,7 +784,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Note: Session cache clears automatically when clear button is clicked
         // Delegated listener covers newly created chips automatically
       }
-    });
+
+      // Reset button state
+      deleteButton.classList.remove('deleting');
+      hideDeleteConfirmation();
+    }, 200);
   }
 
   // Download PDF functionality moved to export-pdf.js

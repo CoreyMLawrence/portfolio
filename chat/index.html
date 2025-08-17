@@ -109,8 +109,13 @@
               </p>
             </div>
             <div class="chat-actions">
-              <button class="action-btn" title="Clear Chat">
+              <button
+                class="action-btn delete-btn"
+                title="Clear Chat"
+                id="delete-chat-btn"
+              >
                 <i class="fas fa-trash-alt"></i>
+                <span class="delete-text">Delete</span>
               </button>
               <button
                 class="action-btn"
@@ -246,7 +251,7 @@
 
     <!-- GSAP Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
+
     <script src="export-pdf.js"></script>
     <script src="chat-interface.js"></script>
     <script src="session-cache.js"></script>
