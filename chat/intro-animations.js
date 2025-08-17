@@ -56,7 +56,7 @@ class ChatIntroAnimations {
     const welcomeH3 = document.querySelector('.welcome-message h3');
 
     // Only animate elements that exist
-    const containerElements = [chatShell, profileShell].filter(el => el);
+    const containerElements = [chatShell, profileShell].filter((el) => el);
     if (containerElements.length > 0) {
       gsap.set(containerElements, {
         opacity: 1,
@@ -66,7 +66,7 @@ class ChatIntroAnimations {
       });
     }
 
-    const contentElements = [welcomeP, suggestionChips].filter(el => el);
+    const contentElements = [welcomeP, suggestionChips].filter((el) => el);
     if (contentElements.length > 0) {
       gsap.set(contentElements, {
         opacity: 1,
@@ -75,7 +75,8 @@ class ChatIntroAnimations {
     }
 
     if (welcomeH3) {
-      welcomeH3.textContent = this.originalText || 'Ask me anything about Corey';
+      welcomeH3.textContent =
+        this.originalText || 'Ask me anything about Corey';
       // Show all characters immediately if they were wrapped in spans
       const spans = welcomeH3.querySelectorAll('span');
       if (spans.length > 0) {
@@ -88,16 +89,17 @@ class ChatIntroAnimations {
     // Set up h3 with full text but hidden characters for typing animation
     const welcomeH3 = document.querySelector('.welcome-message h3');
     if (welcomeH3) {
-      this.originalText = welcomeH3.textContent || 'Ask me anything about Corey';
+      this.originalText =
+        welcomeH3.textContent || 'Ask me anything about Corey';
       this.prepareStaticLayout();
     }
 
     // Ensure welcome content is hidden - with null checks
     const welcomeP = document.querySelector('.welcome-message p');
     const suggestionChips = document.querySelector('.suggestion-chips');
-    
+
     // Only animate elements that exist
-    const elementsToHide = [welcomeP, suggestionChips].filter(el => el);
+    const elementsToHide = [welcomeP, suggestionChips].filter((el) => el);
     if (elementsToHide.length > 0) {
       gsap.set(elementsToHide, {
         opacity: 0,
@@ -110,7 +112,7 @@ class ChatIntroAnimations {
   prepareStaticLayout() {
     const element = document.querySelector('.welcome-message h3');
     if (!element) return;
-    
+
     const text = this.originalText;
 
     // Clear and wrap each character in a span for individual control
@@ -140,7 +142,7 @@ class ChatIntroAnimations {
         // Re-enable interactions - with null checks
         const welcomeP = document.querySelector('.welcome-message p');
         const suggestionChips = document.querySelector('.suggestion-chips');
-        const elementsToEnable = [welcomeP, suggestionChips].filter(el => el);
+        const elementsToEnable = [welcomeP, suggestionChips].filter((el) => el);
         if (elementsToEnable.length > 0) {
           gsap.set(elementsToEnable, {
             pointerEvents: 'auto',
@@ -189,44 +191,7 @@ class ChatIntroAnimations {
       ); // Start 0.2s after chat shell
     }
 
-    // 3. Status dot animation sequence (overlapped with containers) - only if element exists
-    if (statusDot) {
-      tl.to(
-        statusDot,
-        {
-          duration: 0.5,
-          scale: 1.3,
-          ease: 'power2.out',
-        },
-        0.6
-      )
-        .to(statusDot, {
-          duration: 0.3,
-          scale: 0.8,
-          ease: 'power2.inOut',
-        })
-        .to(statusDot, {
-          duration: 0.4,
-          scale: 1,
-          ease: 'elastic.out(1, 0.3)',
-        })
-        .to(
-          statusDot,
-          {
-            duration: 0.3,
-            backgroundColor: '#30d158',
-            ease: 'power2.out',
-          },
-          0.6
-        ) // Start with scale animation
-        .to(statusDot, {
-          duration: 0.6,
-          backgroundColor: '#34c759',
-          ease: 'power2.out',
-        });
-    }
-
-    // 4. Welcome message typing (starts overlapped with status dot animation)
+    // 3. Welcome message typing (starts overlapped with status dot animation)
     const typingStartTime = 0.2;
     const typingDuration = (this.originalText.length * 60) / 1000; // Simplified timing
 
@@ -259,6 +224,35 @@ class ChatIntroAnimations {
         },
         contentStartTime + 0.2
       ); // Stagger slightly
+    }
+
+    // 4. Status dot animation sequence — play as the final step so the dot animates last
+    if (statusDot) {
+      tl.to(statusDot, {
+        duration: 0.5,
+        scale: 1.3,
+        ease: 'power2.out',
+      })
+        .to(statusDot, {
+          duration: 0.3,
+          scale: 0.8,
+          ease: 'power2.inOut',
+        })
+        .to(statusDot, {
+          duration: 0.4,
+          scale: 1,
+          ease: 'elastic.out(1, 0.3)',
+        })
+        .to(statusDot, {
+          duration: 0.3,
+          backgroundColor: '#30d158',
+          ease: 'power2.out',
+        }) // color pulse
+        .to(statusDot, {
+          duration: 0.6,
+          backgroundColor: '#34c759',
+          ease: 'power2.out',
+        });
     }
   }
 
