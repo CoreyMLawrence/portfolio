@@ -815,15 +815,14 @@ body {
 
   /* Sidebar becomes off-canvas panel */
   .sidebar {
-    position: fixed;
-    top: var(--space-sm);
-    left: var(--space-sm);
-    bottom: var(--space-sm);
+    position: fixed !important;
+    top: 0;
+    left: 0;
     width: min(78vw, 320px);
     margin: 0;
-    height: 97.9%;
+    min-height: calc(100% + 4px);
     transform: translateX(-110%);
-    margin-top: -6px;
+    margin-top: -6px !important;
     transition: transform 0.3s ease;
     z-index: 1100; /* above chat content while open */
   }
@@ -881,7 +880,11 @@ body {
     scroll-behavior: auto;
     overflow-anchor: none;
   }
-  /* removed mobile-only focus ring override; now global */
+
+  .sidebar-header {
+    padding: var(--space-lg) var(--space-lg) var(--space-md);
+    border-bottom: 1px solid var(--border-medium);
+  }
 }
 
 /* Scrollbar Styling - Clean and minimal */
