@@ -701,6 +701,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button class="suggestion-chip">What is Corey's background?</button>
           </div>`;
         chatMessages.appendChild(wrap);
+
+        // Ensure welcome elements are visible when recreated (no animation needed)
+        const welcomeP = wrap.querySelector('p');
+        const suggestionChips = wrap.querySelector('.suggestion-chips');
+        if (window.gsap) {
+          gsap.set([welcomeP, suggestionChips], {
+            opacity: 1,
+            y: 0,
+            pointerEvents: 'auto',
+          });
+        } else {
+          // Fallback if GSAP isn't available
+          if (welcomeP) {
+            welcomeP.style.opacity = '1';
+            welcomeP.style.transform = 'translateY(0)';
+          }
+          if (suggestionChips) {
+            suggestionChips.style.opacity = '1';
+            suggestionChips.style.transform = 'translateY(0)';
+            suggestionChips.style.pointerEvents = 'auto';
+          }
+        }
+
         chatMessages.scrollTop = 0;
         // Reset in-memory history
         history = [];

@@ -450,7 +450,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  padding: 0 var(--space-sm);
+  padding: var(--space-lg) var(--space-sm) 0 var(--space-sm);
   min-height: 0; /* Allows flex shrinking */
   max-width: 860px;
   z-index: 1;
@@ -917,9 +917,4 @@ body {
 /* Smooth scroll behavior */
 .chat-messages {
   scroll-behavior: smooth;
-}
-
-/* Ensure proper spacing when welcome message is removed */
-.chat-messages:not(:has(.welcome-message)) {
-  padding-top: var(--space-lg);
 }

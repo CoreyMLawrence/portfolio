@@ -12,9 +12,6 @@ class ChatIntroAnimations {
     this.typingSpeed = 50; // ms per character
     this.originalText = '';
 
-    // Cache elements
-    this.els = {};
-
     // Initialize
     this.init();
   }
@@ -33,7 +30,13 @@ class ChatIntroAnimations {
       return;
     }
 
-    this.cacheElements();
+    // Ensure essential elements exist before starting animations
+    const chatShell = document.querySelector('.chat-shell');
+    if (!chatShell) {
+      console.warn('Essential elements not found, retrying in 100ms');
+      setTimeout(() => this.setup(), 100);
+      return;
+    }
 
     if (this.prefersReducedMotion) {
       this.showAllImmediately();
@@ -44,41 +47,37 @@ class ChatIntroAnimations {
     this.createTimeline();
   }
 
-  cacheElements() {
-    this.els = {
-      chatShell: document.querySelector('.chat-shell'),
-      profileShell: document.querySelector('.profile-shell'),
-      statusDot: document.querySelector('.status-dot'),
-      welcomeH3: document.querySelector('.welcome-message h3'),
-      welcomeP: document.querySelector('.welcome-message p'),
-      suggestionChips: document.querySelector('.suggestion-chips'),
-    };
-
-    // Store original text and prepare for typing
-    if (this.els.welcomeH3) {
-      this.originalText =
-        this.els.welcomeH3.textContent || 'Ask me anything about Corey';
-    }
-  }
-
   showAllImmediately() {
     // Fallback for reduced motion preference
-    gsap.set([this.els.chatShell, this.els.profileShell], {
-      opacity: 1,
-      scale: 1,
-      x: 0,
-      y: 0,
-    });
+    const chatShell = document.querySelector('.chat-shell');
+    const profileShell = document.querySelector('.profile-shell');
+    const welcomeP = document.querySelector('.welcome-message p');
+    const suggestionChips = document.querySelector('.suggestion-chips');
+    const welcomeH3 = document.querySelector('.welcome-message h3');
 
-    gsap.set([this.els.welcomeP, this.els.suggestionChips], {
-      opacity: 1,
-      y: 0,
-    });
+    // Only animate elements that exist
+    const containerElements = [chatShell, profileShell].filter(el => el);
+    if (containerElements.length > 0) {
+      gsap.set(containerElements, {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+      });
+    }
 
-    if (this.els.welcomeH3) {
-      this.els.welcomeH3.textContent = this.originalText;
+    const contentElements = [welcomeP, suggestionChips].filter(el => el);
+    if (contentElements.length > 0) {
+      gsap.set(contentElements, {
+        opacity: 1,
+        y: 0,
+      });
+    }
+
+    if (welcomeH3) {
+      welcomeH3.textContent = this.originalText || 'Ask me anything about Corey';
       // Show all characters immediately if they were wrapped in spans
-      const spans = this.els.welcomeH3.querySelectorAll('span');
+      const spans = welcomeH3.querySelectorAll('span');
       if (spans.length > 0) {
         gsap.set(spans, { opacity: 1 });
       }
@@ -87,20 +86,31 @@ class ChatIntroAnimations {
 
   setInitialStates() {
     // Set up h3 with full text but hidden characters for typing animation
-    if (this.els.welcomeH3) {
+    const welcomeH3 = document.querySelector('.welcome-message h3');
+    if (welcomeH3) {
+      this.originalText = welcomeH3.textContent || 'Ask me anything about Corey';
       this.prepareStaticLayout();
     }
 
-    // Ensure welcome content is hidden
-    gsap.set([this.els.welcomeP, this.els.suggestionChips], {
-      opacity: 0,
-      y: 20,
-      pointerEvents: 'none',
-    });
+    // Ensure welcome content is hidden - with null checks
+    const welcomeP = document.querySelector('.welcome-message p');
+    const suggestionChips = document.querySelector('.suggestion-chips');
+    
+    // Only animate elements that exist
+    const elementsToHide = [welcomeP, suggestionChips].filter(el => el);
+    if (elementsToHide.length > 0) {
+      gsap.set(elementsToHide, {
+        opacity: 0,
+        y: 20,
+        pointerEvents: 'none',
+      });
+    }
   }
 
   prepareStaticLayout() {
-    const element = this.els.welcomeH3;
+    const element = document.querySelector('.welcome-message h3');
+    if (!element) return;
+    
     const text = this.originalText;
 
     // Clear and wrap each character in a span for individual control
@@ -127,33 +137,47 @@ class ChatIntroAnimations {
     this.timeline = gsap.timeline({
       onComplete: () => {
         this.isAnimating = false;
-        // Re-enable interactions
-        gsap.set([this.els.welcomeP, this.els.suggestionChips], {
-          pointerEvents: 'auto',
-        });
+        // Re-enable interactions - with null checks
+        const welcomeP = document.querySelector('.welcome-message p');
+        const suggestionChips = document.querySelector('.suggestion-chips');
+        const elementsToEnable = [welcomeP, suggestionChips].filter(el => el);
+        if (elementsToEnable.length > 0) {
+          gsap.set(elementsToEnable, {
+            pointerEvents: 'auto',
+          });
+        }
       },
     });
 
     const tl = this.timeline;
     const isDesktop = window.innerWidth > 1050;
 
-    // 1. Main containers entrance (0s start)
-    tl.to(
-      this.els.chatShell,
-      {
-        duration: 0.8,
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        ease: 'power2.out',
-      },
-      0
-    );
+    // Query elements with null checks
+    const chatShell = document.querySelector('.chat-shell');
+    const profileShell = document.querySelector('.profile-shell');
+    const statusDot = document.querySelector('.status-dot');
+    const welcomeP = document.querySelector('.welcome-message p');
+    const suggestionChips = document.querySelector('.suggestion-chips');
 
-    // 2. Profile shell (desktop only, overlapped)
-    if (this.els.profileShell && isDesktop) {
+    // 1. Main containers entrance (0s start) - only if element exists
+    if (chatShell) {
       tl.to(
-        this.els.profileShell,
+        chatShell,
+        {
+          duration: 0.8,
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          ease: 'power2.out',
+        },
+        0
+      );
+    }
+
+    // 2. Profile shell (desktop only, overlapped) - only if element exists
+    if (profileShell && isDesktop) {
+      tl.to(
+        profileShell,
         {
           duration: 0.7,
           opacity: 1,
@@ -165,40 +189,42 @@ class ChatIntroAnimations {
       ); // Start 0.2s after chat shell
     }
 
-    // 3. Status dot animation sequence (overlapped with containers)
-    tl.to(
-      this.els.statusDot,
-      {
-        duration: 0.5,
-        scale: 1.3,
-        ease: 'power2.out',
-      },
-      0.6
-    )
-      .to(this.els.statusDot, {
-        duration: 0.3,
-        scale: 0.8,
-        ease: 'power2.inOut',
-      })
-      .to(this.els.statusDot, {
-        duration: 0.4,
-        scale: 1,
-        ease: 'elastic.out(1, 0.3)',
-      })
-      .to(
-        this.els.statusDot,
+    // 3. Status dot animation sequence (overlapped with containers) - only if element exists
+    if (statusDot) {
+      tl.to(
+        statusDot,
         {
-          duration: 0.3,
-          backgroundColor: '#30d158',
+          duration: 0.5,
+          scale: 1.3,
           ease: 'power2.out',
         },
         0.6
-      ) // Start with scale animation
-      .to(this.els.statusDot, {
-        duration: 0.6,
-        backgroundColor: '#34c759',
-        ease: 'power2.out',
-      });
+      )
+        .to(statusDot, {
+          duration: 0.3,
+          scale: 0.8,
+          ease: 'power2.inOut',
+        })
+        .to(statusDot, {
+          duration: 0.4,
+          scale: 1,
+          ease: 'elastic.out(1, 0.3)',
+        })
+        .to(
+          statusDot,
+          {
+            duration: 0.3,
+            backgroundColor: '#30d158',
+            ease: 'power2.out',
+          },
+          0.6
+        ) // Start with scale animation
+        .to(statusDot, {
+          duration: 0.6,
+          backgroundColor: '#34c759',
+          ease: 'power2.out',
+        });
+    }
 
     // 4. Welcome message typing (starts overlapped with status dot animation)
     const typingStartTime = 0.2;
@@ -206,83 +232,96 @@ class ChatIntroAnimations {
 
     tl.call(() => this.startTyping(), null, typingStartTime);
 
-    // 5. Welcome content reveal (after typing completes)
+    // 5. Welcome content reveal (after typing completes) - only if elements exist
     const contentStartTime = typingStartTime + typingDuration + 0.3;
 
-    tl.to(
-      this.els.welcomeP,
-      {
-        duration: 0.6,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      },
-      contentStartTime
-    ).to(
-      this.els.suggestionChips,
-      {
-        duration: 0.7,
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      },
-      contentStartTime + 0.2
-    ); // Stagger slightly
+    if (welcomeP) {
+      tl.to(
+        welcomeP,
+        {
+          duration: 0.6,
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+        },
+        contentStartTime
+      );
+    }
+
+    if (suggestionChips) {
+      tl.to(
+        suggestionChips,
+        {
+          duration: 0.7,
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+        },
+        contentStartTime + 0.2
+      ); // Stagger slightly
+    }
   }
 
   startTyping() {
-    if (!this.els.welcomeH3 || !this.originalText || !this.charSpans) return;
+    const welcomeH3 = document.querySelector('.welcome-message h3');
+    if (!welcomeH3 || !this.originalText || !this.charSpans) return;
 
-    let currentIndex = 0;
-    const text = this.originalText;
     const spans = this.charSpans;
+    const text = this.originalText;
 
-    // Simple typing speed with natural variation
-    const baseSpeed = 50; // ms per character
+    // Premium smooth staggered reveal using GSAP timeline
+    const tl = gsap.timeline();
 
-    const revealNextChar = () => {
-      if (currentIndex < spans.length) {
-        const currentSpan = spans[currentIndex];
-        const currentChar = text[currentIndex];
-
-        // Simply reveal character by setting opacity to 1
-        gsap.to(currentSpan, {
-          duration: 0.1,
-          opacity: 1,
-          ease: 'power2.out',
-        });
-
-        if (currentIndex < spans.length - 1) {
-          // Calculate delay with natural variation
-          let delay = baseSpeed;
-
-          // Slightly slower for punctuation and spaces
-          if (['.', ',', '!', '?', ';', ':'].includes(currentChar)) {
-            delay += 150;
-          } else if (currentChar === ' ') {
-            delay *= 0.7;
-          }
-
-          // Add natural variation
-          delay += Math.random() * 20 - 10;
-
-          currentIndex++;
-          setTimeout(revealNextChar, Math.max(delay, 30));
-        } else {
-          // Simple finish animation - just a subtle scale
-          gsap.to(this.els.welcomeH3, {
-            duration: 0.2,
-            scale: 1.02,
-            ease: 'power2.out',
-            yoyo: true,
-            repeat: 1,
-          });
-        }
+    // Custom function for premium effect per character
+    spans.forEach((span, i) => {
+      const char = text[i];
+      let baseDelay = 0.045; // seconds
+      // Slightly slower for punctuation, faster for spaces
+      if (['.', ',', '!', '?', ';', ':'].includes(char)) {
+        baseDelay += 0.09;
+      } else if (char === ' ') {
+        baseDelay -= 0.02;
       }
-    };
+      tl.to(
+        span,
+        {
+          opacity: 1,
+          scale: 1.12,
+          y: -2,
+          filter: 'blur(0px)',
+          duration: 0.22,
+          ease: 'power3.out',
+          onStart: () => {
+            // Subtle fade-in shadow for premium effect
+            span.style.textShadow = '0 2px 8px rgba(60,60,60,0.08)';
+          },
+          onComplete: () => {
+            // Remove scale and shadow after reveal
+            gsap.to(span, {
+              scale: 1,
+              y: 0,
+              duration: 0.18,
+              ease: 'power2.inOut',
+              textShadow: 'none',
+            });
+          },
+        },
+        i * baseDelay
+      );
+    });
 
-    // Start typing after a brief pause
-    setTimeout(revealNextChar, 200);
+    // Finish animation for the whole h3 after all chars
+    tl.to(
+      welcomeH3,
+      {
+        scale: 1.03,
+        duration: 0.18,
+        ease: 'power2.out',
+        yoyo: true,
+        repeat: 1,
+      },
+      spans.length * 0.045 + 0.1
+    );
   }
 
   // Public method to replay animation
@@ -314,5 +353,7 @@ class ChatIntroAnimations {
   }
 }
 
-// Initialize when script loads
-window.ChatIntroAnimations = new ChatIntroAnimations();
+// Initialize when script loads - prevent multiple instances
+if (!window.ChatIntroAnimations) {
+  window.ChatIntroAnimations = new ChatIntroAnimations();
+}
