@@ -77,13 +77,18 @@ class ChatIntroAnimations {
 
     if (this.els.welcomeH3) {
       this.els.welcomeH3.textContent = this.originalText;
+      // Show all characters immediately if they were wrapped in spans
+      const spans = this.els.welcomeH3.querySelectorAll('span');
+      if (spans.length > 0) {
+        gsap.set(spans, { opacity: 1 });
+      }
     }
   }
 
   setInitialStates() {
-    // Clear welcome text for typing effect
+    // Set up h3 with full text but hidden characters for typing animation
     if (this.els.welcomeH3) {
-      this.els.welcomeH3.textContent = '';
+      this.prepareStaticLayout();
     }
 
     // Ensure welcome content is hidden
@@ -94,6 +99,29 @@ class ChatIntroAnimations {
     });
   }
 
+  prepareStaticLayout() {
+    const element = this.els.welcomeH3;
+    const text = this.originalText;
+
+    // Clear and wrap each character in a span for individual control
+    element.innerHTML = '';
+
+    const spans = [];
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.style.display = 'inline';
+      element.appendChild(span);
+      spans.push(span);
+    }
+
+    // Store character spans for animation
+    this.charSpans = spans;
+
+    // Use GSAP to set initial opacity instead of inline styles
+    gsap.set(this.charSpans, { opacity: 0 });
+  }
   createTimeline() {
     this.isAnimating = true;
     this.timeline = gsap.timeline({
@@ -174,7 +202,7 @@ class ChatIntroAnimations {
 
     // 4. Welcome message typing (starts overlapped with status dot animation)
     const typingStartTime = 0.2;
-    const typingDuration = (this.originalText.length * this.typingSpeed) / 1000;
+    const typingDuration = (this.originalText.length * 60) / 1000; // Simplified timing
 
     tl.call(() => this.startTyping(), null, typingStartTime);
 
@@ -203,25 +231,58 @@ class ChatIntroAnimations {
   }
 
   startTyping() {
-    if (!this.els.welcomeH3 || !this.originalText) return;
+    if (!this.els.welcomeH3 || !this.originalText || !this.charSpans) return;
 
     let currentIndex = 0;
     const text = this.originalText;
+    const spans = this.charSpans;
 
-    const typeNextChar = () => {
-      if (currentIndex <= text.length) {
-        this.els.welcomeH3.textContent = text.substring(0, currentIndex);
-        currentIndex++;
+    // Simple typing speed with natural variation
+    const baseSpeed = 50; // ms per character
 
-        if (currentIndex <= text.length) {
-          // Vary typing speed slightly for natural feel
-          const nextDelay = this.typingSpeed + (Math.random() * 20 - 10);
-          setTimeout(typeNextChar, nextDelay);
+    const revealNextChar = () => {
+      if (currentIndex < spans.length) {
+        const currentSpan = spans[currentIndex];
+        const currentChar = text[currentIndex];
+
+        // Simply reveal character by setting opacity to 1
+        gsap.to(currentSpan, {
+          duration: 0.1,
+          opacity: 1,
+          ease: 'power2.out',
+        });
+
+        if (currentIndex < spans.length - 1) {
+          // Calculate delay with natural variation
+          let delay = baseSpeed;
+
+          // Slightly slower for punctuation and spaces
+          if (['.', ',', '!', '?', ';', ':'].includes(currentChar)) {
+            delay += 150;
+          } else if (currentChar === ' ') {
+            delay *= 0.7;
+          }
+
+          // Add natural variation
+          delay += Math.random() * 20 - 10;
+
+          currentIndex++;
+          setTimeout(revealNextChar, Math.max(delay, 30));
+        } else {
+          // Simple finish animation - just a subtle scale
+          gsap.to(this.els.welcomeH3, {
+            duration: 0.2,
+            scale: 1.02,
+            ease: 'power2.out',
+            yoyo: true,
+            repeat: 1,
+          });
         }
       }
     };
 
-    typeNextChar();
+    // Start typing after a brief pause
+    setTimeout(revealNextChar, 200);
   }
 
   // Public method to replay animation
