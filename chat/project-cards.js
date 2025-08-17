@@ -24,7 +24,7 @@ class ProjectCardsManager {
         id: 'music-player',
         title: 'Music Player PWA',
         subtitle: 'Progressive Web App',
-        image: '../assets/images/music-main.webp',
+        image: '../assets/images/CoreyLawrenceMusic.webp',
         description:
           'Offline-capable music player with dynamic preloading and Media Session API',
         technologies: ['JavaScript', 'HTML', 'CSS'],
