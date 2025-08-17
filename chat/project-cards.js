@@ -141,21 +141,32 @@ Use these tokens anywhere in your response where you want cards to appear. For e
     `;
   }
 
+  // Generate HTML for individual cards (without grid wrapper)
+  createProjectCardsOnly(projects) {
+    return projects.map(project => this.createProjectCard(project)).join('');
+  }
+
   // Inject project cards into message content
   injectProjectCards(contentEl, text, actions, actionData) {
     if (!actions.length) return;
+
+    // Find or create a single grid container for all cards
+    let gridContainer = contentEl.querySelector('.project-cards-grid');
+    if (!gridContainer) {
+      gridContainer = document.createElement('div');
+      gridContainer.className = 'project-cards-grid';
+      contentEl.appendChild(gridContainer);
+    }
 
     // Process the text to find where tokens were and replace with cards
     let processedHTML = contentEl.innerHTML;
     
     if (actions.includes('SHOW_PROJECTS')) {
-      const cardsHtml = this.createProjectCardsGrid(this.projectsData);
-      // Find and replace the token placeholder or append at the end
-      if (processedHTML.includes('[[ACTION:SHOW_PROJECTS]]')) {
-        processedHTML = processedHTML.replace('[[ACTION:SHOW_PROJECTS]]', cardsHtml);
-      } else {
-        processedHTML += cardsHtml;
-      }
+      const cardsHtml = this.createProjectCardsOnly(this.projectsData);
+      // Add cards to the grid container
+      gridContainer.insertAdjacentHTML('beforeend', cardsHtml);
+      // Remove any token placeholders from the text
+      processedHTML = processedHTML.replace(/\[\[ACTION:SHOW_PROJECTS\]\]/g, '');
       this.projectCardsShown = true;
     }
 
@@ -163,19 +174,32 @@ Use these tokens anywhere in your response where you want cards to appear. For e
       actionData.SHOW_PROJECT.forEach(projectId => {
         const project = this.projectsData.find(p => p.id === projectId);
         if (project) {
-          const cardHtml = this.createProjectCardsGrid([project]);
-          const tokenPattern = `[[ACTION:SHOW_PROJECT:${projectId}]]`;
-          if (processedHTML.includes(tokenPattern)) {
-            processedHTML = processedHTML.replace(tokenPattern, cardHtml);
-          } else {
-            processedHTML += cardHtml;
-          }
+          const cardHtml = this.createProjectCard(project);
+          // Add card to the grid container
+          gridContainer.insertAdjacentHTML('beforeend', cardHtml);
+          // Remove token placeholders from the text
+          const tokenPattern = `\\[\\[ACTION:SHOW_PROJECT:${projectId}\\]\\]`;
+          processedHTML = processedHTML.replace(new RegExp(tokenPattern, 'g'), '');
         }
       });
       this.projectCardsShown = true;
     }
 
-    contentEl.innerHTML = processedHTML;
+    // Update the content without the grid (since we added it separately)
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = processedHTML;
+    // Remove any grid containers from the processed HTML to avoid duplicates
+    const existingGrids = tempDiv.querySelectorAll('.project-cards-grid');
+    existingGrids.forEach(grid => {
+      if (grid !== gridContainer) grid.remove();
+    });
+    
+    // Only update the text content, keeping our grid container
+    const textContent = tempDiv.innerHTML;
+    if (textContent.trim()) {
+      contentEl.innerHTML = textContent;
+      contentEl.appendChild(gridContainer);
+    }
   }
 
   // Reset the cards shown flag (called when chat is cleared)
