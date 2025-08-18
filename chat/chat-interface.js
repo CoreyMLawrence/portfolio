@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       experience:
         "Summarize Corey's professional experience timeline for recruiters. List roles in reverse chronological order with title, company, dates (start–end), and a 1–2 line impact statement. Highlight leadership, ownership, and measurable outcomes when present. Use 4–7 concise bullets. Facts only from the résumé JSON; omit unknowns. Utilize markdown formatting and focus on fantastic readability for this section.",
       projects:
-        "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns.",
+        "Summarize Corey's flagship projects. Emphasize outcomes and relevance to typical hiring needs. Include project names, timeline, goals, outcomes/metrics, and tech stack. Use 4–8 bullets, grouped if helpful. Third person. Facts only from the résumé JSON. Omit unknowns. Ouput the project cards at the end. Output live URL's with project details if available.",
       expertise:
         "Summarize Corey's technical skills and expertise, highlighting strengths that matter to hiring managers. Group by categories (Product, Frontend, Backend, Cloud/DevOps, Data/AI, Tools). Note proficiency or depth when available and top tools. 5–10 bullets, concise. Third person. Facts only from the résumé JSON. Omit unknowns.",
       education:
@@ -848,7 +848,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <button class="suggestion-chip">Tell me about Corey's projects</button>
             <button class="suggestion-chip">What technologies does Corey use?</button>
             <button class="suggestion-chip">What is Corey's background?</button>
-            <button class="suggestion-chip">Show me his best work</button>
+            <button class="suggestion-chip">Show me Corey's best work</button>
           </div>`;
         chatMessages.appendChild(wrap);
 

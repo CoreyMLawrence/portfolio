@@ -59,14 +59,20 @@ class ProjectCardsManager {
     const projectIds = this.projectsData.map((p) => p.id).join(', ');
     const projectNames = this.projectsData.map((p) => p.title).join(', ');
 
-    return ` You can display interactive project cards anywhere in your response using these tokens:
-- [[ACTION:SHOW_PROJECTS]] - Shows all project cards
-- [[ACTION:SHOW_PROJECT:project-id]] - Shows a specific project card
+    return ` Project cards are available ONLY when users specifically ask about Corey's projects, portfolio work, or technical examples. Use these tokens ONLY when appropriate:
+- [[ACTION:SHOW_PROJECTS]] - Shows all project cards (use when user asks about "projects", "portfolio", "work samples", or "what has Corey built")
+- [[ACTION:SHOW_PROJECT:project-id]] - Shows a specific project card (use when user mentions a specific project by name)
 
 Available project IDs: ${projectIds}
 Project names: ${projectNames}
 
-Use these tokens anywhere in your response where you want cards to appear. For example, you can mention a project in text and then insert its card token on the next line. Only use valid project IDs - invalid IDs will be ignored.`;
+DO NOT use these tokens for:
+- General resume/career discussions
+- Job requirements/skills questions  
+- Interview preparation
+- General conversation about Corey's background
+
+ONLY use these tokens when the user explicitly asks about Corey's projects, portfolio work, or wants to see examples of what he has built. Only use valid project IDs - invalid IDs will be ignored.`;
   }
 
   // Parse and process project action tokens
