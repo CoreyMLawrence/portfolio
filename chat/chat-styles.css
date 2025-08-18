@@ -989,6 +989,8 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   background: var(--background-container);
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 2px solid var(--border-light);
   aspect-ratio: 16 / 10;

@@ -44,7 +44,7 @@ class ProjectCardsManager {
         id: 'adventureai-player',
         title: 'AdventureAI',
         subtitle: 'AI-Powered Adventure Game',
-        image: '../assets/images/AdventureAI-full.webp',
+        image: '../assets/images/AdventureAI.webp',
         description:
           'Choose-your-own-adventure game with dynamic storytelling and AI integration',
         technologies: ['JavaScript', 'Gemini AI', 'HTML', 'CSS'],
