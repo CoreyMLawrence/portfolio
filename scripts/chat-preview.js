@@ -177,39 +177,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Reverse the expansion timeline
     expansionTl.reverse().eventCallback('onReverseComplete', function () {
-      console.log('Expansion reverse complete');
       // Clean up classes and styles
       chatIframeContainer.classList.remove('fullscreen', 'transitioning');
       if (chatOverlay) chatOverlay.style.display = '';
       document.body.style.overflow = '';
+      setTimeout(() => {
+        // Reset positioning to original state
+        gsap.set(chatIframeContainer, {
+          position: 'relative',
+          top: 'auto',
+          left: 'auto',
+          width: '80vw',
+          height: '70vh',
+          zIndex: 'auto',
+          borderRadius: '20px',
+        });
 
-      // Reset positioning to original state
-      gsap.set(chatIframeContainer, {
-        position: 'relative',
-        top: 'auto',
-        left: 'auto',
-        width: '80vw',
-        height: '70vh',
-        zIndex: 'auto',
-        borderRadius: '20px',
-      });
+        // Reset iframe to natural container-filling state
+        gsap.set(chatIframe, {
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          left: 0,
+          top: 0,
+          transform: 'none',
+        });
 
-      // Reset iframe to natural container-filling state
-      gsap.set(chatIframe, {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        left: 0,
-        top: 0,
-        transform: 'none',
-      });
-
-      // Reset elements to their original state
-      gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
-        opacity: 1,
-        y: 0,
-      });
-
+        // Reset elements to their original state
+        gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
+          opacity: 1,
+          y: 0,
+        });
+      }, 400);
       // Clear the event callback to prevent memory leaks
       expansionTl.eventCallback('onReverseComplete', null);
     });
