@@ -148,24 +148,28 @@ document.addEventListener('DOMContentLoaded', function () {
   function handleChatStart() {
     if (isExpanded) return; // Prevent multiple expansions
 
-    console.log('Starting chat expansion...');
+    // Center the start chatting button in viewport before expansion
+    chatNowBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Load iframe if not already loaded
-    if (!iframeLoaded && originalSrc) {
-      chatIframe.src = originalSrc;
-    }
+    // Wait for scroll to complete before starting expansion
+    setTimeout(() => {
+      // Load iframe if not already loaded
+      if (!iframeLoaded && originalSrc) {
+        chatIframe.src = originalSrc;
+      }
 
-    // Create and play expansion timeline
-    if (!expansionTl) {
-      createExpansionTimeline();
-    }
+      // Create and play expansion timeline
+      if (!expansionTl) {
+        createExpansionTimeline();
+      }
 
-    expansionTl.play();
-    isExpanded = true;
+      expansionTl.play();
+      isExpanded = true;
 
-    // Set up history state for back button handling
-    history.pushState({ chatExpanded: true }, '', window.location.href);
-    console.log('Chat expanded, history state set');
+      // Set up history state for back button handling
+      history.pushState({ chatExpanded: true }, '', window.location.href);
+      console.log('Chat expanded, history state set');
+    }, 300); // Wait 600ms for smooth scroll to complete
   }
 
   // Function to close the expanded iframe

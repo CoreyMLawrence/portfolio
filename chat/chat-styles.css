@@ -595,6 +595,7 @@ body {
   overflow-wrap: anywhere; /* modern */
   word-break: break-word;
   margin: 0;
+  transition: all 0s;
 }
 
 .message.user .message-content {
