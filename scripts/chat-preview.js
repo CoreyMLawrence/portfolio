@@ -19,12 +19,13 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   });
 
-  entryTl.to('.chat-preview-title', {
-    duration: 0.8,
-    y: 0,
-    opacity: 1,
-    ease: 'power3.out',
-  })
+  entryTl
+    .to('.chat-preview-title', {
+      duration: 0.8,
+      y: 0,
+      opacity: 1,
+      ease: 'power3.out',
+    })
     .to(
       '.chat-preview-subtitle',
       {
@@ -78,57 +79,90 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to create expansion timeline
   function createExpansionTimeline() {
     expansionTl = gsap.timeline({ paused: true });
-    
-    // Hide overlay immediately
-    expansionTl.call(() => {
-      if (chatOverlay) chatOverlay.style.display = 'none';
-      chatIframeContainer.classList.add('fullscreen', 'transitioning');
-      document.body.style.overflow = 'hidden';
-    }, null, 0);
 
-    // Animate to fullscreen dimensions
-    expansionTl.to(chatIframeContainer, {
-      duration: 0.6,
-      ease: 'power2.inOut',
-    }, 0.1);
+    // Get the current position and dimensions of the iframe container
+    const rect = chatIframeContainer.getBoundingClientRect();
+    const currentTop = rect.top;
+    const currentLeft = rect.left;
+    const currentWidth = rect.width;
+    const currentHeight = rect.height;
 
-    // Scale the iframe content for smooth transition
-    expansionTl.to(chatIframe, {
-      duration: 0.6,
-      scale: 1,
-      ease: 'power2.inOut',
-    }, 0.1);
+    // Hide overlay immediately and set up for animation
+    expansionTl.call(
+      () => {
+        if (chatOverlay) chatOverlay.style.display = 'none';
+        // Add transitioning class but not fullscreen yet
+        chatIframeContainer.classList.add('transitioning');
+
+        // Set container to fixed position at current location
+        gsap.set(chatIframeContainer, {
+          position: 'fixed',
+          top: currentTop,
+          left: currentLeft,
+          width: currentWidth,
+          height: currentHeight,
+          zIndex: 999,
+        });
+
+        // Don't change iframe positioning at all - let it maintain its current state
+        document.body.style.overflow = 'hidden';
+      },
+      null,
+      0
+    );
+
+    // Animate ONLY the container - iframe will scale perfectly with it
+    expansionTl.to(
+      chatIframeContainer,
+      {
+        duration: 0.4,
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        borderRadius: 0,
+        ease: 'power2.inOut',
+        onComplete: function () {
+          chatIframeContainer.classList.add('fullscreen');
+        },
+      },
+      0
+    );
 
     // Fade out section content
-    expansionTl.to(['.chat-preview-title', '.chat-preview-subtitle'], {
-      duration: 0.3,
-      opacity: 0,
-      y: -10,
-      ease: 'power2.out',
-    }, 0);
-    
+    expansionTl.to(
+      ['.chat-preview-title', '.chat-preview-subtitle'],
+      {
+        duration: 0.5,
+        opacity: 0,
+        y: -10,
+        ease: 'power2.out',
+      },
+      0
+    );
+
     return expansionTl;
   }
 
   // Click handler for the overlay and button
   function handleChatStart() {
     if (isExpanded) return; // Prevent multiple expansions
-    
+
     console.log('Starting chat expansion...');
-    
+
     // Load iframe if not already loaded
     if (!iframeLoaded && originalSrc) {
       chatIframe.src = originalSrc;
     }
-    
+
     // Create and play expansion timeline
     if (!expansionTl) {
       createExpansionTimeline();
     }
-    
+
     expansionTl.play();
     isExpanded = true;
-    
+
     // Set up history state for back button handling
     history.pushState({ chatExpanded: true }, '', window.location.href);
     console.log('Chat expanded, history state set');
@@ -137,25 +171,45 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to close the expanded iframe
   function closeExpansion() {
     if (!isExpanded || !expansionTl) return;
-    
+
     console.log('Closing chat expansion...');
     isExpanded = false;
-    
+
     // Reverse the expansion timeline
-    expansionTl.reverse().eventCallback('onReverseComplete', function() {
+    expansionTl.reverse().eventCallback('onReverseComplete', function () {
       console.log('Expansion reverse complete');
       // Clean up classes and styles
       chatIframeContainer.classList.remove('fullscreen', 'transitioning');
       if (chatOverlay) chatOverlay.style.display = '';
       document.body.style.overflow = '';
-      
+
+      // Reset positioning to original state
+      gsap.set(chatIframeContainer, {
+        position: 'relative',
+        top: 'auto',
+        left: 'auto',
+        width: '80vw',
+        height: '70vh',
+        zIndex: 'auto',
+        borderRadius: '20px',
+      });
+
+      // Reset iframe to natural container-filling state
+      gsap.set(chatIframe, {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        left: 0,
+        top: 0,
+        transform: 'none',
+      });
+
       // Reset elements to their original state
       gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
         opacity: 1,
         y: 0,
       });
-      gsap.set(chatIframe, { scale: 1 });
-      
+
       // Clear the event callback to prevent memory leaks
       expansionTl.eventCallback('onReverseComplete', null);
     });
@@ -169,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Handle back button to close expanded iframe
-  window.addEventListener('popstate', function(e) {
+  window.addEventListener('popstate', function (e) {
     console.log('Popstate event:', e.state, 'isExpanded:', isExpanded);
     if (isExpanded) {
       closeExpansion();
