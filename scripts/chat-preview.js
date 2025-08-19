@@ -172,8 +172,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function closeExpansion() {
     if (!isExpanded || !expansionTl) return;
 
-    console.log('Closing chat expansion...');
     isExpanded = false;
+    chatNowBtn.innerText = 'Continue Chatting';
 
     // Reverse the expansion timeline
     expansionTl.reverse().eventCallback('onReverseComplete', function () {
