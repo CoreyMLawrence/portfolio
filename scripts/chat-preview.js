@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // GSAP animations for the chat preview section
   gsap.registerPlugin(ScrollTrigger);
 
-  // Animate chat preview section elements on scroll
-  const tl = gsap.timeline({
+  // Entry timeline - separate from expansion
+  const entryTl = gsap.timeline({
     scrollTrigger: {
       trigger: '.chat-preview',
       start: 'top 80%',
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   });
 
-  tl.to('.chat-preview-title', {
+  entryTl.to('.chat-preview-title', {
     duration: 0.8,
     y: 0,
     opacity: 1,
@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
       '-=0.6'
     );
 
+  // Expansion timeline - separate timeline for fullscreen expansion
+  let expansionTl = null;
+  let isExpanded = false;
+
   // Initially don't load the iframe
   const originalSrc = chatIframe.getAttribute('data-src');
   chatIframe.setAttribute('data-loading', 'true');
@@ -71,49 +75,90 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Click handler for the overlay and button
-  function handleChatStart() {
-    // Set a flag in sessionStorage to disable animations on the chat page
-    sessionStorage.setItem('skipIntroAnimations', 'true');
+  // Function to create expansion timeline
+  function createExpansionTimeline() {
+    expansionTl = gsap.timeline({ paused: true });
+    
+    // Hide overlay immediately
+    expansionTl.call(() => {
+      if (chatOverlay) chatOverlay.style.display = 'none';
+      chatIframeContainer.classList.add('fullscreen', 'transitioning');
+      document.body.style.overflow = 'hidden';
+    }, null, 0);
 
-    // Add transition class for smooth animation
-    chatIframeContainer.classList.add('transitioning');
-
-  // Remove overlay immediately
-  if (chatOverlay) chatOverlay.style.display = 'none';
-  chatIframeContainer.classList.add('fullscreen', 'transitioning');
-  document.body.style.overflow = 'hidden';
-
-    // Create GSAP timeline for the expansion animation
-    const expandTl = gsap.timeline({
-      onComplete: function () {
-        window.location.href = './chat/';
-      },
-    });
-
-    // Expand the container to fullscreen
-    expandTl.to(chatIframeContainer, {
+    // Animate to fullscreen dimensions
+    expansionTl.to(chatIframeContainer, {
       duration: 0.6,
       ease: 'power2.inOut',
-    }, 0);
+    }, 0.1);
 
-    // Subtle scale animation for smoothness
-    expandTl.to(chatIframe, {
+    // Scale the iframe content for smooth transition
+    expansionTl.to(chatIframe, {
       duration: 0.6,
-      scale: 1.01,
+      scale: 1,
       ease: 'power2.inOut',
-      onComplete: function () {
-        gsap.set(chatIframe, { scale: 1 });
-      },
-    }, 0);
+    }, 0.1);
 
-    // Fade out section content for cleaner transition
-    expandTl.to(['.chat-preview-title', '.chat-preview-subtitle'], {
+    // Fade out section content
+    expansionTl.to(['.chat-preview-title', '.chat-preview-subtitle'], {
       duration: 0.3,
       opacity: 0,
       y: -10,
       ease: 'power2.out',
     }, 0);
+    
+    return expansionTl;
+  }
+
+  // Click handler for the overlay and button
+  function handleChatStart() {
+    if (isExpanded) return; // Prevent multiple expansions
+    
+    console.log('Starting chat expansion...');
+    
+    // Load iframe if not already loaded
+    if (!iframeLoaded && originalSrc) {
+      chatIframe.src = originalSrc;
+    }
+    
+    // Create and play expansion timeline
+    if (!expansionTl) {
+      createExpansionTimeline();
+    }
+    
+    expansionTl.play();
+    isExpanded = true;
+    
+    // Set up history state for back button handling
+    history.pushState({ chatExpanded: true }, '', window.location.href);
+    console.log('Chat expanded, history state set');
+  }
+
+  // Function to close the expanded iframe
+  function closeExpansion() {
+    if (!isExpanded || !expansionTl) return;
+    
+    console.log('Closing chat expansion...');
+    isExpanded = false;
+    
+    // Reverse the expansion timeline
+    expansionTl.reverse().eventCallback('onReverseComplete', function() {
+      console.log('Expansion reverse complete');
+      // Clean up classes and styles
+      chatIframeContainer.classList.remove('fullscreen', 'transitioning');
+      if (chatOverlay) chatOverlay.style.display = '';
+      document.body.style.overflow = '';
+      
+      // Reset elements to their original state
+      gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
+        opacity: 1,
+        y: 0,
+      });
+      gsap.set(chatIframe, { scale: 1 });
+      
+      // Clear the event callback to prevent memory leaks
+      expansionTl.eventCallback('onReverseComplete', null);
+    });
   }
 
   // Event listeners
@@ -123,34 +168,26 @@ document.addEventListener('DOMContentLoaded', function () {
     handleChatStart();
   });
 
-  // Handle escape key to exit fullscreen if needed
-  document.addEventListener('keydown', function (e) {
-    if (
-      e.key === 'Escape' &&
-      chatIframeContainer.classList.contains('fullscreen')
-    ) {
-      exitFullscreen();
+  // Handle back button to close expanded iframe
+  window.addEventListener('popstate', function(e) {
+    console.log('Popstate event:', e.state, 'isExpanded:', isExpanded);
+    if (isExpanded) {
+      closeExpansion();
     }
   });
 
-  function exitFullscreen() {
-    chatIframeContainer.classList.remove('fullscreen', 'transitioning');
-    chatOverlay.classList.remove('hidden');
-    document.body.style.overflow = '';
-
-    gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
-      opacity: 1,
-      y: 0,
-    });
-
-    gsap.set(chatIframe, {
-      scale: 1,
-    });
-  }
+  // Handle escape key to exit fullscreen
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isExpanded) {
+      closeExpansion();
+      // Remove the history state by going back
+      history.back();
+    }
+  });
 
   // Simplified hover effects
   chatIframeContainer.addEventListener('mouseenter', function () {
-    if (!chatIframeContainer.classList.contains('fullscreen')) {
+    if (!isExpanded) {
       gsap.to(chatIframeContainer, {
         duration: 0.3,
         scale: 1.01,
@@ -160,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   chatIframeContainer.addEventListener('mouseleave', function () {
-    if (!chatIframeContainer.classList.contains('fullscreen')) {
+    if (!isExpanded) {
       gsap.to(chatIframeContainer, {
         duration: 0.3,
         scale: 1,
@@ -171,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Button hover animations (simplified)
   chatNowBtn.addEventListener('mouseenter', function () {
-    if (!chatIframeContainer.classList.contains('fullscreen')) {
+    if (!isExpanded) {
       gsap.to(chatNowBtn, {
         duration: 0.3,
         scale: 1.05,
@@ -181,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   chatNowBtn.addEventListener('mouseleave', function () {
-    if (!chatIframeContainer.classList.contains('fullscreen')) {
+    if (!isExpanded) {
       gsap.to(chatNowBtn, {
         duration: 0.3,
         scale: 1,
@@ -192,14 +229,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Handle window resize for fullscreen mode
   window.addEventListener('resize', function () {
-  // No JS resizing; let CSS .fullscreen control width/height
+    // No JS resizing; let CSS .fullscreen control width/height
   });
-
-  // Preload the chat page for faster transition
-  const preloadLink = document.createElement('link');
-  preloadLink.rel = 'prefetch';
-  preloadLink.href = './chat/';
-  document.head.appendChild(preloadLink);
 
   // Intersection observer for lazy loading and animation triggering
   const observer = new IntersectionObserver(
