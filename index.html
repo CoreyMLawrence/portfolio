@@ -65,6 +65,7 @@
     <link rel="stylesheet" href="./styles/main.css" />
     <link rel="stylesheet" href="./styles/projects.css" />
     <link rel="stylesheet" href="./styles/projects-mobile.css" />
+    <link rel="stylesheet" href="./styles/chat-preview.css" />
 
     <!-- Preload Critical Resources -->
     <link rel="preload" as="image" href="/assets/images/CoreyLawrence.webp" />
@@ -96,6 +97,7 @@
     <script src="./scripts/top.js"></script>
     <script src="./scripts/menu.js"></script>
     <script defer src="./scripts/script.js"></script>
+    <script defer src="./scripts/chat-preview.js"></script>
   </head>
 
   <body>
@@ -188,6 +190,26 @@
         solutions that deliver measurable outcomes for businesses.
       </p>
       <a href="#contact" class="cta">Work with me</a>
+    </section>
+
+    <section class="section chat-preview" id="chat-preview">
+      <div class="chat-preview-content">
+        <h2 class="chat-preview-title">Chat with My Resume</h2>
+        <p class="chat-preview-subtitle">
+          Get instant answers about my experience, skills, and projects through an intelligent AI assistant.
+        </p>
+        <div class="chat-iframe-container">
+          <iframe 
+            id="chat-iframe" 
+            data-src="./chat/"
+            title="Chat with Resume"
+            loading="lazy">
+          </iframe>
+          <div class="chat-overlay">
+            <button class="chat-now-btn">Start Chatting</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section journey" id="about">

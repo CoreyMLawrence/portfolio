@@ -11,17 +11,42 @@ class ChatIntroAnimations {
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
     this.typingSpeed = 50; // ms per character
     this.originalText = '';
+    
+    // Animation control - set to true to skip animations
+    this.skipAnimations = false;
 
     // Initialize
     this.init();
   }
 
   init() {
+    // Always capture original text first, regardless of animation preference
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.setup());
+      document.addEventListener('DOMContentLoaded', () => this.initializeContent());
     } else {
-      this.setup();
+      this.initializeContent();
     }
+  }
+
+  initializeContent() {
+    // Capture original text before any modifications
+    const welcomeH3 = document.querySelector('.welcome-message h3');
+    if (welcomeH3) {
+      this.originalText = welcomeH3.textContent || 'Ask me anything about Corey';
+    }
+
+    // Check if we should skip intro animations (coming from iframe preview)
+    if (sessionStorage.getItem('skipIntroAnimations') === 'true') {
+      sessionStorage.removeItem('skipIntroAnimations'); // Clean up
+      this.skipAnimations = true;
+    }
+
+    // Also skip for reduced motion preference
+    if (this.prefersReducedMotion) {
+      this.skipAnimations = true;
+    }
+
+    this.setup();
   }
 
   setup() {
@@ -38,52 +63,8 @@ class ChatIntroAnimations {
       return;
     }
 
-    if (this.prefersReducedMotion) {
-      this.showAllImmediately();
-      return;
-    }
-
     this.setInitialStates();
     this.createTimeline();
-  }
-
-  showAllImmediately() {
-    // Fallback for reduced motion preference
-    const chatShell = document.querySelector('.chat-shell');
-    const profileShell = document.querySelector('.profile-shell');
-    const welcomeP = document.querySelector('.welcome-message p');
-    const suggestionChips = document.querySelector('.suggestion-chips');
-    const welcomeH3 = document.querySelector('.welcome-message h3');
-
-    // Only animate elements that exist
-    const containerElements = [chatShell, profileShell].filter((el) => el);
-    if (containerElements.length > 0) {
-      gsap.set(containerElements, {
-        opacity: 1,
-        scale: 1,
-        x: 0,
-        y: 0,
-      });
-    }
-
-    const contentElements = [welcomeP, suggestionChips].filter((el) => el);
-    if (contentElements.length > 0) {
-      gsap.set(contentElements, {
-        opacity: 1,
-        y: 0,
-        pointerEvents: 'auto',
-      });
-    }
-
-    if (welcomeH3) {
-      welcomeH3.textContent =
-        this.originalText || 'Ask me anything about Corey';
-      // Show all characters immediately if they were wrapped in spans
-      const spans = welcomeH3.querySelectorAll('span');
-      if (spans.length > 0) {
-        gsap.set(spans, { opacity: 1 });
-      }
-    }
   }
 
   setInitialStates() {
@@ -137,6 +118,20 @@ class ChatIntroAnimations {
   createTimeline() {
     this.isAnimating = true;
 
+    // Animation timing variables - use ternary to set to 0 if skipping animations
+    const containerDuration = this.skipAnimations ? 0 : 0.8;
+    const profileDuration = this.skipAnimations ? 0 : 0.7;
+    const contentDuration = this.skipAnimations ? 0 : 0.6;
+    const chipsDuration = this.skipAnimations ? 0 : 0.7;
+    const statusDuration = this.skipAnimations ? 0 : 0.5;
+    
+    // Delay timing variables
+    const profileDelay = this.skipAnimations ? 0 : 0.2;
+    const typingStartTime = this.skipAnimations ? 0 : 0.2;
+    const typingDuration = this.skipAnimations ? 0 : (this.originalText.length * 60) / 1000;
+    const contentStartTime = this.skipAnimations ? 0 : typingStartTime + typingDuration - 0.1;
+    const chipsDelay = this.skipAnimations ? 0 : 0.2;
+
     this.timeline = gsap.timeline({
       onComplete: () => {
         this.isAnimating = false;
@@ -152,16 +147,16 @@ class ChatIntroAnimations {
     const welcomeP = document.querySelector('.welcome-message p');
     const suggestionChips = document.querySelector('.suggestion-chips');
 
-    // 1. Main containers entrance (0s start) - only if element exists
+    // 1. Main containers entrance - only if element exists
     if (chatShell) {
       tl.to(
         chatShell,
         {
-          duration: 0.8,
+          duration: containerDuration,
           opacity: 1,
           scale: 1,
           y: 0,
-          ease: 'power2.out',
+          ease: this.skipAnimations ? 'none' : 'power2.out',
         },
         0
       );
@@ -172,33 +167,37 @@ class ChatIntroAnimations {
       tl.to(
         profileShell,
         {
-          duration: 0.7,
+          duration: profileDuration,
           opacity: 1,
           x: 0,
           scale: 1,
-          ease: 'power2.out',
+          ease: this.skipAnimations ? 'none' : 'power2.out',
         },
-        0.2
-      ); // Start 0.2s after chat shell
+        profileDelay
+      );
     }
 
-    // 3. Welcome message typing (starts overlapped with status dot animation)
-    const typingStartTime = 0.2;
-    const typingDuration = (this.originalText.length * 60) / 1000; // Simplified timing
+    // 3. Welcome message typing
+    if (!this.skipAnimations) {
+      tl.call(() => this.startTyping(), null, typingStartTime);
+    } else {
+      // Just show the text immediately
+      const welcomeH3 = document.querySelector('.welcome-message h3');
+      if (welcomeH3) {
+        welcomeH3.textContent = this.originalText;
+        tl.set(welcomeH3, { opacity: 1 }, 0);
+      }
+    }
 
-    tl.call(() => this.startTyping(), null, typingStartTime);
-
-    // 5. Welcome content reveal (after typing completes) - only if elements exist
-    const contentStartTime = typingStartTime + typingDuration - 0.1;
-
+    // 4. Welcome content reveal - only if elements exist
     if (welcomeP) {
       tl.to(
         welcomeP,
         {
-          duration: 0.6,
+          duration: contentDuration,
           opacity: 1,
           y: 0,
-          ease: 'power2.out',
+          ease: this.skipAnimations ? 'none' : 'power2.out',
         },
         contentStartTime
       );
@@ -208,19 +207,19 @@ class ChatIntroAnimations {
       tl.to(
         suggestionChips,
         {
-          duration: 0.7,
+          duration: chipsDuration,
           opacity: 1,
           y: 0,
-          ease: 'power2.out',
+          ease: this.skipAnimations ? 'none' : 'power2.out',
         },
-        contentStartTime + 0.2
-      ); // Stagger slightly
+        contentStartTime + chipsDelay
+      );
     }
 
-    // 4. Status dot animation sequence — play as the final step so the dot animates last
-    if (statusDot) {
+    // 5. Status dot animation sequence
+    if (statusDot && !this.skipAnimations) {
       tl.to(statusDot, {
-        duration: 0.5,
+        duration: statusDuration,
         scale: 1.3,
         ease: 'power2.out',
       })
@@ -238,13 +237,18 @@ class ChatIntroAnimations {
           duration: 0.3,
           backgroundColor: '#30d158',
           ease: 'power2.out',
-        }) // color pulse
+        })
         .to(statusDot, {
           duration: 0.6,
           backgroundColor: '#34c759',
           ease: 'power2.out',
         });
+    } else if (statusDot) {
+      // Just ensure it's visible
+      tl.set(statusDot, { opacity: 1, scale: 1, backgroundColor: '#34c759' }, 0);
     }
+
+    console.log(this.skipAnimations ? 'Chat intro animations skipped' : 'Chat intro animations started');
   }
 
   startTyping() {
@@ -253,6 +257,12 @@ class ChatIntroAnimations {
 
     const spans = this.charSpans;
     const text = this.originalText;
+
+    // If skipping animations, just show all characters immediately
+    if (this.skipAnimations) {
+      gsap.set(spans, { opacity: 1, scale: 1, y: 0 });
+      return;
+    }
 
     // Premium smooth staggered reveal using GSAP timeline
     const tl = gsap.timeline();
