@@ -202,13 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
           top: 0,
           transform: 'none',
         });
-
-        // Reset elements to their original state
-        gsap.set(['.chat-preview-title', '.chat-preview-subtitle'], {
-          opacity: 1,
-          y: 0,
-        });
-      }, 400);
+      }, 600);
       // Clear the event callback to prevent memory leaks
       expansionTl.eventCallback('onReverseComplete', null);
     });

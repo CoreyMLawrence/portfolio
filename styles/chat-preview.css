@@ -4,8 +4,8 @@
   padding: var(--spacing) 10vw;
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .chat-preview-content {
@@ -86,9 +86,9 @@
   justify-content: center;
   border-radius: inherit;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  transition: opacity 0.3s ease;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: all 0.5s ease;
   cursor: pointer;
 }
 
