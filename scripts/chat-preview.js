@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Phase 1: Setup and smooth positioning transition
     expansionTl.call(
       () => {
-        if (chatOverlay) chatOverlay.style.display = 'none';
         chatIframeContainer.classList.add('transitioning');
         document.body.style.overflow = 'hidden';
       },
@@ -160,28 +159,46 @@ document.addEventListener('DOMContentLoaded', function () {
       0
     );
 
-    // Phase 2: Smoothly move to fixed positioning at current location
-    expansionTl.to(chatIframeContainer, {
-      duration: 0.1,
-      ease: 'power2.out',
-      onStart: function () {
-        // Set to fixed position but maintain current visual position
-        gsap.set(chatIframeContainer, {
-          position: 'fixed',
-          top: currentTop,
-          left: currentLeft,
-          width: currentWidth,
-          height: currentHeight,
-          zIndex: 999,
-        });
+    // Phase 1.5: Fade out overlay smoothly
+    expansionTl.to(
+      chatOverlay,
+      {
+        duration: 0.3,
+        opacity: 0,
+        ease: 'power2.out',
+        onComplete: function () {
+          if (chatOverlay) chatOverlay.style.display = 'none';
+        },
       },
-    });
+      0
+    );
+
+    // Phase 2: Smoothly move to fixed positioning at current location
+    expansionTl.to(
+      chatIframeContainer,
+      {
+        duration: 0.1,
+        ease: 'power2.out',
+        onStart: function () {
+          // Set to fixed position but maintain current visual position
+          gsap.set(chatIframeContainer, {
+            position: 'fixed',
+            top: currentTop,
+            left: currentLeft,
+            width: currentWidth,
+            height: currentHeight,
+            zIndex: 999,
+          });
+        },
+      },
+      -0.3
+    );
 
     // Phase 3: Expand to fullscreen with smooth animation
     expansionTl.to(
       chatIframeContainer,
       {
-        duration: 0.5,
+        duration: 0.2,
         top: 0,
         left: 0,
         width: '100vw',
@@ -192,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
           chatIframeContainer.classList.add('fullscreen');
         },
       },
-      0.1
+      0
     );
 
     // Phase 4: Fade out section content in parallel
@@ -204,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
         y: -10,
         ease: 'power2.out',
       },
-      0.1
+      -0.3
     );
 
     return expansionTl;
@@ -214,8 +231,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function handleChatStart() {
     if (isExpanded) return; // Prevent multiple expansions
 
-    // Center the start chatting button in viewport before expansion
-    chatNowBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Position the start chatting button 10px below center in viewport before expansion
+    const buttonRect = chatNowBtn.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const targetTop = (viewportHeight / 2) + 10;
+    const currentTop = buttonRect.top;
+    const scrollOffset = currentTop - targetTop;
+    
+    window.scrollTo({
+      top: window.pageYOffset + scrollOffset,
+      behavior: 'smooth'
+    });
 
     // Wait for scroll to complete before starting expansion
     setTimeout(() => {
@@ -235,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Set up history state for back button handling
       history.pushState({ chatExpanded: true }, '', window.location.href);
       console.log('Chat expanded, history state set');
-    }, 300); // Wait 600ms for smooth scroll to complete
+    }, 200); // Wait 600ms for smooth scroll to complete
   }
 
   // Function to close the expanded iframe
@@ -249,8 +275,18 @@ document.addEventListener('DOMContentLoaded', function () {
     expansionTl.reverse().eventCallback('onReverseComplete', function () {
       // Clean up classes and styles
       chatIframeContainer.classList.remove('fullscreen', 'transitioning');
-      if (chatOverlay) chatOverlay.style.display = '';
       document.body.style.overflow = '';
+
+      // Fade overlay back in
+      if (chatOverlay) {
+        chatOverlay.style.display = '';
+        gsap.to(chatOverlay, {
+          duration: 0.3,
+          opacity: 1,
+          ease: 'power2.out',
+        });
+      }
+
       setTimeout(() => {
         // Get responsive dimensions for the current device
         const dimensions = getContainerDimensions();
