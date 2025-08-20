@@ -7,6 +7,51 @@ document.addEventListener('DOMContentLoaded', function () {
   const chatNowBtn = document.querySelector('.chat-now-btn');
   const chatIframe = document.getElementById('chat-iframe');
 
+  // Device detection and responsive dimensions
+  function getDeviceType() {
+    const width = window.innerWidth;
+    if (width <= 480) return 'mobile';
+    if (width <= 768) return 'tablet';
+    if (width <= 1024) return 'tablet-landscape';
+    return 'desktop';
+  }
+
+  function getContainerDimensions() {
+    const deviceType = getDeviceType();
+    const vh = window.innerHeight;
+    
+    // Get the content container width to align with title
+    const contentContainer = document.querySelector('.chat-preview-content');
+    const contentWidth = contentContainer ? contentContainer.offsetWidth : window.innerWidth * 0.8;
+
+    switch (deviceType) {
+      case 'mobile':
+        return {
+          width: contentWidth, // Use full content container width
+          height: Math.max(vh * 0.85, 350),
+          aspectRatio: 9 / 16,
+        };
+      case 'tablet':
+        return {
+          width: contentWidth, // Use full content container width
+          height: Math.max(vh * 0.8, 400),
+          aspectRatio: 3 / 4,
+        };
+      case 'tablet-landscape':
+        return {
+          width: contentWidth, // Use full content container width
+          height: Math.max(vh * 0.75, 450),
+          aspectRatio: 4 / 3,
+        };
+      default: // desktop
+        return {
+          width: contentWidth, // Use full content container width
+          height: Math.max(vh * 0.7, 500),
+          aspectRatio: 16 / 10,
+        };
+    }
+  }
+
   // GSAP animations for the chat preview section
   gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +101,26 @@ document.addEventListener('DOMContentLoaded', function () {
   chatIframe.setAttribute('data-loading', 'true');
 
   let iframeLoaded = false;
+
+  // Initialize responsive dimensions
+  function initializeResponsiveDimensions() {
+    const dimensions = getContainerDimensions();
+    const deviceType = getDeviceType();
+
+    gsap.set(chatIframeContainer, {
+      width: `${dimensions.width}px`,
+      height: `${dimensions.height}px`,
+      borderRadius:
+        deviceType === 'mobile'
+          ? '12px'
+          : deviceType === 'tablet'
+          ? '15px'
+          : '20px',
+    });
+  }
+
+  // Initialize on load
+  initializeResponsiveDimensions();
 
   // Iframe loading state
   chatIframe.addEventListener('load', function () {
@@ -186,15 +251,23 @@ document.addEventListener('DOMContentLoaded', function () {
       if (chatOverlay) chatOverlay.style.display = '';
       document.body.style.overflow = '';
       setTimeout(() => {
-        // Reset positioning to original state
+        // Get responsive dimensions for the current device
+        const dimensions = getContainerDimensions();
+
+        // Reset positioning to responsive state
         gsap.set(chatIframeContainer, {
           position: 'relative',
           top: 'auto',
           left: 'auto',
-          width: '80vw',
-          height: '70vh',
+          width: `${dimensions.width}px`,
+          height: `${dimensions.height}px`,
           zIndex: 'auto',
-          borderRadius: '20px',
+          borderRadius:
+            getDeviceType() === 'mobile'
+              ? '12px'
+              : getDeviceType() === 'tablet'
+              ? '15px'
+              : '20px',
         });
 
         // Reset iframe to natural container-filling state
@@ -280,7 +353,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Handle window resize for fullscreen mode
   window.addEventListener('resize', function () {
-    // No JS resizing; let CSS .fullscreen control width/height
+    // Update container dimensions for responsive behavior when not in fullscreen
+    if (!isExpanded) {
+      const dimensions = getContainerDimensions();
+      const deviceType = getDeviceType();
+
+      // Update container dimensions based on current device type
+      gsap.set(chatIframeContainer, {
+        width: `${dimensions.width}px`,
+        height: `${dimensions.height}px`,
+        borderRadius:
+          deviceType === 'mobile'
+            ? '12px'
+            : deviceType === 'tablet'
+            ? '15px'
+            : '20px',
+      });
+
+      // Reset expansion timeline since dimensions changed
+      if (expansionTl) {
+        expansionTl.kill();
+        expansionTl = null;
+      }
+    }
   });
 
   // Intersection observer for lazy loading and animation triggering
