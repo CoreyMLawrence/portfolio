@@ -39,7 +39,7 @@
   width: 100%; /* Use full width of content container instead of viewport */
   height: 70vh;
   min-height: 500px;
-  border-radius: 20px;
+  border-radius: 2.5rem;
   overflow: hidden;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.05);
   opacity: 0;
@@ -149,7 +149,7 @@
   .chat-iframe-container:not(.fullscreen):not(.transitioning) {
     /* JavaScript will handle responsive dimensions */
     min-height: 400px;
-    border-radius: 15px;
+    border-radius: 2.5rem;
   }
 
   .chat-now-btn {
@@ -161,12 +161,17 @@
 /* Mobile */
 @media screen and (max-width: 480px) {
   .chat-preview {
-    padding: 60px 1.5rem;
+    padding: 60px 0.75rem;
+  }
+
+  .chat-preview-title {
+    padding: 0 0.75rem;
   }
 
   .chat-preview-subtitle {
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
+    padding: 0 0.75rem;
   }
 
   .chat-iframe-container:not(.fullscreen):not(.transitioning) {

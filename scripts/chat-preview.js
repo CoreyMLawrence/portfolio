@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function getContainerDimensions() {
     const deviceType = getDeviceType();
-    const vh = window.innerHeight;
+    const dvh = window.innerHeight;
 
     // Get the content container width to align with title
     const contentContainer = document.querySelector('.chat-preview-content');
@@ -30,25 +30,25 @@ document.addEventListener('DOMContentLoaded', function () {
       case 'mobile':
         return {
           width: contentWidth, // Use full content container width
-          height: Math.max(vh * 0.85, 350),
+          height: Math.max(dvh * 0.85, 350),
           aspectRatio: 9 / 16,
         };
       case 'tablet':
         return {
           width: contentWidth, // Use full content container width
-          height: Math.max(vh * 0.8, 400),
+          height: Math.max(dvh * 0.8, 400),
           aspectRatio: 3 / 4,
         };
       case 'tablet-landscape':
         return {
           width: contentWidth, // Use full content container width
-          height: Math.max(vh * 0.75, 450),
+          height: Math.max(dvh * 0.75, 450),
           aspectRatio: 4 / 3,
         };
       default: // desktop
         return {
           width: contentWidth, // Use full content container width
-          height: Math.max(vh * 0.7, 500),
+          height: Math.max(dvh * 0.7, 500),
           aspectRatio: 16 / 10,
         };
     }
@@ -112,12 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
     gsap.set(chatIframeContainer, {
       width: `${dimensions.width}px`,
       height: `${dimensions.height}px`,
-      borderRadius:
-        deviceType === 'mobile'
-          ? '12px'
-          : deviceType === 'tablet'
-          ? '15px'
-          : '20px',
+      borderRadius: '2.5rem',
     });
   }
 
@@ -190,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
         top: 0,
         left: 0,
         width: '100vw',
-        height: '100vh',
+        height: '100dvh',
         borderRadius: 0,
         ease: 'power2.inOut',
         onComplete: function () {
@@ -268,12 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
           zIndex: 'auto',
-          borderRadius:
-            getDeviceType() === 'mobile'
-              ? '12px'
-              : getDeviceType() === 'tablet'
-              ? '15px'
-              : '20px',
+          borderRadius: '2.5rem',
         });
 
         // Reset iframe to natural container-filling state
@@ -368,12 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
       gsap.set(chatIframeContainer, {
         width: `${dimensions.width}px`,
         height: `${dimensions.height}px`,
-        borderRadius:
-          deviceType === 'mobile'
-            ? '12px'
-            : deviceType === 'tablet'
-            ? '15px'
-            : '20px',
+        borderRadius: '2.5rem',
       });
 
       // Reset expansion timeline since dimensions changed

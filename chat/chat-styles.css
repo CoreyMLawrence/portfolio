@@ -547,6 +547,7 @@ body {
   opacity: 0;
   transform: translateY(20px);
   max-width: 600px;
+  white-space: nowrap;
 }
 
 .suggestion-chip {
@@ -926,6 +927,15 @@ body {
     padding: 0 var(--space-xs);
   }
 
+  .welcome-message {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .welcome-message p {
+    max-width: 90%;
+  }
+
   .chat-messages {
     max-height: calc(
       100svh - 140px
@@ -933,6 +943,8 @@ body {
     /* prevent smooth scrolling/anchor from nudging layout during textarea resize */
     scroll-behavior: auto;
     overflow-anchor: none;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .sidebar-header {
@@ -976,7 +988,7 @@ body {
 /* Project Cards Styles */
 .project-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
   margin: 1rem 0;
   max-width: 100%;
@@ -995,8 +1007,7 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 2px solid var(--border-light);
   aspect-ratio: 16 / 10;
-  max-width: 320px; /* Limit maximum size */
-  width: 100%;
+  width: 100%; /* Remove max-width constraint to allow scaling */
 }
 
 .project-card:hover {
@@ -1057,7 +1068,7 @@ body {
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .project-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 0.75rem;
     margin: 0.75rem 0;
   }
@@ -1065,7 +1076,7 @@ body {
   .project-card {
     aspect-ratio: 4 / 3;
     border-width: 1px;
-    max-width: 280px; /* Smaller max on mobile */
+    max-width: none; /* Remove max width constraint */
   }
 
   /* Show overlay always on mobile */
@@ -1076,34 +1087,53 @@ body {
   }
 
   .project-card-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .project-card-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
-/* For small mobile screens - single column */
+/* Tablet responsive adjustments */
+@media (min-width: 769px) and (max-width: 1199px) {
+  .project-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* For small mobile screens - maintain responsive columns */
 @media (max-width: 480px) {
   .project-cards-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 0.5rem;
   }
 
   .project-card {
-    max-width: 100%; /* Full width on very small screens */
+    max-width: none; /* Allow cards to scale down with grid */
   }
 
   .project-card-overlay {
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+    padding: 1rem 0.75rem 0.75rem;
+  }
+
+  .project-card-title {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .project-card-subtitle {
+    font-size: 0.7rem;
+    line-height: 1.2;
   }
 }
 
-/* For larger screens, limit to 3 columns max */
+/* For larger screens, maintain responsive columns */
 @media (min-width: 1200px) {
   .project-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     justify-content: start;
   }
 }
