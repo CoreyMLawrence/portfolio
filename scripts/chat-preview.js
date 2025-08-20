@@ -19,10 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function getContainerDimensions() {
     const deviceType = getDeviceType();
     const vh = window.innerHeight;
-    
+
     // Get the content container width to align with title
     const contentContainer = document.querySelector('.chat-preview-content');
-    const contentWidth = contentContainer ? contentContainer.offsetWidth : window.innerWidth * 0.8;
+    const contentWidth = contentContainer
+      ? contentContainer.offsetWidth
+      : window.innerWidth * 0.8;
 
     switch (deviceType) {
       case 'mobile':
@@ -152,14 +154,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentWidth = rect.width;
     const currentHeight = rect.height;
 
-    // Hide overlay immediately and set up for animation
+    // Phase 1: Setup and smooth positioning transition
     expansionTl.call(
       () => {
         if (chatOverlay) chatOverlay.style.display = 'none';
-        // Add transitioning class but not fullscreen yet
         chatIframeContainer.classList.add('transitioning');
+        document.body.style.overflow = 'hidden';
+      },
+      null,
+      0
+    );
 
-        // Set container to fixed position at current location
+    // Phase 2: Smoothly move to fixed positioning at current location
+    expansionTl.to(chatIframeContainer, {
+      duration: 0.1,
+      ease: 'power2.out',
+      onStart: function () {
+        // Set to fixed position but maintain current visual position
         gsap.set(chatIframeContainer, {
           position: 'fixed',
           top: currentTop,
@@ -168,19 +179,14 @@ document.addEventListener('DOMContentLoaded', function () {
           height: currentHeight,
           zIndex: 999,
         });
-
-        // Don't change iframe positioning at all - let it maintain its current state
-        document.body.style.overflow = 'hidden';
       },
-      null,
-      0
-    );
+    });
 
-    // Animate ONLY the container - iframe will scale perfectly with it
+    // Phase 3: Expand to fullscreen with smooth animation
     expansionTl.to(
       chatIframeContainer,
       {
-        duration: 0.4,
+        duration: 0.5,
         top: 0,
         left: 0,
         width: '100vw',
@@ -191,19 +197,19 @@ document.addEventListener('DOMContentLoaded', function () {
           chatIframeContainer.classList.add('fullscreen');
         },
       },
-      0
+      0.1
     );
 
-    // Fade out section content
+    // Phase 4: Fade out section content in parallel
     expansionTl.to(
       ['.chat-preview-title', '.chat-preview-subtitle'],
       {
-        duration: 0.5,
+        duration: 0.4,
         opacity: 0,
         y: -10,
         ease: 'power2.out',
       },
-      0
+      0.1
     );
 
     return expansionTl;
