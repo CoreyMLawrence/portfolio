@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Close the menu when clicking a .back-link (mobile)
+  document.querySelectorAll('.back-link').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (appContainer && appContainer.classList.contains('menu-open')) {
+        setTimeout(() => {
+          appContainer.classList.remove('menu-open');
+        }, 1300); // Delay closing the menu for the animation
+      }
+    });
+  });
+
   // Close the menu when clicking a nav item (mobile)
   navItems.forEach((item) =>
     item.addEventListener('click', () => {
