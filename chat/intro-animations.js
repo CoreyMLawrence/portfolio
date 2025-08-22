@@ -11,7 +11,7 @@ class ChatIntroAnimations {
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
     this.typingSpeed = 50; // ms per character
     this.originalText = '';
-    
+
     // Animation control - set to true to skip animations
     this.skipAnimations = false;
 
@@ -22,7 +22,9 @@ class ChatIntroAnimations {
   init() {
     // Always capture original text first, regardless of animation preference
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.initializeContent());
+      document.addEventListener('DOMContentLoaded', () =>
+        this.initializeContent()
+      );
     } else {
       this.initializeContent();
     }
@@ -32,7 +34,8 @@ class ChatIntroAnimations {
     // Capture original text before any modifications
     const welcomeH3 = document.querySelector('.welcome-message h3');
     if (welcomeH3) {
-      this.originalText = welcomeH3.textContent || 'Ask me anything about Corey';
+      this.originalText =
+        welcomeH3.textContent || 'Ask me anything about Corey';
     }
 
     // Check if we should skip intro animations (coming from iframe preview)
@@ -124,12 +127,16 @@ class ChatIntroAnimations {
     const contentDuration = this.skipAnimations ? 0 : 0.6;
     const chipsDuration = this.skipAnimations ? 0 : 0.7;
     const statusDuration = this.skipAnimations ? 0 : 0.5;
-    
+
     // Delay timing variables
     const profileDelay = this.skipAnimations ? 0 : 0.2;
     const typingStartTime = this.skipAnimations ? 0 : 0.2;
-    const typingDuration = this.skipAnimations ? 0 : (this.originalText.length * 60) / 1000;
-    const contentStartTime = this.skipAnimations ? 0 : typingStartTime + typingDuration - 0.1;
+    const typingDuration = this.skipAnimations
+      ? 0
+      : (this.originalText.length * 60) / 1000;
+    const contentStartTime = this.skipAnimations
+      ? 0
+      : typingStartTime + typingDuration - 0.1;
     const chipsDelay = this.skipAnimations ? 0 : 0.2;
 
     this.timeline = gsap.timeline({
@@ -245,10 +252,12 @@ class ChatIntroAnimations {
         });
     } else if (statusDot) {
       // Just ensure it's visible
-      tl.set(statusDot, { opacity: 1, scale: 1, backgroundColor: '#34c759' }, 0);
+      tl.set(
+        statusDot,
+        { opacity: 1, scale: 1, backgroundColor: '#34c759' },
+        0
+      );
     }
-
-    console.log(this.skipAnimations ? 'Chat intro animations skipped' : 'Chat intro animations started');
   }
 
   startTyping() {

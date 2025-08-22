@@ -234,13 +234,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Position the start chatting button 10px below center in viewport before expansion
     const buttonRect = chatNowBtn.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const targetTop = (viewportHeight / 2) + 10;
+    const targetTop = viewportHeight / 2 + 10;
     const currentTop = buttonRect.top;
     const scrollOffset = currentTop - targetTop;
-    
+
     window.scrollTo({
       top: window.pageYOffset + scrollOffset,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
 
     // Wait for scroll to complete before starting expansion
@@ -260,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Set up history state for back button handling
       history.pushState({ chatExpanded: true }, '', window.location.href);
-      console.log('Chat expanded, history state set');
     }, 200); // Wait 600ms for smooth scroll to complete
   }
 
@@ -326,7 +325,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Handle back button to close expanded iframe
   window.addEventListener('popstate', function (e) {
-    console.log('Popstate event:', e.state, 'isExpanded:', isExpanded);
     if (isExpanded) {
       closeExpansion();
     }

@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const res = await fetch('./resume.json');
     resumeData = await res.json();
-    console.log('Resume data loaded successfully');
     hydrateProfilePanel(resumeData);
   } catch (e) {
     console.error('Failed to load resume data:', e);
@@ -917,9 +916,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (welcome) welcome.remove();
       // Ensure scroll is at bottom after hydration
       chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      console.log('Session restored with history:', history.length, 'messages');
-      console.log('PDF export will use session cache directly');
     }
     // Delegated listener covers chips after restore as well
   });
