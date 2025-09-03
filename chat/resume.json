@@ -22,6 +22,24 @@
       "honors": "Graduated cum laude"
     }
   ],
+  "marketing_summary": {
+    "overview": "8+ years of progressive marketing and product management experience at Highland International, with advancement from Marketing Specialist to Marketing Manager to Head of Marketing. Owned multiple product lines from research to launch, built campaigns across print and digital, and drove measurable growth in traffic, leads, and revenue.",
+    "key_achievements": [
+      "Directed a website redesign that, along with SEO and paid campaigns, grew online revenue from $50K to $250K annually.",
+      "Tripled monthly site visitors (2,000 to 6,000+) through SEO, content optimization, and improved site structure.",
+      "Increased organic search visibility by 300%, outranking national competitors such as Sherwin-Williams.",
+      "Ran targeted Google Ads campaigns that doubled qualified leads.",
+      "Owned multiple product launches (StoveMaster1200, 200QD, QuickDry45), overseeing everything from market research and label design to web promotion and sales enablement.",
+      "Produced product labels, brochures, mailers, and collateral to establish consistent branding.",
+      "Coordinated with sales and distributors to align marketing strategies with customer targeting."
+    ],
+    "metrics": {
+      "organic_traffic_growth": "300% increase",
+      "monthly_visitors": "2,000 to 6,000+",
+      "online_revenue": "$50K to $250K annually",
+      "qualified_leads": "Doubled through campaigns"
+    }
+  },
   "featured_projects": [
     {
       "name": "Comfort Airlines",
@@ -110,29 +128,44 @@
   ],
   "career": [
     {
+      "title": "Head of Marketing",
+      "company": "Highland International, LLC",
+      "location": "Boone, NC",
+      "start_date": "2017-01",
+      "end_date": "2020-05",
+      "summary": "Owned product lifecycles, directed digital campaigns, and led a major web transformation that significantly boosted traffic and revenue.",
+      "key_responsibilities": [
+        "Owned multiple products across lifecycle, from ideation to sales.",
+        "Directed a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+        "Designed product labels, packaging, brochures, and digital campaigns.",
+        "Tripled organic traffic and outranked national competitors.",
+        "Aligned marketing with sales strategies to grow market presence."
+      ]
+    },
+    {
+      "title": "Marketing Manager",
+      "company": "Highland International, LLC",
+      "location": "Boone, NC",
+      "start_date": "2014-08",
+      "end_date": "2016-12",
+      "summary": "Managed campaigns across several product lines, refined targeting strategies, and improved branding.",
+      "key_responsibilities": [
+        "Executed Google Ads campaigns that doubled qualified leads.",
+        "Oversaw packaging redesigns and collateral updates for brand consistency.",
+        "Coordinated multi-channel marketing campaigns."
+      ]
+    },
+    {
       "title": "Marketing Specialist",
       "company": "Highland International, LLC",
       "location": "Boone, NC",
       "start_date": "2012-10",
-      "end_date": "2020-05",
-      "summary": "Blended marketing, web management, and content creation to grow brand visibility and lead generation.",
+      "end_date": "2014-07",
+      "summary": "Supported product launches with content, collateral, and campaign execution.",
       "key_responsibilities": [
-        "Rebuilt and managed corporate website, transitioning from HTTP to HTTPS and tripling organic traffic through SEO and UX improvements.",
-        "Created and managed site content via WordPress, including keyword research, metadata optimization, and blog updates.",
-        "Designed landing pages, marketing emails, and print/digital collateral to support lead generation.",
-        "Ran targeted Google Ads campaigns, doubling qualified leads through analytics-driven optimization.",
-        "Performed professional product photography for use in marketing campaigns.",
-        "Collaborated with cross-functional teams to ensure alignment between marketing strategies and business objectives."
-      ],
-      "skills_used": [
-        "WordPress CMS",
-        "SEO",
-        "Google Analytics",
-        "Content Strategy",
-        "Adobe Creative Suite",
-        "Photography",
-        "Copywriting",
-        "Campaign Management"
+        "Maintained website content and implemented keyword-driven updates.",
+        "Produced product photography, print collateral, and marketing emails.",
+        "Contributed to early product rollouts with research and promotion efforts."
       ]
     },
     {
@@ -224,12 +257,14 @@
     "cms_platforms": ["WordPress", "Sanity"],
     "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
     "marketing": [
+      "Product Lifecycle Management",
       "SEO Strategy",
+      "Google Ads Campaigns",
       "Content Marketing",
+      "Conversion Optimization",
+      "Analytics Tracking",
       "Email Campaigns",
-      "Google Ads",
-      "Conversion Rate Optimization",
-      "Analytics Tracking"
+      "Brand Development"
     ],
     "soft_skills": [
       "Cross-Functional Collaboration",
