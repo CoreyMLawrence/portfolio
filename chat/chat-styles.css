@@ -493,6 +493,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   min-height: 0; /* Allows flex shrinking */
+  position: relative; /* For positioning scroll indicator */
 }
 
 .chat-messages {
@@ -1136,4 +1137,37 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     justify-content: start;
   }
+}
+
+/* Scroll Down Indicator */
+.chat-scroll-indicator {
+  position: absolute;
+  bottom: 60px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 36px;
+  height: 36px;
+  background: var(--text-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.25s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chat-scroll-indicator.visible {
+  opacity: 0.75;
+}
+
+.chat-scroll-indicator i {
+  font-size: 20px;
+  color: white;
+}
+
+.chat-scroll-indicator:hover {
+  background: #656569;
 }

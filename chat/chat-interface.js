@@ -64,6 +64,56 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Markdown renderer holder (set on window for global access)
   let snarkdown = null;
 
+  // Chat anchor state for pinning user messages at top during streaming
+  const __chatAnchor = {
+    element: null, // DOM element of the latest user message to pin
+    padding: 12, // top padding (px) between viewport top and anchored element
+    userScrolledToBottomOnce: false, // true once user has reached bottom since last user message
+    resetOnNextUserMessage: true, // controls whether arrow may be shown while current response streams
+    active: false, // whether anchor mode is in effect for current user message
+    reachedTop: false, // set true when anchored element is aligned to top
+  };
+
+  // Create scroll down indicator
+  function createScrollDownIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'chat-scroll-indicator';
+    indicator.innerHTML = `
+      <i class="fas fa-chevron-down"></i>
+    `;
+
+    indicator.addEventListener('click', () => {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      __chatAnchor.userScrolledToBottomOnce = true;
+      hideScrollIndicator();
+    });
+
+    // Append to chat container (parent of chatMessages)
+    const chatContainer = chatMessages.parentElement;
+    if (chatContainer) {
+      chatContainer.appendChild(indicator);
+    }
+
+    return indicator;
+  }
+
+  // Show scroll indicator
+  function showScrollIndicator() {
+    let indicator = document.querySelector('.chat-scroll-indicator');
+    if (!indicator) {
+      indicator = createScrollDownIndicator();
+    }
+    indicator.classList.add('visible');
+  }
+
+  // Hide scroll indicator
+  function hideScrollIndicator() {
+    const indicator = document.querySelector('.chat-scroll-indicator');
+    if (indicator) {
+      indicator.classList.remove('visible');
+    }
+  }
+
   // Initialize project cards manager
   if (window.ProjectCardsManager) {
     projectCardsManager = new window.ProjectCardsManager();
@@ -101,7 +151,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // No direct binds needed; delegation above covers all current/future chips
+  // Hide scroll indicator when user scrolls to bottom
+  chatMessages.addEventListener('scroll', () => {
+    const atBottom =
+      chatMessages.scrollTop + chatMessages.clientHeight >=
+      chatMessages.scrollHeight - 8;
+    if (atBottom) {
+      hideScrollIndicator();
+    }
+  });
 
   // Handle navigation
   navItems.forEach((item) => {
@@ -160,7 +218,56 @@ document.addEventListener('DOMContentLoaded', async () => {
       contact: 'Contact',
     };
     const display = (label || sectionLabelMap[section] || 'About').trim();
-    if (display) addMessage('user', display);
+    if (display) {
+      // Add user message with preventAutoScroll and set up anchor state like in handleSendMessage
+      const userMessageDiv = addMessage('user', display, {
+        preventAutoScroll: true,
+      });
+
+      // Set up anchor state
+      __chatAnchor.element = userMessageDiv;
+      __chatAnchor.active = true;
+      __chatAnchor.reachedTop = false;
+      __chatAnchor.userScrolledToBottomOnce = false;
+      __chatAnchor.resetOnNextUserMessage = true;
+
+      // Animate user message to top position
+      const isMobile = window.innerWidth < 1024;
+      const target = Math.max(
+        0,
+        userMessageDiv.offsetTop - __chatAnchor.padding
+      );
+
+      if (isMobile) {
+        // Snap directly on mobile
+        chatMessages.scrollTop = target;
+        checkAndShowScrollIndicator();
+      } else {
+        // Smooth animation on desktop
+        const startScrollTop = chatMessages.scrollTop;
+        const distance = target - startScrollTop;
+        const duration = 220;
+        const startTime = performance.now();
+
+        const animateScroll = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Easing function (ease-out)
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+
+          chatMessages.scrollTop = startScrollTop + distance * easeOut;
+
+          if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+          } else {
+            checkAndShowScrollIndicator();
+          }
+        };
+
+        requestAnimationFrame(animateScroll);
+      }
+    }
 
     showTypingIndicator();
     // Generate response with internal prompt but store only the display text in history
@@ -171,18 +278,79 @@ document.addEventListener('DOMContentLoaded', async () => {
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // Add user message
-    addMessage('user', message);
+    // Add user message with preventAutoScroll
+    const userMessageDiv = addMessage('user', message, {
+      preventAutoScroll: true,
+    });
+
+    // Set up anchor state
+    __chatAnchor.element = userMessageDiv;
+    __chatAnchor.active = true;
+    __chatAnchor.reachedTop = false;
+    __chatAnchor.userScrolledToBottomOnce = false;
+    __chatAnchor.resetOnNextUserMessage = true;
 
     // Clear input
     chatInput.value = '';
     autoResizeTextarea();
+
+    // Animate user message to top position
+    const isMobile = window.innerWidth < 1024;
+    const target = Math.max(0, userMessageDiv.offsetTop - __chatAnchor.padding);
+
+    if (isMobile) {
+      // Snap directly on mobile
+      chatMessages.scrollTop = target;
+      checkAndShowScrollIndicator();
+    } else {
+      // Smooth animation on desktop
+      const startScrollTop = chatMessages.scrollTop;
+      const distance = target - startScrollTop;
+      const duration = 220;
+      const startTime = performance.now();
+
+      const animateScroll = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-out)
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+
+        chatMessages.scrollTop = startScrollTop + distance * easeOut;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        } else {
+          checkAndShowScrollIndicator();
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    }
 
     // Show typing indicator
     showTypingIndicator();
 
     // Generate AI response using Gemini (streamed)
     generateGeminiResponse(message);
+  }
+
+  // Check if content is hidden below viewport and show indicator if needed
+  function checkAndShowScrollIndicator() {
+    const hiddenBelow =
+      chatMessages.scrollHeight >
+      chatMessages.scrollTop + chatMessages.clientHeight + 8;
+
+    if (
+      hiddenBelow &&
+      !__chatAnchor.userScrolledToBottomOnce &&
+      __chatAnchor.resetOnNextUserMessage &&
+      __chatAnchor.reachedTop
+    ) {
+      showScrollIndicator();
+    } else {
+      hideScrollIndicator();
+    }
   }
 
   async function generateGeminiResponse(question, userDisplayText = null) {
@@ -261,17 +429,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       hideTypingIndicator();
-      const aiDiv = addMessage('ai', '');
+      const aiDiv = addMessage('ai', '', { preventAutoScroll: true });
       const contentEl = aiDiv.querySelector('.message-content');
       let buffer = '';
 
       // Per-message auto-scroll with user-cancel behavior (only on manual input)
-      let shouldAutoScroll = true;
       const nearBottom = () =>
         chatMessages.scrollHeight -
           chatMessages.scrollTop -
           chatMessages.clientHeight <=
         8;
+      let shouldAutoScroll = nearBottom();
       // Smooth auto-scroll animation (slower than default)
       const scroller = (() => {
         let raf = 0;
@@ -333,13 +501,105 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
         };
       })();
-      const cancelIfUserMoves = () => {
-        if (!nearBottom()) {
-          shouldAutoScroll = false;
-          // Also cancel any in-flight smooth scrolling
-          scroller.cancel();
+
+      // Smooth anchor scroller for streaming text positioning
+      const anchorScroller = (() => {
+        let raf = 0;
+        let active = false;
+        const isDesktopWidth = () =>
+          (window.innerWidth || document.documentElement.clientWidth || 1080) >=
+          1024;
+
+        const step = (target) => {
+          if (!active) return;
+          const diff = target - chatMessages.scrollTop;
+
+          // Stop when close enough
+          if (Math.abs(diff) < 1) {
+            chatMessages.scrollTop = target;
+            active = false;
+            raf = 0;
+            __chatAnchor.reachedTop = true;
+            return;
+          }
+
+          // Gentle easing for smooth streaming scroll - faster than main scroller
+          chatMessages.scrollTop += diff * 0.92;
+          raf = requestAnimationFrame(() => step(target));
+        };
+
+        return {
+          start(target) {
+            // On mobile, snap directly for performance but don't set reachedTop immediately
+            // since content may still be growing and target position may change
+            if (!isDesktopWidth()) {
+              chatMessages.scrollTop = target;
+              // Only set reachedTop if we're very close to the intended position
+              const diff = Math.abs(chatMessages.scrollTop - target);
+              if (diff <= 2) {
+                __chatAnchor.reachedTop = true;
+              }
+              return;
+            }
+
+            if (!active) {
+              active = true;
+              step(target);
+            }
+          },
+          cancel() {
+            active = false;
+            if (raf) cancelAnimationFrame(raf);
+            raf = 0;
+          },
+          isActive() {
+            return active;
+          },
+        };
+      })();
+
+      // Function to maintain anchor position or start smooth scroll
+      const maintainAnchorOrStart = () => {
+        if (__chatAnchor.active && __chatAnchor.element) {
+          const target = Math.max(
+            0,
+            __chatAnchor.element.offsetTop - __chatAnchor.padding
+          );
+          const diff = Math.abs(chatMessages.scrollTop - target);
+          const isMobile = window.innerWidth < 1024;
+
+          if (diff <= 2) {
+            __chatAnchor.reachedTop = true;
+          } else {
+            // On mobile, always reposition when content grows during streaming
+            // On desktop, only start scrolling if we haven't reached top yet
+            if (isMobile || !__chatAnchor.reachedTop) {
+              anchorScroller.start(target);
+            }
+          }
+        } else if (!__chatAnchor.active && shouldAutoScroll) {
+          scroller.start();
         }
       };
+
+      // Function for continuation streaming (reuse same logic)
+      const maintainAnchorOrStartCont = maintainAnchorOrStart;
+
+      const cancelIfUserMoves = () => {
+        const wasNearBottom = nearBottom();
+        if (!wasNearBottom) {
+          shouldAutoScroll = false;
+          scroller.cancel();
+          anchorScroller.cancel();
+        }
+
+        // Check if user scrolled to bottom manually
+        if (wasNearBottom && __chatAnchor.active) {
+          __chatAnchor.userScrolledToBottomOnce = true;
+          hideScrollIndicator();
+        }
+      };
+
       // Listen to manual interactions only
       chatMessages.addEventListener('wheel', cancelIfUserMoves, {
         passive: true,
@@ -368,15 +628,17 @@ document.addEventListener('DOMContentLoaded', async () => {
           contentEl.innerHTML = markdownToHtml(visibleText);
           // Update data-markdown attribute with the raw markdown
           aiDiv.setAttribute('data-markdown', visibleText);
-          if (shouldAutoScroll) {
-            scroller.start();
-          } else {
-            scroller.cancel();
-          }
+
+          // Use new anchor-aware scrolling logic
+          maintainAnchorOrStart();
+
+          // Update scroll indicator visibility
+          setTimeout(checkAndShowScrollIndicator, 0);
         }
       } finally {
         // Stop any ongoing smooth scroll between phases
         scroller.cancel();
+        anchorScroller.cancel();
         chatMessages.removeEventListener('wheel', cancelIfUserMoves);
         chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
         chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
@@ -455,15 +717,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             contentEl.innerHTML = markdownToHtml(answer);
             // Update data-markdown attribute with the raw markdown
             aiDiv.setAttribute('data-markdown', answer);
-            if (shouldAutoScroll) {
-              scroller.start();
-            } else {
-              scroller.cancel();
-            }
+
+            // Use new anchor-aware scrolling logic
+            maintainAnchorOrStartCont();
+
+            // Update scroll indicator visibility
+            setTimeout(checkAndShowScrollIndicator, 0);
           }
         } finally {
           // Ensure smooth scrolling stops after this phase as well
           scroller.cancel();
+          anchorScroller.cancel();
           chatMessages.removeEventListener('wheel', cancelIfUserMoves);
           chatMessages.removeEventListener('touchmove', cancelIfUserMoves);
           chatMessages.removeEventListener('touchstart', cancelIfUserMoves);
@@ -527,10 +791,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           console.warn('Failed to trigger PDF export from hidden action:', e);
         }
       }
-      // Final snap to bottom if user hasn't taken over scrolling
-      if (shouldAutoScroll) {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
+
+      // DO NOT auto-snap to bottom after completion - leave viewport where user message is pinned
+      // Just update the scroll indicator visibility
+      checkAndShowScrollIndicator();
 
       // Use the display text for history storage (simple button text) instead of internal prompt
       const textToStore = userDisplayText || question;
@@ -615,7 +879,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return { visibleText: out.trimEnd(), actions, actionData };
   }
 
-  function addMessage(sender, text) {
+  function addMessage(sender, text, options = {}) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
@@ -638,7 +902,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Only auto-scroll if preventAutoScroll is not true
+    if (!options.preventAutoScroll) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
     return messageDiv;
   }
 
@@ -656,7 +925,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
 
     chatMessages.appendChild(typingDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Only auto-scroll if anchor is not active
+    if (!__chatAnchor.active) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
   }
 
   function hideTypingIndicator() {
