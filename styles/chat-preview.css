@@ -121,7 +121,7 @@
 .chat-now-btn:active {
   background-color: #004494;
   transform: scale(0.98);
-  transition: all 0.05s ease;
+  transition: color 0.75s ease;
 }
 
 .chat-now-btn:focus {

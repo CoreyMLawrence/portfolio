@@ -360,27 +360,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Button hover animations (simplified)
-  chatNowBtn.addEventListener('mouseenter', function () {
-    if (!isExpanded) {
-      gsap.to(chatNowBtn, {
-        duration: 0.3,
-        scale: 1.05,
-        ease: 'power2.out',
-      });
-    }
-  });
-
-  chatNowBtn.addEventListener('mouseleave', function () {
-    if (!isExpanded) {
-      gsap.to(chatNowBtn, {
-        duration: 0.3,
-        scale: 1,
-        ease: 'power2.out',
-      });
-    }
-  });
-
   // Handle window resize for fullscreen mode
   window.addEventListener('resize', function () {
     // Update container dimensions for responsive behavior when not in fullscreen
@@ -402,9 +381,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   });
-  
+
   // Listen for messages from the chat iframe
-  window.addEventListener('message', function(e) {
+  window.addEventListener('message', function (e) {
     // Handle back navigation message from iframe
     if (e.data && e.data.action === 'navigateBack') {
       if (isExpanded) {
