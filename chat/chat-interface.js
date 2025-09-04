@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const indicator = document.createElement('div');
     indicator.className = 'chat-scroll-indicator';
     indicator.innerHTML = `
-      <i class="fas fa-chevron-down"></i>
+      <i class="fas fa-arrow-down"></i>
     `;
 
     indicator.addEventListener('click', () => {
