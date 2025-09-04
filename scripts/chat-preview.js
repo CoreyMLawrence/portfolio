@@ -402,6 +402,17 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   });
+  
+  // Listen for messages from the chat iframe
+  window.addEventListener('message', function(e) {
+    // Handle back navigation message from iframe
+    if (e.data && e.data.action === 'navigateBack') {
+      if (isExpanded) {
+        // If chat is expanded, close it instead of navigating back
+        closeExpansion();
+      }
+    }
+  });
 
   // Intersection observer for lazy loading and animation triggering
   const observer = new IntersectionObserver(

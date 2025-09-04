@@ -25,13 +25,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Close the menu when clicking a .back-link (mobile)
+  // Modify back-link behavior based on iframe detection and close the menu when clicking (mobile)
   document.querySelectorAll('.back-link').forEach((el) => {
-    el.addEventListener('click', () => {
+    // Override the default onclick behavior
+    el.removeAttribute('onclick');
+    
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Handle mobile menu closing
       if (appContainer && appContainer.classList.contains('menu-open')) {
         setTimeout(() => {
           appContainer.classList.remove('menu-open');
         }, 1300); // Delay closing the menu for the animation
+      }
+      
+      // Check if page is in an iframe
+      const isInIframe = window.self !== window.top;
+      
+      if (isInIframe) {
+        // If in iframe, send a message to parent window to navigate back
+        window.parent.postMessage({ action: 'navigateBack' }, '*');
+      } else {
+        // If not in iframe, redirect to root
+        window.location.href = '/';
       }
     });
   });
