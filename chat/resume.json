@@ -42,10 +42,42 @@
   },
   "featured_projects": [
     {
+      "name": "Comfort Airlines Aircraft Simulator",
+      "subtitle": "Full-Stack Airline Operations Simulation Platform",
+      "technologies": [
+        "Python",
+        "JavaScript",
+        "HTML5",
+        "CSS3",
+        "Docker",
+        "MariaDB"
+      ],
+      "description": "A comprehensive simulation platform that models airline operations over a two-week period, combining a robust Python backend for flight, aircraft, and passenger scheduling with a user-friendly web interface for visualization and interaction. Designed for educational and analytical exploration of airline logistics, profitability, and operational strategy.",
+      "github_url": "https://github.com/CoreyMLawrence/Comfort-Airlines",
+      "key_features": [
+        "Backend simulation engine models flights, aircraft, passengers, and finances, generating detailed CSV reports.",
+        "Frontend web interface (HTML, JS, CSS) for dashboards, ticketing, and interactive visualizations.",
+        "Automated setup with PowerShell and Docker for reproducible local or containerized runs.",
+        "Intuitive GUI for ticket purchasing, dashboards, timetables, and aircraft activity playback.",
+        "Playback controls for financial and operational reports, enabling users to see profit and activity over time.",
+        "Simulation of 400,597 passengers and 3,475 flights, achieving $263M+ net profit in two simulated weeks."
+      ],
+      "technical_highlights": [
+        "Python backend with modular simulation, scheduling, and reporting logic.",
+        "Detailed algorithm documentation and modular codebase for extensibility.",
+        "Frontend built with vanilla JS, HTML, and CSS for broad compatibility.",
+        "Dockerized environment for backend and database, with automation scripts for setup and execution.",
+        "Interactive map and dashboards for visualizing simulation results.",
+        "Granular CSV reporting for aircraft, airports, flights, passengers, and financials."
+      ],
+      "impact": "Delivered an accessible, end-to-end simulation and visualization tool for exploring the complexities of airline operations, from scheduling and logistics to financial outcomes. The project demonstrates full-stack development, automation, and the ability to translate complex business logic into an engaging, educational platform."
+    },
+    {
       "project": "Ashton Gray Website Rebuild",
       "client": "Ashton Gray Development",
       "role": "Full-Stack Developer (Contract)",
       "duration": "March 2025 – Present",
+    "live_url": "https://ashtongray.com/",
       "overview": "Led the complete rebuild of Ashton Gray’s corporate website, transforming it from static files into a modern, CMS-driven platform powered by Sanity, Eleventy, and GitHub Actions. Delivered a fully automated, SEO-optimized, and highly performant site designed for scalability, ease of content management, and polished user experience.",
       "key_achievements": [
         "Designed and implemented a scalable content model in Sanity CMS, including schemas for properties, homepage, team members, site settings, and investor pages.",
@@ -154,20 +186,20 @@
       "start_date": "2017-01",
       "end_date": "2020-05",
       "summary": "Owned product lifecycles, directed digital campaigns, and led a major web transformation that significantly boosted traffic and revenue.",
-        "key_responsibilities": [
-          "Led the seamless transition of the company website from HTTP to HTTPS, boosting security and SEO rankings.",
-          "Increased organic search traffic by 300% through targeted SEO strategies and data-driven content optimization.",
-          "Directed brand positioning and messaging across digital, print, and product marketing channels.",
-          "Developed and executed integrated marketing strategies in collaboration with company leadership.",
-          "Managed email marketing campaigns and wrote blog content to strengthen customer engagement.",
-          "Conducted professional product photography to elevate marketing visuals across all platforms.",
-          "Oversaw the full marketing function, ensuring initiatives supported overarching business objectives.",
-          "Owned multiple products across lifecycle, from ideation to sales.",
-          "Directed a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
-          "Designed product labels, packaging, brochures, and digital campaigns.",
-          "Tripled organic traffic and outranked national competitors.",
-          "Aligned marketing with sales strategies to grow market presence."
-        ]
+      "key_responsibilities": [
+        "Led the seamless transition of the company website from HTTP to HTTPS, boosting security and SEO rankings.",
+        "Increased organic search traffic by 300% through targeted SEO strategies and data-driven content optimization.",
+        "Directed brand positioning and messaging across digital, print, and product marketing channels.",
+        "Developed and executed integrated marketing strategies in collaboration with company leadership.",
+        "Managed email marketing campaigns and wrote blog content to strengthen customer engagement.",
+        "Conducted professional product photography to elevate marketing visuals across all platforms.",
+        "Oversaw the full marketing function, ensuring initiatives supported overarching business objectives.",
+        "Owned multiple products across lifecycle, from ideation to sales.",
+        "Directed a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+        "Designed product labels, packaging, brochures, and digital campaigns.",
+        "Tripled organic traffic and outranked national competitors.",
+        "Aligned marketing with sales strategies to grow market presence."
+      ]
     },
     {
       "title": "Marketing Manager",
@@ -175,16 +207,16 @@
       "location": "Boone, NC",
       "start_date": "2014-08",
       "end_date": "2016-12",
-        "summary": "Managed campaigns across several product lines, refined targeting strategies, and improved branding.",
-        "key_responsibilities": [
-          "Designed and executed Google Ads campaigns, doubling qualified leads through ongoing optimization.",
-          "Implemented SEO strategies that improved search rankings and drove consistent traffic growth.",
-          "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
-          "Coordinated multi-channel campaigns while mentoring newer marketing team members.",
-          "Executed Google Ads campaigns that doubled qualified leads.",
-          "Oversaw packaging redesigns and collateral updates for brand consistency.",
-          "Coordinated multi-channel marketing campaigns."
-        ]
+      "summary": "Managed campaigns across several product lines, refined targeting strategies, and improved branding.",
+      "key_responsibilities": [
+        "Designed and executed Google Ads campaigns, doubling qualified leads through ongoing optimization.",
+        "Implemented SEO strategies that improved search rankings and drove consistent traffic growth.",
+        "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
+        "Coordinated multi-channel campaigns while mentoring newer marketing team members.",
+        "Executed Google Ads campaigns that doubled qualified leads.",
+        "Oversaw packaging redesigns and collateral updates for brand consistency.",
+        "Coordinated multi-channel marketing campaigns."
+      ]
     },
     {
       "title": "Marketing Specialist",
@@ -192,16 +224,16 @@
       "location": "Boone, NC",
       "start_date": "2012-10",
       "end_date": "2014-07",
-        "summary": "Supported product launches with content, collateral, and campaign execution.",
-        "key_responsibilities": [
-          "Supported day-to-day marketing operations, including email campaigns, blog content, and social media updates.",
-          "Produced product photography and design assets to strengthen online and offline marketing.",
-          "Created print collateral such as flyers, brochures, and mailers to support sales efforts.",
-          "Assisted with website maintenance and collaborated with teams on small marketing projects.",
-          "Maintained website content and implemented keyword-driven updates.",
-          "Produced product photography, print collateral, and marketing emails.",
-          "Contributed to early product rollouts with research and promotion efforts."
-        ]
+      "summary": "Supported product launches with content, collateral, and campaign execution.",
+      "key_responsibilities": [
+        "Supported day-to-day marketing operations, including email campaigns, blog content, and social media updates.",
+        "Produced product photography and design assets to strengthen online and offline marketing.",
+        "Created print collateral such as flyers, brochures, and mailers to support sales efforts.",
+        "Assisted with website maintenance and collaborated with teams on small marketing projects.",
+        "Maintained website content and implemented keyword-driven updates.",
+        "Produced product photography, print collateral, and marketing emails.",
+        "Contributed to early product rollouts with research and promotion efforts."
+      ]
     },
     {
       "title": "UI/UX Engineer",
