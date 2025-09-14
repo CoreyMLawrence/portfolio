@@ -44,20 +44,12 @@
     {
       "name": "Comfort Airlines Aircraft Simulator",
       "subtitle": "Full-Stack Airline Operations Simulation Platform",
-      "technologies": [
-        "Python",
-        "JavaScript",
-        "HTML5",
-        "CSS3",
-        "Docker",
-        "MariaDB"
-      ],
+      "technologies": ["Python", "JavaScript", "HTML5", "CSS3"],
       "description": "A comprehensive simulation platform that models airline operations over a two-week period, combining a robust Python backend for flight, aircraft, and passenger scheduling with a user-friendly web interface for visualization and interaction. Designed for educational and analytical exploration of airline logistics, profitability, and operational strategy.",
       "github_url": "https://github.com/CoreyMLawrence/Comfort-Airlines",
       "key_features": [
         "Backend simulation engine models flights, aircraft, passengers, and finances, generating detailed CSV reports.",
         "Frontend web interface (HTML, JS, CSS) for dashboards, ticketing, and interactive visualizations.",
-        "Automated setup with PowerShell and Docker for reproducible local or containerized runs.",
         "Intuitive GUI for ticket purchasing, dashboards, timetables, and aircraft activity playback.",
         "Playback controls for financial and operational reports, enabling users to see profit and activity over time.",
         "Simulation of 400,597 passengers and 3,475 flights, achieving $263M+ net profit in two simulated weeks."
@@ -66,7 +58,6 @@
         "Python backend with modular simulation, scheduling, and reporting logic.",
         "Detailed algorithm documentation and modular codebase for extensibility.",
         "Frontend built with vanilla JS, HTML, and CSS for broad compatibility.",
-        "Dockerized environment for backend and database, with automation scripts for setup and execution.",
         "Interactive map and dashboards for visualizing simulation results.",
         "Granular CSV reporting for aircraft, airports, flights, passengers, and financials."
       ],
