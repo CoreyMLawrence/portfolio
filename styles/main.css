@@ -121,7 +121,7 @@ header {
     display: none;
   }
   #desktop-menu {
-    height: 60px;
+    height: 48px;
     z-index: 996 !important;
     background-color: rgba(245, 245, 247, 0.5); /* Adjust for transparency */
   }
