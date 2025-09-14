@@ -77,7 +77,7 @@
       "client": "Ashton Gray Development",
       "role": "Full-Stack Developer (Contract)",
       "duration": "March 2025 – Present",
-    "live_url": "https://ashtongray.com/",
+      "live_url": "https://ashtongray.com/",
       "overview": "Led the complete rebuild of Ashton Gray’s corporate website, transforming it from static files into a modern, CMS-driven platform powered by Sanity, Eleventy, and GitHub Actions. Delivered a fully automated, SEO-optimized, and highly performant site designed for scalability, ease of content management, and polished user experience.",
       "key_achievements": [
         "Designed and implemented a scalable content model in Sanity CMS, including schemas for properties, homepage, team members, site settings, and investor pages.",
