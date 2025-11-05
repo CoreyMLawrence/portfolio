@@ -72,15 +72,53 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Simplified click behavior: any click or touch toggles playback.
+  // Touch-friendly handling: prefer touchend taps and suppress synthetic clicks
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  let touchMoved = false;
+  let lastTouchTime = 0;
+
   control.addEventListener('click', (e) => {
+    // Ignore synthetic click events that follow a touch
+    if (Date.now() - lastTouchTime < 300) return;
     e.preventDefault();
     handleToggle();
   });
 
-  // Support touch events on mobile for toggling
-  control.addEventListener('touchstart', (e) => {
-    if (!e.touches || e.touches.length === 0) return;
-    handleToggle();
+  control.addEventListener(
+    'touchstart',
+    (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchStartTime = Date.now();
+      touchMoved = false;
+    },
+    { passive: true }
+  );
+
+  control.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      if (Math.hypot(dx, dy) > 12) touchMoved = true; // movement cancels tap
+    },
+    { passive: true }
+  );
+
+  control.addEventListener('touchend', (e) => {
+    // Only treat as a tap if the user didn't move their finger significantly
+    const duration = Date.now() - touchStartTime;
+    if (!touchMoved && duration < 700) {
+      lastTouchTime = Date.now();
+      e.preventDefault();
+      handleToggle();
+    }
   });
 
   // Show control only when the long-form ("in-depth") mode is active.

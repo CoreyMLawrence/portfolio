@@ -311,7 +311,7 @@ button.prism-copy-button:hover {
 @media (max-width: 480px) {
   #sticky-audio-control {
     right: 14px;
-    bottom: 14px;
+    bottom: 4px;
     width: 56px;
     height: 56px;
   }
