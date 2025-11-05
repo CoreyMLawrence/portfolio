@@ -832,6 +832,7 @@ button.prism-copy-button:hover {
 @media (max-width: 480px) {
   .custom-audio-player {
     padding: 10px;
+    box-shadow: none;
   }
 
   .controls {
