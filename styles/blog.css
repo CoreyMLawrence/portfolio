@@ -1,10 +1,16 @@
 .blog-post {
   max-width: 800px;
   margin: 120px auto 60px;
-  padding: 0 2rem;
+  padding: 0 0.75rem;
   line-height: 1.8;
   font-size: 1.125rem;
   overflow-x: hidden;
+}
+
+main.blog-post {
+  overflow: visible;
+  min-height: max-content;
+  margin-bottom: 5rem;
 }
 
 .blog-header {
@@ -410,10 +416,224 @@ button.prism-copy-button:hover {
   font-weight: bold;
 }
 
+/* Blog listing styles */
+.blog-list {
+  max-width: 800px;
+  margin: 120px auto 60px;
+  padding: 0 2rem;
+  line-height: 1.8;
+  font-size: 1.125rem;
+}
+
+.blog-list h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.blog-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.blog-preview {
+  padding: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.blog-preview h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.blog-preview h2 a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-preview h2 a:hover {
+  color: var(--primary);
+}
+
+.blog-preview p {
+  margin-bottom: 1rem;
+  color: var(--gray);
+}
+
+.blog-preview .blog-meta {
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+/* Pill-shaped blog options container */
+.blog-options-pill {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem 0 2.5rem 0;
+  padding: 0.25rem 0.3rem;
+  background: var(--light-gray, #f9fafb);
+  border-radius: 2rem;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
+  border: 1px rgba(0, 0, 0, 0.08) solid;
+}
+
+.pill-option {
+  border: none;
+  background: none;
+  color: #222;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pill-option.active {
+  background: var(--primary, #007aff);
+  color: #fff;
+  border: 1.5px solid var(--primary, #007aff);
+}
+
+.pill-option i {
+  font-size: 1.1em;
+}
+
+/* Multimedia layout */
+.multimedia-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.video-placeholder {
+  background: #e9eef6;
+  border-radius: 8px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  font-weight: 600;
+}
+
+.multimedia-video video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.multimedia-audio h3 {
+  margin-top: 0;
+}
+
+/* Multimedia container with player and list */
+.multimedia-container {
+  background: var(--light-gray, #f9fafb);
+  border-radius: 12px;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.multimedia-active {
+  margin-bottom: 2rem;
+}
+
+#active-video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.multimedia-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.multimedia-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(50, 50, 50, 0.08);
+  color: #000;
+  font-weight: 500;
+}
+
+.multimedia-item:last-child {
+  border-bottom: none;
+}
+
+.multimedia-item:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.multimedia-item.active {
+  background: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.multimedia-item i {
+  font-size: 1.25rem;
+  color: var(--primary, #007aff);
+  width: 24px;
+}
+
+.multimedia-item span:first-of-type {
+  flex: 1;
+}
+
+.media-duration {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: normal;
+}
+
+@media (max-width: 768px) {
+  .multimedia-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .multimedia-container {
+    padding: 1.5rem;
+  }
+
+  .multimedia-item {
+    padding: 0.75rem;
+  }
+}
+
+/* Smooth content switching for quick read/in-depth */
+#quick-read,
+#post-intro,
+.blog-content {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Simple hidden utility: immediate hide/show to avoid reflow and flicker */
+.hidden {
+  display: none !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .blog-post {
-    margin-top: 100px;
+    margin-top: 120px;
     padding: 0 0.75rem;
   }
 
@@ -455,6 +675,121 @@ button.prism-copy-button:hover {
   .answer ul {
     list-style-type: none;
     margin-left: 0rem;
+  }
+}
+
+/* Custom Audio Player Styles */
+.custom-audio-player {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-audio-player.hidden {
+  display: none;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.time-elapsed,
+.time-remaining {
+  font-family: monospace;
+  font-size: 14px;
+  color: #666;
+  min-width: 45px;
+}
+
+.progress-slider {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+}
+
+.progress-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.control-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#play-pause {
+  font-size: 24px;
+}
+
+/* Make sure audio element is hidden when using custom controls */
+#multimedia-player audio {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .custom-audio-player {
+    padding: 10px;
+  }
+
+  .controls {
+    gap: 15px;
+  }
+
+  .control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  #play-pause {
+    font-size: 20px;
   }
 }
 

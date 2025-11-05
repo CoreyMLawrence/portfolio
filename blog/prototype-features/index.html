@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Learn how to prototype new features inside your existing product using real design systems and components, avoiding the pitfalls of traditional prototyping."
+    />
+    <meta
+      name="keywords"
+      content="product prototyping, design systems, feature development, user experience, product management"
+    />
+    <meta name="author" content="Corey Lawrence" />
+    <link
+      rel="canonical"
+      href="https://coreylawrence.me/blog/prototype-features/"
+    />
+
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="How to Prototype New Features Inside Your Existing Product (Without Breaking What Works)"
+    />
+    <meta
+      property="og:description"
+      content="Learn how to prototype new features inside your existing product using real design systems and components, avoiding the pitfalls of traditional prototyping."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://coreylawrence.me/blog/prototype-features/"
+    />
+    <meta
+      property="og:image"
+      content="https://coreylawrence.me/assets/images/prototype-features.webp"
+    />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Prototype New Features Inside Your Existing Product (Without Breaking What Works)",
+        "author": {
+          "@type": "Person",
+          "name": "Corey Lawrence"
+        },
+        "datePublished": "2025-11-04",
+        "description": "Learn how to prototype new features inside your existing product using real design systems and components, avoiding the pitfalls of traditional prototyping."
+      }
+    </script>
+    <script src="../../scripts/menu.js"></script>
+
+    <title>
+      How to Prototype New Features Inside Your Existing Product (Without
+      Breaking What Works)
+    </title>
+    <link rel="stylesheet" href="../../styles/main.css" />
+    <link rel="stylesheet" href="../../styles/blog.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
+    ></script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-20RDYXR05Q"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-20RDYXR05Q');
+    </script>
+    <link rel="icon" type="image/png" href="../../favicon.png" sizes="32x32" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="../../favicon-16x16.png"
+      sizes="16x16"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header id="desktop-menu">
+      <nav>
+        <div class="logo">
+          <a href="/">Corey Lawrence</a>
+        </div>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#projects">Projects</a></li>
+          <li><a href="/#expertise">Expertise</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li class="menu-ai-chat">
+            <a
+              href="../../chat/"
+              aria-label="AI Chat"
+              class="special-menu-link"
+            >
+              <img
+                src="../../assets/icons/ai-diamonds.svg"
+                alt=""
+                class="menu-icon"
+                aria-hidden="true"
+              />
+              AI Chat
+            </a>
+          </li>
+        </ul>
+        <div class="email-button-container">
+          <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+            >Email Me</a
+          >
+        </div>
+      </nav>
+    </header>
+    <header id="mobile-menu">
+      <nav>
+        <div id="menu-visible">
+          <div class="logo">
+            <a style="cursor: default">Corey Lawrence</a>
+          </div>
+          <div class="menu-actions">
+            <img
+              id="menu-indicator-down"
+              src="../../assets/icons/down.svg"
+              alt="Open Menu"
+            />
+            <img
+              id="menu-indicator-up"
+              src="../../assets/icons/up.svg"
+              alt="Close Menu"
+              style="display: none"
+            />
+            <div class="email-button-container">
+              <a href="mailto:cmlawrence445@gmail.com" class="cta-mobile"
+                >Email Me</a
+              >
+            </div>
+          </div>
+        </div>
+        <div id="menu-hidden">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/#expertise">Expertise</a></li>
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li class="menu-ai-chat">
+              <a
+                href="../../chat/"
+                aria-label="AI Chat"
+                class="special-menu-link"
+              >
+                <img
+                  src="../../assets/icons/ai-diamonds.svg"
+                  alt=""
+                  class="menu-icon"
+                  aria-hidden="true"
+                />
+                AI Chat
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="blog-post">
+      <div class="blog-options-pill">
+        <button class="pill-option active" data-mode="in-depth">
+          In-depth
+        </button>
+        <button class="pill-option" data-mode="quick">Quick Read</button>
+        <button class="pill-option" data-mode="multimedia" title="Multimedia">
+          <i class="fa-solid fa-photo-film"></i>
+        </button>
+      </div>
+      <article class="content">
+        <section id="quick-read" aria-hidden="true">
+          <h1 class="blog-title">
+            How to Prototype New Features Inside Your Existing Product (Without
+            Breaking What Works)
+          </h1>
+          <div class="blog-meta">
+            <time datetime="2025-11-04">November 4, 2025</time> • Corey Lawrence
+          </div>
+          <p>
+            The answer: Use your actual design system and components from day
+            one.
+          </p>
+          <p>
+            Most teams prototype fast but learn slow. They build mock-ups that
+            look nothing like their real product, get feedback that doesn't
+            account for actual constraints, then waste weeks translating
+            concepts into something that fits reality.
+          </p>
+          <p>
+            The fix: prototype inside your existing product context from the
+            start.
+          </p>
+          <h3>The Core Problem</h3>
+          <p>
+            Traditional prototyping tools assume you're building a new app from
+            scratch. But product teams working inside existing products face
+            different challenges:
+          </p>
+          <ul>
+            <li>
+              Your design system matters. Random UI components create useless
+              feedback.
+            </li>
+            <li>
+              Navigation context is critical. Users need to understand where
+              features live and how they connect.
+            </li>
+            <li>
+              Multiple stakeholders need alignment. PMs, designers, engineers,
+              and execs all need to review the same thing.
+            </li>
+            <li>
+              Speed still counts. But fast prototypes that ignore reality waste
+              more time than they save.
+            </li>
+          </ul>
+          <h3>What High-Velocity Teams Do Differently</h3>
+          <ul>
+            <li>
+              Start with your real components. Use the buttons, forms, and
+              layouts your product already has. This makes prototypes feel real
+              immediately and eliminates translation work for engineering.
+            </li>
+            <li>
+              Prototype the feature, not everything. Focus on the new
+              interaction. Show how it fits existing flows. You don't need to
+              rebuild your entire app to test one feature.
+            </li>
+            <li>
+              Get feedback in real time. When your team reviews the same live
+              prototype and comments inline, decisions happen faster. No more
+              context lost in Slack threads.
+            </li>
+            <li>
+              Test with real fidelity. Users react to what something actually
+              is, not what they imagine it could be. Prototypes that match your
+              product generate better signal.
+            </li>
+          </ul>
+          <h3>Questions Your Prototype Must Answer</h3>
+          <ul>
+            <li>Does this fit naturally into our existing navigation?</li>
+            <li>Does it match our design language?</li>
+            <li>Can users understand it immediately?</li>
+            <li>Will this create new problems elsewhere?</li>
+            <li>Is this technically feasible for our stack?</li>
+          </ul>
+          <h3>How AI Changes the Speed-Context Trade-Off</h3>
+          <p>
+            For years, product teams faced an impossible choice: prototype fast
+            with generic tools (no useful feedback) or prototype in high
+            fidelity using your actual design system (days or weeks of work).
+          </p>
+          <p>
+            AI prototyping tools built specifically for product teams can now
+            generate context-aware prototypes in minutes. You describe what you
+            want to test, and the tool builds it using your design system and
+            components.
+          </p>
+          <p>Speed and context are no longer opposites.</p>
+          <p>
+            You can test multiple variations in the time it used to take to
+            build one. You can validate ideas before engineering writes any
+            production code. You can make better decisions because your
+            prototypes reflect reality from day one.
+          </p>
+          <h3>Example: Adding a Dashboard Filter</h3>
+          <p>
+            The old way: Days mocking up a filter in isolation. Team meeting
+            reveals it doesn't match your design system. Engineering flags
+            mobile conflicts. You start over.
+          </p>
+          <p>
+            The new way: Generate a prototype in your actual dashboard using
+            existing filter components. Team reviews it together, spots
+            conflicts immediately, adjusts the design, and tests with users the
+            same week. Engineering gets usable specs. You ship faster.
+          </p>
+          <h3>The Real Outcome: Velocity</h3>
+          <p>
+            Prototypes aren't the goal. Shipped features that solve real
+            problems are the goal.
+          </p>
+          <p>
+            Context-aware prototyping eliminates gaps between concept, feedback,
+            and implementation. When your prototypes use real constraints from
+            the start, your decisions improve, your features ship stronger, and
+            your team moves faster.
+          </p>
+          <p>
+            Ready to prototype features inside your existing product? Reforge
+            Build is designed specifically for product teams who need
+            context-aware prototypes that lead to confident decisions.
+            <a href="#" target="_blank">Learn more about Build →</a>
+          </p>
+        </section>
+
+        <section id="multimedia" class="hidden" aria-hidden="true">
+          <div class="multimedia-container">
+            <!-- Active player display -->
+            <div class="multimedia-active">
+              <!-- Post title & date for context when viewing multimedia -->
+              <div class="multimedia-meta">
+                <h2 class="blog-title">
+                  How to Prototype New Features Inside Your Existing Product
+                  (Without Breaking What Works)
+                </h2>
+                <div class="blog-meta">
+                  <time datetime="2025-11-04">November 4, 2025</time> • Corey
+                  Lawrence
+                </div>
+              </div>
+              <div id="multimedia-player">
+                <video
+                  id="active-video"
+                  controls
+                  preload="metadata"
+                  playsinline
+                >
+                  <source
+                    src="./Context-Aware_Prototyping_web.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div id="custom-audio-player" class="hidden">
+                <div class="progress-container">
+                  <span class="time-elapsed">0:00</span>
+                  <input
+                    type="range"
+                    class="progress-slider"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="0.1"
+                  />
+                  <span class="time-remaining">0:00</span>
+                </div>
+                <div class="controls">
+                  <button
+                    class="control-btn"
+                    id="skip-backward"
+                    title="Skip backward 15 seconds"
+                  >
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </button>
+                  <button
+                    class="control-btn"
+                    id="play-pause"
+                    title="Play/Pause"
+                  >
+                    <i class="fa-solid fa-play"></i>
+                  </button>
+                  <button
+                    class="control-btn"
+                    id="skip-forward"
+                    title="Skip forward 15 seconds"
+                  >
+                    <i class="fa-solid fa-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Media list -->
+            <div class="multimedia-list">
+              <div class="multimedia-item active" data-media="video">
+                <i class="fa-solid fa-video"></i>
+                <span>Video</span>
+                <span class="media-duration">7:43</span>
+              </div>
+              <div class="multimedia-item" data-media="podcast">
+                <i class="fa-solid fa-microphone"></i>
+                <span>Podcast</span>
+                <span class="media-duration">12:15</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="post-intro" aria-hidden="false">
+          <h1 class="blog-title">
+            How to Prototype New Features Inside Your Existing Product (Without
+            Breaking What Works)
+          </h1>
+          <div class="blog-meta">
+            <time datetime="2025-11-04">November 4, 2025</time> • Corey Lawrence
+          </div>
+          <p>
+            The answer: Use your actual design system and components from day
+            one.
+          </p>
+          <p>
+            Instead of building prototypes from scratch that look nothing like
+            your product, start with the UI patterns, navigation flows, and
+            components your users already know. Test your new feature inside
+            that reality. Get feedback from your team while everyone's looking
+            at the same thing. Make decisions based on something that actually
+            reflects what you'll ship.
+          </p>
+          <p>
+            Most product teams skip this step. They prototype fast but learn
+            slow because their prototypes don't account for real constraints.
+            Then they waste weeks translating concepts into something that fits
+            their actual product.
+          </p>
+          <p>Here's why that happens and how to fix it.</p>
+        </section>
+
+        <section class="blog-content">
+          <h2>The Core Problem with Traditional Prototyping</h2>
+          <p>
+            Most prototyping tools assume you're starting fresh. Blank canvas.
+            No constraints. Build whatever you imagine.
+          </p>
+          <p>
+            That works great if you're launching a new startup. But when you're
+            working inside an existing product, you face different challenges:
+          </p>
+          <ul>
+            <li>
+              <strong>Your design system matters.</strong> You can't throw
+              random UI components into a prototype. It needs to match what
+              users already know. If the prototype looks foreign, the feedback
+              you get will be worthless.
+            </li>
+            <li>
+              <strong>Navigation context is everything.</strong> Where does this
+              feature live? How do users get to it? What happens after they use
+              it? A prototype that ignores those questions creates more
+              confusion than clarity.
+            </li>
+            <li>
+              <strong>Multiple stakeholders need to weigh in.</strong> Your PM
+              validates the flow. Your designer checks interactions. Your
+              engineers assess feasibility. Your exec team evaluates the value.
+              Everyone needs to see the same thing and provide feedback without
+              endless handoffs.
+            </li>
+            <li>
+              <strong>Speed still matters.</strong> You need answers quickly.
+              Waiting weeks for high-fidelity mocks defeats the purpose. But
+              rushing a prototype that doesn't reflect reality wastes everyone's
+              time.
+            </li>
+          </ul>
+          <p>
+            The gap between "fast prototype" and "useful prototype" is where
+            most teams get stuck.
+          </p>
+
+          <h2>What High-Velocity Teams Do Differently</h2>
+          <p>
+            The teams moving fastest share a common approach: they prototype
+            inside the constraints of their actual product from day one. Here's
+            exactly how they do it:
+          </p>
+
+          <h3>Start With Your Real Components</h3>
+          <p>
+            Instead of building UI from scratch, use the components your product
+            already has. Your buttons, forms, navigation patterns, and layouts
+            should match what users see today.
+          </p>
+          <p>
+            This does two things immediately. First, it makes the prototype feel
+            real to everyone reviewing it. Second, it eliminates the translation
+            work when you hand specs to engineering. They're looking at
+            components they already know how to build.
+          </p>
+          <p>
+            <em>In practice:</em> Pull your design system tokens into your
+            prototyping environment. Use the same button styles, color palette,
+            typography, and spacing. When you prototype a new dashboard filter,
+            it should use the exact same filter component that exists everywhere
+            else in your product.
+          </p>
+
+          <h3>Prototype the Feature, Not the Entire Product</h3>
+          <p>
+            You don't need to rebuild your whole app to test one feature. Focus
+            on the new interaction. Show how it fits into existing flows.
+            Demonstrate how users would discover it and what happens after they
+            use it.
+          </p>
+          <p>
+            <em>In practice:</em> If you're testing a new onboarding step, you
+            don't need to rebuild your entire onboarding flow. Show the new step
+            in context. Show what comes before and after. That's enough to
+            validate whether it works.
+          </p>
+
+          <h3>Get Your Team Looking at the Same Thing</h3>
+          <p>
+            When your PM, designer, and engineers can all look at the same
+            prototype and add feedback directly, you eliminate the game of
+            telephone. Comments stay attached to specific elements. Everyone
+            sees updates immediately. Decisions happen faster because context
+            doesn't get lost in Slack threads or email chains.
+          </p>
+          <p>
+            <em>In practice:</em> Share a live prototype link. Let people
+            comment inline. Make updates in real time during review meetings.
+            When your designer flags a spacing issue and your engineer confirms
+            it's feasible, you've validated two things at once without
+            scheduling another meeting.
+          </p>
+
+          <h3>Test With Enough Fidelity to Generate Signal</h3>
+          <p>
+            Your prototype needs to feel real enough that users react naturally.
+            If it looks like a wireframe, they'll give you wireframe feedback
+            ("I guess that could work"). If it looks like your actual product
+            with one new feature, they'll tell you whether that feature solves
+            their problem.
+          </p>
+          <p>
+            Fidelity creates better signal. Users stop imagining what it might
+            be like and start reacting to what it actually is.
+          </p>
+          <p>
+            <em>In practice:</em> When you test that new dashboard filter with
+            users, they should see it in your actual dashboard using your actual
+            styling. Their reaction tells you whether the feature makes sense in
+            context—not whether they can imagine it making sense someday.
+          </p>
+
+          <h2>The Questions Your Prototype Must Answer</h2>
+          <p>
+            A good prototype for an existing product answers specific questions
+            your team needs before deciding whether to build:
+          </p>
+          <ul>
+            <li>
+              Does this feature fit naturally into our existing navigation?
+              Users shouldn't have to hunt for it or wonder how it relates to
+              features they already use.
+            </li>
+            <li>
+              Does it match our design language? If it feels bolted on, that's a
+              red flag. Good features feel like they've always been there.
+            </li>
+            <li>
+              Can our users understand it immediately? If the prototype requires
+              extensive explanation, the real feature will confuse people too.
+            </li>
+            <li>
+              Will this create new problems? Sometimes adding one feature breaks
+              the logic of three others. Your prototype should surface those
+              conflicts early.
+            </li>
+            <li>
+              Is this technically feasible for our stack? Engineers need enough
+              detail to estimate effort and spot potential blockers before you
+              commit to the roadmap.
+            </li>
+          </ul>
+
+          <h2>How AI Changes the Speed-Context Trade-Off</h2>
+          <p>
+            For years, product teams faced an impossible choice: prototype fast
+            with generic tools and get something that looked nothing like your
+            product, or prototype in high fidelity using your actual design
+            system and spend days or weeks doing it.
+          </p>
+          <p>
+            Fast prototypes gave you speed but no useful feedback. High-fidelity
+            prototypes gave you real signal but killed your momentum.
+          </p>
+          <p>
+            That trade-off forced teams to guess. Ship the feature and hope it
+            works. Or invest weeks validating something that might be wrong
+            anyway.
+          </p>
+          <p>
+            AI prototyping tools built specifically for product teams can now
+            generate context-aware prototypes in minutes instead of days. You
+            describe the feature you want to test, and the tool builds it using
+            your design system, your components, and your patterns.
+          </p>
+          <p>Speed and context are no longer opposites.</p>
+          <p>
+            You can test multiple variations of a feature in the time it used to
+            take to build one. You can show stakeholders realistic options and
+            get real feedback fast. You can validate ideas before engineering
+            writes a single line of production code.
+          </p>
+          <p>
+            The key distinction: tools designed for teams working inside
+            existing products versus tools built for solo developers starting
+            from scratch.
+          </p>
+
+          <h2>Example: Adding a Dashboard Filter</h2>
+          <p>
+            Let's say you're adding a new dashboard filter. Users have been
+            requesting it, and you think it could help them find insights
+            faster.
+          </p>
+          <p>
+            <strong>The old way:</strong> You spend days mocking up the new
+            filter in isolation. When you show it to your team, someone asks how
+            it works with existing filters. Someone else points out it doesn't
+            match your design system. Engineering flags that the placement
+            conflicts with planned mobile updates. You start over.
+          </p>
+          <p>
+            <strong>The new way:</strong> You generate a prototype in your
+            actual dashboard layout using your existing filter components. The
+            new filter sits exactly where it would in production. Your team
+            reviews it together, spots the mobile conflict immediately, adjusts
+            the design, and tests it with users the same week. Engineering gets
+            specs they can work with. You ship faster because you validated in
+            context from the start.
+          </p>
+
+          <h2>The Real Outcome: Velocity</h2>
+          <p>
+            Prototypes aren't the goal. Shipped features that solve real
+            problems are the goal.
+          </p>
+          <p>
+            The faster you can validate what works and kill what doesn't, the
+            more velocity your team has. Context-aware prototyping gets you
+            there by eliminating the gaps between concept, feedback, and
+            implementation.
+          </p>
+          <p>
+            When your prototypes reflect reality from day one, the decisions you
+            make are better. The features you ship are stronger. And your team
+            moves faster because you're working with real constraints instead of
+            imagining them.
+          </p>
+
+          <section class="conclusion" id="post-conclusion">
+            <h2>Ready to prototype features inside your existing product?</h2>
+            <p>
+              Reforge Build is designed specifically for product teams who need
+              context-aware prototypes that lead to confident decisions.
+              <a href="#" target="_blank">Learn more about Build →</a>
+            </p>
+          </section>
+        </section>
+      </article>
+    </main>
+
+    <section class="section cta-section" id="contact">
+      <div class="cta-content">
+        <h2>Ready to bring your vision to life?</h2>
+        <p>
+          Let's transform your ideas into digital experiences that captivate and
+          inspire. Together, we'll craft something extraordinary.
+        </p>
+      </div>
+      <div class="connect-links">
+        <a
+          class="connect-button"
+          href="https://linkedin.com/in/corey-lawrence-85621386"
+          target="_blank"
+        >
+          <img src="../../assets/icons/linkedin.svg" alt="LinkedIn" />
+          <div>LinkedIn</div>
+        </a>
+        <a
+          class="connect-button"
+          id="email-button"
+          href="mailto:cmlawrence445@gmail.com"
+        >
+          <div id="email-label-area">
+            <div id="email-label">
+              <img
+                id="email-icon"
+                src="../../assets/icons/email.svg"
+                alt="Email"
+              />
+              Email Me
+            </div>
+            <div id="email-address">cmlawrence445@gmail.com</div>
+          </div>
+        </a>
+        <a
+          class="connect-button"
+          href="https://github.com/CoreyMLawrence"
+          target="_blank"
+        >
+          <img src="../../assets/icons/github.svg" alt="GitHub" />
+          <div>GitHub</div>
+        </a>
+      </div>
+    </section>
+    <!-- Include Prism.js scripts at the end of the body -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- Include animations.js at the end of the body -->
+    <script src="./animations.js"></script>
+    <script src="./toggle-content.js"></script>
+  </body>
+</html>

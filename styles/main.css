@@ -176,8 +176,9 @@ nav ul li a {
 .special-menu-link {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.1rem;
+  white-space: nowrap;
 }
 
 nav ul li a:hover {
