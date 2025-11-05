@@ -734,6 +734,10 @@ button.prism-copy-button:hover {
   }
 }
 
+#sticky-audio-control {
+  box-shadow: none;
+}
+
 /* Custom Audio Player Styles */
 .custom-audio-player {
   width: 100%;
@@ -742,7 +746,6 @@ button.prism-copy-button:hover {
   padding: 15px;
   background: #f5f5f5;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .custom-audio-player.hidden {
