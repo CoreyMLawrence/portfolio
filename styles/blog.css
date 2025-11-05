@@ -266,8 +266,8 @@ button.prism-copy-button:hover {
   position: fixed;
   right: 20px;
   bottom: 20px;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -303,7 +303,7 @@ button.prism-copy-button:hover {
   place-items: center;
   background: #0b63d6; /* keep inner same as theme */
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
 }
 
