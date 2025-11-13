@@ -13,6 +13,8 @@
   "Years coding": "10+",
   "Years in marketing": "8+",
   "Years in AI": "3+",
+  "headline": "Bridging business goals and modern technology to build AI supported systems that improve workflows and growth.",
+  "professional_summary": "I help companies close the gap between what they want to achieve and the technology they use every day. My background in marketing gave me hands-on experience talking with customers, running campaigns, and finding what actually moves the needle. My computer science degree and engineering work let me turn those insights into stable systems, automation, and AI supported tools that make teams faster, clearer, and more effective.",
   "education": [
     {
       "degree": "Bachelor of Science",
@@ -23,7 +25,7 @@
     }
   ],
   "marketing_summary": {
-    "overview": "8+ years of progressive marketing and product management experience at Highland International, with advancement from Marketing Specialist to Marketing Manager to Head of Marketing. Owned multiple product lines from research to launch, built campaigns across print and digital, and drove measurable growth in traffic, leads, and revenue.",
+    "overview": "8+ years of hands-on marketing and product management experience at Highland International, moving from Marketing Specialist to Marketing Manager to Head of Marketing. Spent years in the trenches gathering data, talking directly with customers, testing campaigns, and learning what actually drives traffic, leads, and revenue. That practical experience now informs how I design and connect technology, including AI supported workflows, to real business needs.",
     "key_achievements": [
       "Directed a website redesign that, along with SEO and paid campaigns, grew online revenue from $50K to $250K annually.",
       "Tripled monthly site visitors (2,000 to 6,000+) through SEO, content optimization, and improved site structure.",
@@ -45,7 +47,7 @@
       "name": "Comfort Airlines Aircraft Simulator",
       "subtitle": "Full-Stack Airline Operations Simulation Platform",
       "technologies": ["Python", "JavaScript", "HTML5", "CSS3"],
-      "description": "A comprehensive simulation platform that models airline operations over a two-week period, combining a robust Python backend for flight, aircraft, and passenger scheduling with a user-friendly web interface for visualization and interaction. Designed for educational and analytical exploration of airline logistics, profitability, and operational strategy.",
+      "description": "A comprehensive simulation platform that models airline operations over a two week period, combining a robust Python backend for flight, aircraft, and passenger scheduling with a user friendly web interface for visualization and interaction. Designed for educational and analytical exploration of airline logistics, profitability, and operational strategy.",
       "github_url": "https://github.com/CoreyMLawrence/Comfort-Airlines",
       "key_features": [
         "Backend simulation engine models flights, aircraft, passengers, and finances, generating detailed CSV reports.",
@@ -61,30 +63,30 @@
         "Interactive map and dashboards for visualizing simulation results.",
         "Granular CSV reporting for aircraft, airports, flights, passengers, and financials."
       ],
-      "impact": "Delivered an accessible, end-to-end simulation and visualization tool for exploring the complexities of airline operations, from scheduling and logistics to financial outcomes. The project demonstrates full-stack development, automation, and the ability to translate complex business logic into an engaging, educational platform."
+      "impact": "Delivered an accessible, end to end simulation and visualization tool for exploring the complexities of airline operations, from scheduling and logistics to financial outcomes. The project demonstrates full stack development, automation, and the ability to translate complex business logic into an engaging, educational platform."
     },
     {
       "project": "Ashton Gray Website Rebuild",
       "client": "Ashton Gray Development",
       "role": "Full-Stack Developer (Contract)",
-      "duration": "March 2025 – Present",
+      "duration": "March 2025 - Present",
       "live_url": "https://ashtongray.com/",
-      "overview": "Led the complete rebuild of Ashton Gray’s corporate website, transforming it from static files into a modern, CMS-driven platform powered by Sanity, Eleventy, and GitHub Actions. Delivered a fully automated, SEO-optimized, and highly performant site designed for scalability, ease of content management, and polished user experience.",
+      "overview": "Led the complete rebuild of Ashton Gray's corporate website, transforming it from static files into a modern, CMS driven platform powered by Sanity, Eleventy, and GitHub Actions. Delivered a fully automated, SEO optimized, and highly performant site designed for scalability, ease of content management, and polished user experience.",
       "key_achievements": [
         "Designed and implemented a scalable content model in Sanity CMS, including schemas for properties, homepage, team members, site settings, and investor pages.",
-        "Built a dynamic static site pipeline with Eleventy and Nunjucks, generating fully SEO-optimized, crawlable pages for every property and core site section.",
-        "Developed Node.js automation scripts for content export, image/video caching, and smart rebuild logic that only regenerates changed pages.",
-        "Implemented GitHub Actions workflows for both fast builds (content-only updates) and full builds (complete site rebuild), connected directly to Sanity webhooks for automatic deployment.",
-        "Created a robust property media system supporting both images and videos in carousels with auto-play and responsive handling.",
+        "Built a dynamic static site pipeline with Eleventy and Nunjucks, generating fully SEO optimized, crawlable pages for every property and core site section.",
+        "Developed Node.js automation scripts for content export, image and video caching, and smart rebuild logic that only regenerates changed pages.",
+        "Implemented GitHub Actions workflows for both fast builds (content only updates) and full builds (complete site rebuild), connected directly to Sanity webhooks for automatic deployment.",
+        "Created a robust property media system supporting both images and videos in carousels with auto play and responsive handling.",
         "Optimized website performance and Core Web Vitals (FCP 0.7s, LCP 1.1s, TBT 110ms, CLS 0.047, Speed Index 1.1s) achieving Lighthouse scores of 98 Performance, 93 Accessibility, and 100 SEO.",
-        "Developed an advanced Property Contact Modal with full validation, session-aware form handling, smooth animations, and direct URL parameter access (?contact=true).",
+        "Developed an advanced Property Contact Modal with full validation, session aware form handling, smooth animations, and direct URL parameter access (?contact=true).",
         "Built a Smart Return to Map feature with state caching so users can browse properties, view details, and return to their previous map view seamlessly.",
-        "Implemented custom User Metrics system with session management, IP-based geolocation, scroll depth tracking, file download tracking, and form analytics.",
-        "Developed a full-featured Investors Page with interactive charts (Chart.js), animated demographic wave charts, returns calculators, and an interactive property portfolio map.",
-        "Refined dropdown menus with GSAP animations and integrated them across mobile and desktop for category-based navigation.",
+        "Implemented custom User Metrics system with session management, IP based geolocation, scroll depth tracking, file download tracking, and form analytics.",
+        "Developed a full featured Investors Page with interactive charts (Chart.js), animated demographic wave charts, returns calculators, and an interactive property portfolio map.",
+        "Refined dropdown menus with GSAP animations and integrated them across mobile and desktop for category based navigation.",
         "Improved accessibility and responsiveness across all site sections, including modals, carousels, headers, and footers.",
-        "Integrated dynamic tracking script management in Sanity CMS, enabling client control over Google Tag Manager, LinkedIn, HubSpot, and other third-party scripts with header/footer placement options.",
-        "Added automated SEO tools: sitemap generator, JSON-LD structured data for RealEstateListing schema, and hidden semantic enhancements for search engine indexing."
+        "Integrated dynamic tracking script management in Sanity CMS, enabling client control over Google Tag Manager, LinkedIn, HubSpot, and other third party scripts with header and footer placement options.",
+        "Added automated SEO tools: sitemap generator, JSON LD structured data for RealEstateListing schema, and hidden semantic enhancements for search engine indexing."
       ],
       "technologies_used": [
         "Sanity CMS",
@@ -98,30 +100,30 @@
         "SEO Optimization",
         "HTML5 / CSS3",
         "Responsive Web Design",
-        "Custom Analytics & Tracking Scripts",
+        "Custom Analytics and Tracking Scripts",
         "FFmpeg (media optimization in CI)"
       ],
-      "impact": "Delivered a CMS-powered website where Ashton Gray’s team can independently manage property listings, investor content, team profiles, and tracking scripts without developer intervention. Automated builds reduced deployment time to ~5 minutes (20 minutes for large media), while performance optimizations positioned the site for stronger SEO rankings, smoother user experiences, and better scalability for future growth."
+      "impact": "Delivered a CMS powered website where Ashton Gray's team can independently manage property listings, investor content, team profiles, and tracking scripts without developer intervention. Automated builds reduced deployment time while performance optimizations positioned the site for stronger SEO rankings, smoother user experiences, and better scalability for future growth."
     },
     {
       "name": "Music Player PWA",
       "subtitle": "Progressive Web App",
       "technologies": ["JavaScript", "HTML5", "CSS3", "PWA", "Service Workers"],
       "live_url": "https://coreylawrencemusic.duckdns.org",
-      "description": "A sophisticated Progressive Web App music player that offers efficient audio playbook with dynamic song management capabilities. Features intelligent audio preloading based on network connectivity, offline functionality, and seamless integration with device media controls.",
+      "description": "A Progressive Web App music player that offers efficient audio playback with dynamic song management capabilities. Features intelligent audio preloading based on network connectivity, offline functionality, and integration with device media controls.",
       "key_features": [
         "Offline capability - works without internet after initial load",
-        "Cross-platform installation on iOS and Android devices",
+        "Cross platform installation on iOS and Android devices",
         "Intelligent audio preloading based on network conditions",
         "Integration with Media Session API for native device controls",
         "Dynamic playlist management and audio library organization",
         "Responsive design optimized for both mobile and desktop experiences"
       ],
       "technical_highlights": [
-        "Advanced JavaScript for audio management and buffering",
+        "JavaScript for audio management and buffering",
         "Service Worker implementation for offline functionality",
         "PWA architecture following modern web standards",
-        "Media Session API integration for system-level audio controls",
+        "Media Session API integration for system level audio controls",
         "Performance optimization for various network conditions"
       ]
     },
@@ -129,21 +131,21 @@
       "name": "DevolveAI",
       "subtitle": "AI-Powered Decompiler",
       "technologies": ["Python", "Google Gemini AI", "JavaScript", "PHP"],
-      "description": "An innovative AI-powered tool that transforms compiled executables into readable, understandable source code through a simple web interface. Makes reverse engineering accessible to developers at all skill levels by eliminating the need for complex software installations and extensive training.",
+      "description": "An AI supported tool that transforms compiled executables into readable source code through a simple web interface. Makes reverse engineering more accessible to developers by reducing setup friction and guiding users through the process.",
       "key_features": [
-        "AI-powered decompilation of executable files into readable code",
-        "Web-based interface accessible from any browser",
+        "AI assisted decompilation of executable files into readable code",
+        "Web based interface accessible from any browser",
         "Refine feature for code language conversion and comment addition",
-        "Beginner-friendly approach to reverse engineering",
+        "Approachable experience for developers who are new to reverse engineering",
         "Support for multiple programming languages in output",
         "Customizable code formatting and documentation generation"
       ],
       "technical_highlights": [
-        "Integration with Google Gemini AI for intelligent code analysis",
-        "Multi-language backend supporting Python and PHP",
-        "Advanced file processing and executable analysis",
-        "Real-time AI processing with user-friendly feedback",
-        "Cross-platform web deployment for universal accessibility"
+        "Integration with Google Gemini AI for code analysis support",
+        "Multi language backend supporting Python and PHP",
+        "File processing and executable analysis pipeline",
+        "Real time AI processing with user friendly feedback",
+        "Cross platform web deployment for universal accessibility"
       ]
     },
     {
@@ -151,21 +153,21 @@
       "subtitle": "AI-Powered Adventure Game",
       "technologies": ["JavaScript", "Google Gemini AI", "HTML5", "CSS3"],
       "live_url": "https://adventureai.duckdns.org/",
-      "description": "An engaging choose-your-own-adventure game powered by AI that creates dynamic, personalized storytelling experiences. Features vibrant visuals, responsive design, and intelligent narrative generation that ensures each playthrough offers a unique adventure with compelling story branches.",
+      "description": "A choose your own adventure style game powered by AI that creates dynamic storytelling experiences. Built with responsive design and a focus on easy interaction so users can quickly jump into new stories on any device.",
       "key_features": [
-        "Dynamic AI-generated storytelling with unique narratives each session",
+        "AI generated storytelling with unique narratives each session",
         "12 different adventure settings to shape narrative direction",
         "Shared gameplay database allowing users to explore others' adventures",
-        "Fully responsive design optimized for both mobile and desktop",
-        "Humorous and engaging content with rich visual presentation",
-        "Real-time story adaptation based on player choices"
+        "Responsive design optimized for both mobile and desktop",
+        "Light, humorous tone with simple visual presentation",
+        "Real time story updates based on player choices"
       ],
       "technical_highlights": [
-        "Advanced AI integration for dynamic content generation",
-        "Real-time story branching and narrative management",
+        "AI integration for dynamic content generation",
+        "Story branching and narrative state management",
         "Database architecture for shared user experiences",
-        "Responsive web design with mobile-first approach",
-        "Performance optimization for real-time AI interactions"
+        "Responsive web design with mobile first approach",
+        "Performance optimization for real time interactions"
       ]
     }
   ],
@@ -179,7 +181,7 @@
       "summary": "Owned product lifecycles, directed digital campaigns, and led a major web transformation that significantly boosted traffic and revenue.",
       "key_responsibilities": [
         "Led the seamless transition of the company website from HTTP to HTTPS, boosting security and SEO rankings.",
-        "Increased organic search traffic by 300% through targeted SEO strategies and data-driven content optimization.",
+        "Increased organic search traffic by 300% through targeted SEO strategies and data driven content optimization.",
         "Directed brand positioning and messaging across digital, print, and product marketing channels.",
         "Developed and executed integrated marketing strategies in collaboration with company leadership.",
         "Managed email marketing campaigns and wrote blog content to strengthen customer engagement.",
@@ -203,10 +205,10 @@
         "Designed and executed Google Ads campaigns, doubling qualified leads through ongoing optimization.",
         "Implemented SEO strategies that improved search rankings and drove consistent traffic growth.",
         "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
-        "Coordinated multi-channel campaigns while mentoring newer marketing team members.",
+        "Coordinated multi channel campaigns while mentoring newer marketing team members.",
         "Executed Google Ads campaigns that doubled qualified leads.",
         "Oversaw packaging redesigns and collateral updates for brand consistency.",
-        "Coordinated multi-channel marketing campaigns."
+        "Coordinated multi channel marketing campaigns."
       ]
     },
     {
@@ -217,11 +219,11 @@
       "end_date": "2014-07",
       "summary": "Supported product launches with content, collateral, and campaign execution.",
       "key_responsibilities": [
-        "Supported day-to-day marketing operations, including email campaigns, blog content, and social media updates.",
+        "Supported day to day marketing operations, including email campaigns, blog content, and social media updates.",
         "Produced product photography and design assets to strengthen online and offline marketing.",
         "Created print collateral such as flyers, brochures, and mailers to support sales efforts.",
         "Assisted with website maintenance and collaborated with teams on small marketing projects.",
-        "Maintained website content and implemented keyword-driven updates.",
+        "Maintained website content and implemented keyword driven updates.",
         "Produced product photography, print collateral, and marketing emails.",
         "Contributed to early product rollouts with research and promotion efforts."
       ]
@@ -232,12 +234,12 @@
       "location": "Remote",
       "start_date": "2024-05",
       "end_date": "2025-01",
-      "summary": "Focused on front-end architecture, accessibility, and user experience for AI-powered transcription tools.",
+      "summary": "Focused on front end architecture, accessibility, and user experience for AI powered transcription tools.",
       "key_responsibilities": [
-        "Developed a responsive React-based UI for an AI transcription tool, integrating real-time audio syncing and transcript playback.",
+        "Developed a responsive React based UI for an AI transcription tool, integrating real time audio syncing and transcript playback.",
         "Implemented accessibility standards (WCAG) to ensure usability across devices and audiences.",
-        "Created interactive transitions, animations, and real-time state management across components.",
-        "Worked with product, backend, and design teams to translate business requirements into user-friendly features.",
+        "Created interactive transitions, animations, and real time state management across components.",
+        "Worked with product, backend, and design teams to translate business requirements into user friendly features.",
         "Optimized performance and responsiveness for mobile and desktop."
       ],
       "skills_used": [
@@ -258,9 +260,9 @@
       "end_date": "Present",
       "summary": "Provides AI consulting and custom web solutions to help businesses streamline operations and enhance digital presence.",
       "key_responsibilities": [
-        "Developed tailored AI-powered solutions to automate workflows, cut costs, and improve efficiency for small to mid-sized businesses.",
+        "Developed tailored AI powered solutions to automate workflows, cut costs, and improve efficiency for small to mid sized businesses.",
         "Designed and deployed custom websites with integrated content management systems.",
-        "Worked directly with business owners to translate operational needs into functional, easy-to-use digital tools."
+        "Worked directly with business owners to translate operational needs into functional, easy to use digital tools."
       ],
       "skills_used": [
         "AI Tools Integration",
@@ -276,12 +278,12 @@
       "location": "Remote",
       "start_date": "2025-03",
       "end_date": "Present",
-      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, from architecture to front-end experience.",
+      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, from architecture to front end experience.",
       "key_responsibilities": [
         "Rebuilt Ashton Gray's website from scratch using Eleventy, Sanity CMS, and modular design principles.",
-        "Hand-coded responsive front-end with HTML, CSS, JavaScript, and GSAP animations.",
+        "Hand coded responsive front end with HTML, CSS, JavaScript, and GSAP animations.",
         "Connected Sanity CMS content to dynamic Nunjucks templates for maintainable rendering.",
-        "Developed Node-based scripts for CMS data fetching, image caching, and automated build triggers.",
+        "Developed Node based scripts for CMS data fetching, image caching, and automated build triggers.",
         "Set up GitHub Actions for CI/CD deployment tied to content updates.",
         "Optimized SEO, caching, and image handling to improve page speed and search rankings.",
         "Collaborated with stakeholders to ensure tools and features align with business goals."
@@ -298,23 +300,25 @@
         "GitHub Actions",
         "SEO Optimization"
       ],
-      "proud_of": "I'm especially proud of this Ashton Gray project because it's been a full-circle kind of challenge. It let me merge my marketing background—like crafting a strong brand story and user flow—with my design and technical skills. It's been the biggest technical challenge I've taken on, spanning backend, frontend, hosting, automated builds, and CMS integration. It pulls together all the areas I enjoy working in."
+      "proud_of": "I am especially proud of this Ashton Gray project because it let me merge my marketing background with my technical skills. I was able to think about brand story, investor needs, and user flow while also owning the architecture, front end, hosting, and automated build systems. It is a clear example of how I connect business goals with practical engineering."
     }
   ],
   "skills_overview": {
     "web_development": [
       "AI Integration",
-      "Web Design",
+      "Workflow Automation",
+      "System Architecture",
+      "Web Application Development",
       "JavaScript",
       "Dynamic Animations",
       "Node.js",
-      "Storytelling",
       "Eleventy",
       "Nunjucks"
     ],
     "cms_platforms": ["WordPress", "Sanity"],
     "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
     "marketing": [
+      "Customer Research",
       "Product Lifecycle Management",
       "SEO Strategy",
       "Google Ads Campaigns",
@@ -333,22 +337,22 @@
     ]
   },
   "learning_and_growth": {
-    "industry_trends": "I stay up to date by following AI and web dev news closely and testing new tools as soon as they come out. Recently, I've been experimenting with in-browser AI models like Xenova/Mistral to explore lighter, faster user-facing integrations."
+    "industry_trends": "I stay up to date by following AI, marketing, and engineering developments and by testing new tools in real workflows. Recently I have been exploring in browser AI models and automation patterns that make it easier for teams to personalize experiences and reduce manual work without adding unnecessary complexity."
   },
   "dream_project": {
-    "description": "A personal dream project would be an AI-driven storytelling platform for kids. Users could pick a themed world and become characters in interactive stories. Over time it could scale into longer tales with visuals and voice, making storytelling more playful and personal."
+    "description": "A personal dream project would be an AI supported storytelling and learning platform for kids. Users could pick a themed world and become characters in interactive stories that adapt to their interests and pace. Over time it could scale into longer tales with visuals and voice, making storytelling more playful and personal while staying simple for parents to manage."
   },
   "dream_collaborator": {
     "choice": "Alan Turing",
-    "reason": "Turing laid the foundation for modern computing. It would be incredible to show him how far things have come in programming and AI, and to learn from how he might approach today's challenges."
+    "reason": "Turing laid the foundation for modern computing. It would be meaningful to walk through how far applied systems, automation, and AI have come, and to see how he might approach building reliable, human centered tools with what we have today."
   },
   "professional_traits": {
-    "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as if it were his own brand. He is detail-oriented but understands how to prioritize and deliver on time in fast-paced environments.",
-    "collaboration_style": "Easy to work with, receptive to feedback, and proactive in offering solutions. Known for building trust with colleagues by combining clear communication with follow-through.",
-    "problem_solving": "Thrives in identifying root causes quickly, whether in technical systems or process workflows, and implementing practical, sustainable solutions.",
-    "adaptability": "Comfortable stepping into ongoing projects, rapidly learning existing systems, and improving them without disrupting momentum.",
-    "innovation": "Regularly introduces new tools, methods, and design improvements that enhance efficiency and elevate user experience.",
-    "mission_alignment": "Values-driven professional who seeks out work that makes a tangible, positive impact, ensuring projects align with both user needs and organizational goals.",
-    "reputation": "Respected for being steady under pressure, delivering high-quality work, and fostering an environment of trust, clarity, and mutual respect."
+    "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as a real lever for the business rather than a technical exercise. He is detail oriented but understands how to prioritize and deliver on time in fast paced environments.",
+    "collaboration_style": "Easy to work with, receptive to feedback, and proactive in offering solutions. Known for building trust with colleagues by combining clear communication with follow through.",
+    "problem_solving": "Thrives in identifying root causes in both technical systems and process workflows, then implementing practical, sustainable solutions that support team goals.",
+    "adaptability": "Comfortable stepping into ongoing projects, learning existing systems quickly, and improving them without disrupting momentum.",
+    "innovation": "Regularly introduces new tools, methods, and automation patterns that enhance efficiency and strengthen user and business outcomes.",
+    "mission_alignment": "Values driven professional who looks for work that has a clear purpose and positive impact, making sure projects line up with both user needs and organizational goals.",
+    "reputation": "Respected for being steady under pressure, delivering high quality work, and helping teams feel more confident in the systems they rely on."
   }
 }
