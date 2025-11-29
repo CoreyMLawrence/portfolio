@@ -11,10 +11,10 @@
   "timezone": "America/New_York (US Eastern)",
   "preferred_contact": "Any (no preference)",
   "Years coding": "10+",
-  "Years in marketing": "8+",
+  "Years in marketing": "10+",
   "Years in AI": "3+",
-  "headline": "Bridging business goals and modern technology to build AI supported systems that improve workflows and growth.",
-  "professional_summary": "I help companies close the gap between what they want to achieve and the technology they use every day. My background in marketing gave me hands-on experience talking with customers, running campaigns, and finding what actually moves the needle. My computer science degree and engineering work let me turn those insights into stable systems, automation, and AI supported tools that make teams faster, clearer, and more effective.",
+  "headline": "Full stack marketer and engineer who builds AI powered systems that drive growth and reduce manual work.",
+  "professional_summary": "I have delivered more than 100 marketing and technical projects across multiple industries. Eight years at Highland taught me what drives real commercial results, not vanity metrics. The last several years in tech roles at Phonelo AI and Ashton Gray gave me the engineering experience to build systems that support those outcomes. This mix lets me do something most cannot. I can identify what the business needs, design the customer facing experience, and then build the automation, data flows, and AI tooling that make the process scalable. I enjoy solving problems at the point where business goals, modern technology, and real user behavior meet.",
   "education": [
     {
       "degree": "Bachelor of Science",
@@ -25,23 +25,25 @@
     }
   ],
   "marketing_summary": {
-    "overview": "8+ years of hands-on marketing and product management experience at Highland International, moving from Marketing Specialist to Marketing Manager to Head of Marketing. Spent years in the trenches gathering data, talking directly with customers, testing campaigns, and learning what actually drives traffic, leads, and revenue. That practical experience now informs how I design and connect technology, including AI supported workflows, to real business needs.",
-    "key_achievements": [
-      "Directed a website redesign that, along with SEO and paid campaigns, grew online revenue from $50K to $250K annually.",
-      "Tripled monthly site visitors (2,000 to 6,000+) through SEO, content optimization, and improved site structure.",
-      "Increased organic search visibility by 300%, outranking national competitors such as Sherwin-Williams.",
-      "Ran targeted Google Ads campaigns that doubled qualified leads.",
-      "Owned multiple product launches (StoveMaster1200, 200QD, QuickDry45), overseeing everything from market research and label design to web promotion and sales enablement.",
-      "Produced product labels, brochures, mailers, and collateral to establish consistent branding.",
-      "Coordinated with sales and distributors to align marketing strategies with customer targeting."
-    ],
-    "metrics": {
-      "organic_traffic_growth": "300% increase",
-      "monthly_visitors": "2,000 to 6,000+",
-      "online_revenue": "$50K to $250K annually",
-      "qualified_leads": "Doubled through campaigns"
+    "overview": "10 years of marketing experience, including eight years at Highland International where I moved from specialist to manager to head of marketing. That time gave me a ground up understanding of how customers behave, how markets shift, and what actually drives growth. I did not inherit marketing systems. I built them, tested them, and refined them with real revenue outcomes. That experience now informs how I design and connect technology, automation, and AI tools to business goals.",
+    "experience_depth": {
+      "full_funnel": "I learned how to run the entire lifecycle of demand generation. I conducted customer research, developed messaging based on real objections, built campaigns that targeted each awareness stage, and connected everything to sales outcomes. I have created SEO strategies, paid search structures, landing pages, email nurture paths, and analytics dashboards that tracked progress from interest to revenue.",
+      "seo_and_content": "I rebuilt site structure around intent clusters, cleaned up index bloat, and aligned metadata with how people searched rather than how the business described itself. I created anchor content that drew traffic from national competitors and used internal linking and page authority to lift entire product lines in search. That work tripled organic traffic and created steady compounding gains.",
+      "paid_search": "I ran paid campaigns that produced measurable results instead of vanity traffic. I refined keyword strategy, developed landing page alignment, reduced wasted spend through negative keyword filters, and used call tracking to confirm attribution. I paused campaigns that brought leads but not pipeline and focused budget where outcomes proved themselves. This doubled qualified leads while reducing cost per conversion.",
+      "product_launches": "I launched multiple products from concept to revenue. I did the market research, messaging strategy, label design, sales collateral, online positioning, and distributor enablement. That experience taught me how to align marketing, product, and sales so that the story, offer, and delivery were unified.",
+      "content_strategy": "I wrote copy, guides, articles, landing pages, email sequences, and collateral that supported real sales conversations. I tested headlines, structure, and tone until the market confirmed what worked. I learned what makes someone click and what makes them buy.",
+      "cross_functional_alignment": "I worked directly with leadership to tie campaigns to revenue goals. I partnered with sales teams to understand objections and built materials that supported those conversations. I created reporting that gave leaders clarity instead of noise. This taught me how to move teams from ideas to execution."
+    },
+    "how_it_connects_to_my_tech_work": "My marketing foundation lets me build technology, automation, and AI systems that do not sit in isolation. I understand what needs to happen between a campaign and a closed deal, so when I build tools, they serve a real business purpose. This combination of marketing experience and engineering skill lets me solve problems end to end instead of handing off incomplete work.",
+    "key_metrics": {
+      "organic_traffic_growth": "300 percent increase",
+      "monthly_visitors": "From 2,000 to more than 6,000",
+      "online_revenue": "From 50K to more than 250K per year",
+      "qualified_leads": "Doubled through paid and organic improvements"
     }
   },
+  "experience_summary": "Over 100 projects delivered across marketing and engineering. I combine customer insight with hands on technical execution to create workflows that cut waste, increase clarity, and support measurable growth.",
+  "unique_value": "Lots of people can run campaigns and lots of people can write code. Very few can do both well enough to connect strategy, brand, data, and automation into a system that produces repeatable outcomes. That is where I am strongest.",
   "featured_projects": [
     {
       "name": "Comfort Airlines Aircraft Simulator",
@@ -326,15 +328,15 @@
       "Brand Development"
     ],
     "soft_skills": [
-      "Cross-Functional Collaboration",
+      "Cross Functional Collaboration",
       "Clear Communication",
-      "Problem-Solving",
+      "Problem Solving",
       "Stakeholder Alignment",
       "Project Management"
     ]
   },
   "learning_and_growth": {
-    "industry_trends": "I stay up to date by following AI, marketing, and engineering developments and by testing new tools in real workflows. Recently I have been exploring in browser AI models and automation patterns that make it easier for teams to personalize experiences and reduce manual work without adding unnecessary complexity."
+    "industry_trends": "I keep up with developments in AI, marketing, and engineering by testing new tools in real workflows and validating what works. I do not chase trends. I apply what is useful."
   },
   "dream_project": {
     "description": "A personal dream project would be an AI supported storytelling and learning platform for kids. Users could pick a themed world and become characters in interactive stories that adapt to their interests and pace. Over time it could scale into longer tales with visuals and voice, making storytelling more playful and personal while staying simple for parents to manage."
@@ -344,12 +346,12 @@
     "reason": "Turing laid the foundation for modern computing. It would be meaningful to walk through how far applied systems, automation, and AI have come, and to see how he might approach building reliable, human centered tools with what we have today."
   },
   "professional_traits": {
-    "work_ethic": "Corey approaches work with a high level of ownership and accountability, treating every project as a real lever for the business rather than a technical exercise. He is detail oriented but understands how to prioritize and deliver on time in fast paced environments.",
-    "collaboration_style": "Easy to work with, receptive to feedback, and proactive in offering solutions. Known for building trust with colleagues by combining clear communication with follow through.",
-    "problem_solving": "Thrives in identifying root causes in both technical systems and process workflows, then implementing practical, sustainable solutions that support team goals.",
-    "adaptability": "Comfortable stepping into ongoing projects, learning existing systems quickly, and improving them without disrupting momentum.",
-    "innovation": "Regularly introduces new tools, methods, and automation patterns that enhance efficiency and strengthen user and business outcomes.",
-    "mission_alignment": "Values driven professional who looks for work that has a clear purpose and positive impact, making sure projects line up with both user needs and organizational goals.",
-    "reputation": "Respected for being steady under pressure, delivering high quality work, and helping teams feel more confident in the systems they rely on."
+    "work_ethic": "Treats every project like it matters",
+    "collaboration_style": "Straightforward communication and follow through",
+    "problem_solving": "Looks for root causes and builds solutions that last",
+    "adaptability": "Able to join and improve existing systems quickly",
+    "innovation": "Knows when to introduce new tools and when to keep things simple",
+    "mission_alignment": "Prefers work that has a point and delivers value",
+    "reputation": "Reliable, calm under pressure, and trusted to deliver"
   }
 }
