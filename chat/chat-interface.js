@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function generateGeminiResponse(question, userDisplayText = null) {
     try {
-      const API_KEY = 'AIzaSyAo7snx7nHneET_kfKy1KStolC5IiPP9XY';
+      const API_KEY = 'AIzaSyAeJGBo7_ib2zzepy_lY3yWqnQjgmDcbIE';
       const MODEL_ID = 'gemini-2.0-flash';
       const MAX_HISTORY = 6;
 
