@@ -44,6 +44,9 @@
   },
   "rev_ops_fit": {
     "summary": "I'm a good fit for RevOps because my background covers the four main areas the role requires: marketing, sales, systems, and enablement. Instead of coming at it from just one angle, I have experience in all of them, which helps me solve the practical problems that RevOps teams face.",
+    "certifications": [
+      "HubSpot Revenue Operations Certification #70850fc04a014dc3a716d96589160fec"
+    ],
     "breakdown": {
       "revenue_engine_context": "I understand how revenue teams work because I've been part of them. With ten years in marketing, I know how campaigns, attribution, and funnels operate. I also have experience with cold calling, so I know what sales reps actually need to close deals. This helps me build systems that make their jobs easier rather than adding unnecessary steps.",
       "systems_thinking": "My computer science background helps me approach RevOps with an engineering mindset. I focus on breaking problems down to their root causes and understanding how different systems connect. Instead of just fixing individual tickets, I try to build scalable processes that prevent issues from happening in the first place.",
