@@ -29,20 +29,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.back-link').forEach((el) => {
     // Override the default onclick behavior
     el.removeAttribute('onclick');
-    
+
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      
+
       // Handle mobile menu closing
       if (appContainer && appContainer.classList.contains('menu-open')) {
         setTimeout(() => {
           appContainer.classList.remove('menu-open');
         }, 1300); // Delay closing the menu for the animation
       }
-      
+
       // Check if page is in an iframe
       const isInIframe = window.self !== window.top;
-      
+
       if (isInIframe) {
         // If in iframe, send a message to parent window to navigate back
         window.parent.postMessage({ action: 'navigateBack' }, '*');
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function generateGeminiResponse(question, userDisplayText = null) {
     try {
-      const API_KEY = 'AIzaSyDZdLgX_XQP6jaN7eCprfJx15GGt2nYD4k';
+      const API_KEY = 'AIzaSyAo7snx7nHneET_kfKy1KStolC5IiPP9XY';
       const MODEL_ID = 'gemini-2.0-flash';
       const MAX_HISTORY = 6;
 

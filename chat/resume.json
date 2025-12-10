@@ -42,6 +42,17 @@
       "qualified_leads": "Doubled through paid and organic improvements"
     }
   },
+  "rev_ops_fit": {
+    "summary": "I'm a good fit for RevOps because my background covers the four main areas the role requires: marketing, sales, systems, and enablement. Instead of coming at it from just one angle, I have experience in all of them, which helps me solve the practical problems that RevOps teams face.",
+    "breakdown": {
+      "revenue_engine_context": "I understand how revenue teams work because I've been part of them. With ten years in marketing, I know how campaigns, attribution, and funnels operate. I also have experience with cold calling, so I know what sales reps actually need to close deals. This helps me build systems that make their jobs easier rather than adding unnecessary steps.",
+      "systems_thinking": "My computer science background helps me approach RevOps with an engineering mindset. I focus on breaking problems down to their root causes and understanding how different systems connect. Instead of just fixing individual tickets, I try to build scalable processes that prevent issues from happening in the first place.",
+      "technical_execution": "I can handle the technical side of things myself. I write Node.js, which is useful for HubSpot APIs and custom automations. This means I can connect systems, clean up data, and fix bottlenecks directly without always needing to wait for a developer to step in.",
+      "enablement_and_adoption": "I focus on making sure people actually use the systems I build. I enjoy teaching and can explain technical concepts in a way that makes sense to non-technical teams. I also use AI tools to create quick training materials, ensuring that new processes are adopted rather than ignored."
+    },
+    "value_statement": "I understand the goals of revenue teams, build the systems to support them, and help the organization adopt those systems effectively.",
+    "strategic_impact": "For growing companies, I can help establish clean CRM architecture, clear lifecycle stages, and reliable data for ABM. I focus on automation that saves time and reduces manual work. My background has prepared me to step into a RevOps role and start contributing immediately."
+  },
   "experience_summary": "Over 100 projects delivered across marketing and engineering. I combine customer insight with hands on technical execution to create workflows that cut waste, increase clarity, and support measurable growth.",
   "unique_value": "Lots of people can run campaigns and lots of people can write code. Very few can do both well enough to connect strategy, brand, data, and automation into a system that produces repeatable outcomes. That is where I am strongest.",
   "featured_projects": [
