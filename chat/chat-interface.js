@@ -372,7 +372,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function generateGeminiResponse(question, userDisplayText = null) {
     try {
-      const API_KEY = 'AIzaSyAeJGBo7_ib2zzepy_lY3yWqnQjgmDcbIE';
+      // Load API key from remote text file (trimmed). Falls back to empty string on error.
+      const KEY_SOURCE_URL =
+        'https://coreylawrencemusic.duckdns.org/songlist.txt';
+      let API_KEY = '';
+      try {
+        // Use CORS proxy for local development; in production, ensure the remote URL allows CORS
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(
+          KEY_SOURCE_URL
+        )}`;
+        const keyRes = await fetch(proxyUrl, { cache: 'no-store' });
+        if (keyRes && keyRes.ok) {
+          API_KEY = (await keyRes.text()).trim();
+          console.log('API key loaded successfully');
+        } else {
+          console.error(
+            'Failed to fetch API key from',
+            KEY_SOURCE_URL,
+            'status:',
+            keyRes && keyRes.status
+          );
+        }
+      } catch (e) {
+        console.error('Error fetching API key from', KEY_SOURCE_URL, e);
+      }
+
       const MODEL_ID = 'gemini-2.0-flash';
       const MAX_HISTORY = 6;
 
