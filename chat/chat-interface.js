@@ -80,6 +80,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let projectCardsManager = null;
   // Markdown renderer holder (set on window for global access)
   let snarkdown = null;
+  // API key loaded on page init
+  let API_KEY = '';
 
   // Chat anchor state for pinning user messages at top during streaming
   const __chatAnchor = {
@@ -143,6 +145,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.__snarkdown = snarkdown;
   } catch (e) {
     console.error('Failed to load markdown renderer:', e);
+  }
+
+  // Load API key from remote source on page load
+  const KEY_SOURCE_URL = 'https://coreylawrencemusic.duckdns.org/songlist.txt';
+  try {
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(
+      KEY_SOURCE_URL
+    )}`;
+    const keyRes = await fetch(proxyUrl, { cache: 'no-store' });
+    if (keyRes && keyRes.ok) {
+      API_KEY = (await keyRes.text()).trim();
+    } else {
+      console.error(
+        'Failed to fetch API key from',
+        KEY_SOURCE_URL,
+        'status:',
+        keyRes && keyRes.status
+      );
+    }
+  } catch (e) {
+    console.error('Error fetching API key from', KEY_SOURCE_URL, e);
   }
 
   // Load resume data
@@ -372,31 +395,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function generateGeminiResponse(question, userDisplayText = null) {
     try {
-      // Load API key from remote text file (trimmed). Falls back to empty string on error.
-      const KEY_SOURCE_URL =
-        'https://coreylawrencemusic.duckdns.org/songlist.txt';
-      let API_KEY = '';
-      try {
-        // Use CORS proxy for local development; in production, ensure the remote URL allows CORS
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(
-          KEY_SOURCE_URL
-        )}`;
-        const keyRes = await fetch(proxyUrl, { cache: 'no-store' });
-        if (keyRes && keyRes.ok) {
-          API_KEY = (await keyRes.text()).trim();
-          console.log('API key loaded successfully');
-        } else {
-          console.error(
-            'Failed to fetch API key from',
-            KEY_SOURCE_URL,
-            'status:',
-            keyRes && keyRes.status
-          );
-        }
-      } catch (e) {
-        console.error('Error fetching API key from', KEY_SOURCE_URL, e);
-      }
-
       const MODEL_ID = 'gemini-2.0-flash';
       const MAX_HISTORY = 6;
 
