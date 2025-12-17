@@ -790,11 +790,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         actions = result.actions;
         actionData = result.actionData;
 
-        // Also check for PDF export action
+        // Also check for PDF export and resume download actions
         const pdfResult = stripHiddenActionForPDF(visibleText);
         visibleText = pdfResult.visibleText;
         if (pdfResult.actions.includes('EXPORT_PDF')) {
           actions.push('EXPORT_PDF');
+        }
+        if (pdfResult.actions.includes('DOWNLOAD_RESUME')) {
+          actions.push('DOWNLOAD_RESUME');
         }
       } else {
         // Fallback to old method
@@ -831,6 +834,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
+      // If model requested a resume download, trigger it without showing the token
+      if (actions.includes('DOWNLOAD_RESUME') && window.ResumeDownload?.downloadResume) {
+        try {
+          // Defer slightly to let the final message render first
+          setTimeout(() => window.ResumeDownload.downloadResume(), 800);
+        } catch (e) {
+          console.warn('Failed to trigger resume download from hidden action:', e);
+        }
+      }
+
       // DO NOT auto-snap to bottom after completion - leave viewport where user message is pinned
       // Just update the scroll indicator visibility
       checkAndShowScrollIndicator();
@@ -860,6 +873,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pdfProtocol =
       'Hidden action protocol: ONLY when the user explicitly uses words like "download PDF", "export PDF", "save as PDF", or directly asks for a PDF version of the conversation, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do NOT add this token for general resume requests, job applications, or any other purpose.';
 
+    const resumeProtocol =
+      'Resume download protocol: ONLY when the user explicitly asks for "download resume", "get resume", "resume download", "resume PDF", or similar direct resume requests, append the hidden control token [[ACTION:DOWNLOAD_RESUME]] at the very end of your response on its own line. Do NOT add this token for general resume discussions or when providing resume information in chat.';
+
     // Get project instructions from the manager
     const projectInstructions = projectCardsManager
       ? projectCardsManager.getProjectInstructions()
@@ -872,21 +888,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       baseInstruction +
       '\n\n' +
       pdfProtocol +
+      '\n\n' +
+      resumeProtocol +
       projectInstructions +
       tokenClosing
     );
   }
 
-  // PDF-only action parser (for use with new project manager)
+  // PDF and resume action parser (for use with new project manager)
   function stripHiddenActionForPDF(text) {
     const actions = [];
     if (!text) return { visibleText: '', actions };
     let out = String(text);
-    // Only look for PDF export action at the end
-    const actionRe = /\n?\s*\[\[ACTION:EXPORT_PDF\]\]\s*$/;
-    if (actionRe.test(out)) {
+    // Look for PDF export action at the end
+    const pdfActionRe = /\n?\s*\[\[ACTION:EXPORT_PDF\]\]\s*$/;
+    if (pdfActionRe.test(out)) {
       actions.push('EXPORT_PDF');
-      out = out.replace(actionRe, '');
+      out = out.replace(pdfActionRe, '');
+    }
+    // Look for resume download action at the end
+    const resumeActionRe = /\n?\s*\[\[ACTION:DOWNLOAD_RESUME\]\]\s*$/;
+    if (resumeActionRe.test(out)) {
+      actions.push('DOWNLOAD_RESUME');
+      out = out.replace(resumeActionRe, '');
     }
     return { visibleText: out.trimEnd(), actions };
   }
