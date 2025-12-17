@@ -649,8 +649,8 @@
         // Show loading bubble for 1000ms before displaying the link
         setTimeout(() => {
           hideExportTypingIndicator();
-          // const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}" download="${filename}">Download PDF</a>`;
-          const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer">Download PDF</a>`;
+          const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer" download="${filename}" download="${filename}">Download PDF</a>`;
+          // const linkHtml = `<span>PDF ready:</span> <a href="${url}" target="_blank" rel="noopener noreferrer">Download PDF</a>`;
           appendChatMessage(linkHtml);
 
           const chat = document.getElementById('chat-messages');
