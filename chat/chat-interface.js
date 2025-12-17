@@ -835,12 +835,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // If model requested a resume download, trigger it without showing the token
-      if (actions.includes('DOWNLOAD_RESUME') && window.ResumeDownload?.downloadResume) {
+      if (
+        actions.includes('DOWNLOAD_RESUME') &&
+        window.ResumeDownload?.downloadResume
+      ) {
         try {
           // Defer slightly to let the final message render first
           setTimeout(() => window.ResumeDownload.downloadResume(), 800);
         } catch (e) {
-          console.warn('Failed to trigger resume download from hidden action:', e);
+          console.warn(
+            'Failed to trigger resume download from hidden action:',
+            e
+          );
         }
       }
 

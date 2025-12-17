@@ -59,7 +59,7 @@
     try {
       // Resume file path
       const resumePath = '/Corey Lawrence - Product Manager.pdf';
-      
+
       // Verify the file exists by attempting to fetch its headers
       try {
         const response = await fetch(resumePath, { method: 'HEAD' });
@@ -69,7 +69,9 @@
       } catch (fetchError) {
         console.error('Resume file check failed:', fetchError);
         hideDownloadTypingIndicator();
-        appendChatMessage('Resume file not available. Please contact Corey directly.');
+        appendChatMessage(
+          'Resume file not available. Please contact Corey directly.'
+        );
         return;
       }
 
@@ -79,11 +81,12 @@
         const linkHtml = `<span>Resume ready:</span> <a href="${resumePath}" target="_blank" rel="noopener noreferrer" download="Corey Lawrence - Product Manager.pdf">Download Resume (PDF)</a>`;
         appendChatMessage(linkHtml);
       }, 500); // Shorter delay since no processing is needed
-
     } catch (error) {
       console.error('Resume download failed:', error);
       hideDownloadTypingIndicator();
-      appendChatMessage('Resume download failed. Please try again or contact Corey directly.');
+      appendChatMessage(
+        'Resume download failed. Please try again or contact Corey directly.'
+      );
     } finally {
       downloadInProgress = false;
     }
