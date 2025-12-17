@@ -58,7 +58,7 @@
 
     try {
       // Resume file path
-      const resumePath = '/Corey Lawrence - Product Manager.pdf';
+      const resumePath = '/Corey Lawrence - Tech + Marketing.pdf';
 
       // Verify the file exists by attempting to fetch its headers
       try {
