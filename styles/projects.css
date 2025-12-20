@@ -55,7 +55,7 @@ video {
 
 #comfort-mockup {
   width: 100vw;
-  max-width: 1000px;
+  max-width: 1100px;
   height: auto;
   overflow: hidden;
   background-color: #f5f5f7;
@@ -63,6 +63,7 @@ video {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 #comfort-mockup video {
@@ -99,26 +100,177 @@ video {
   margin-bottom: 20px;
 }
 
-#comfort-title-area {
+#marketing-title-area {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
-#comfort-gradient {
+#marketing-gradient {
   background: linear-gradient(
     135deg,
-    #947dff,
-    #7637ea
+    #163264,
+    #0a1934
   ); /* Apply gradient color */
   -webkit-background-clip: text; /* Ensure the gradient is clipped to the text */
+  background-clip: text; /* Standard property for compatibility */
   -webkit-text-fill-color: transparent; /* Make the text transparent to show the gradient */
+  filter: brightness(1.5);
 }
 
-.description {
+.story-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 4rem auto;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.story-section:nth-child(3) {
+  flex-direction: row;
+}
+
+.story-image-large {
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: center;
+}
+
+.story-image-large img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.story-text {
+  flex: 0 0 35%;
+  padding: 0 2rem;
+}
+
+.story-text p {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #6e6e73;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.story-text p:last-child {
+  margin-bottom: 0;
+}
+
+.story-text strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.story-text h4,
+.marketing-text-section h4,
+.story-section-final h4 {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+  color: #1d1d1f;
+  font-weight: 800;
+}
+
+.marketing-text-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-subheader {
+  max-width: 1100px;
+  width: min(1100px, 100vw - 6rem);
+}
+
+.project-subheader p {
+  margin: 2rem auto 6rem 0;
+  max-width: 800px;
+  text-align: left;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: #555;
+}
+
+.project-subheader strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.story-section-final {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 4rem 0 2rem 0;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.story-image-final {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.story-image-full {
+  width: 100%;
   max-width: 850px;
+  display: flex;
+  justify-content: center;
 }
 
-#comfort-description {
+.story-image-full img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.story-image-final img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Mobile responsiveness for story layout */
+@media (max-width: 768px) {
+  .story-section {
+    flex-direction: column !important;
+    gap: 2rem;
+  }
+
+  .story-section:nth-child(3) {
+    flex-direction: column !important;
+  }
+
+  .story-image-large,
+  .story-text {
+    flex: none;
+    width: 100%;
+  }
+
+  .story-text {
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .story-image-large img {
+    max-width: 300px;
+  }
+
+  .story-image-final img {
+    max-width: 400px;
+  }
+
+  .story-text-final {
+    padding: 0 1rem;
+  }
+}
+
+#marketing-description {
   margin-top: 20px;
   text-align: left;
   display: flex;
@@ -127,59 +279,46 @@ video {
   flex-direction: row;
   gap: 4rem;
   width: 100%; /* Ensure the container takes full width */
+  max-width: 816px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#comfort-description p {
+#marketing-description p {
   font-size: 1.5rem;
   font-weight: 500;
-  padding: 0 20px;
   color: #6e6e73;
 }
 
-#comfort-description > * {
+#marketing-description > * {
   flex: 0 0 20%; /* 30% width */
 }
 
-#comfort-description > *:nth-child(2) {
+#marketing-description > *:nth-child(2) {
   flex: 0 0 80%; /* 70% width */
 }
 
-#comfort-description .language-icon {
+#marketing-description .language-icon {
   width: 50px;
-  filter: brightness(0) saturate(100%) invert(24%) sepia(67%) saturate(7458%)
-    hue-rotate(259deg) brightness(98%) contrast(87%);
+  filter: brightness(0) saturate(100%) invert(21%) sepia(93%) saturate(1273%)
+    hue-rotate(199deg) brightness(87%) contrast(89%);
 }
 
-#comfort-languages {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 3rem;
-  margin-top: 10px;
-}
-
-#comfort-languages .language-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
+#marketing-languages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 1.5rem;
-}
-
-#comfort-languages .language-item h3 {
-  font-size: 1.2rem;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
+  margin-top: 4.25rem;
+  justify-items: center;
+  align-items: center;
 }
 
 /* Music */
 
 #music-mockup {
   width: 100vw;
-  max-width: 1000px;
+  max-width: 1100px;
   height: auto;
   overflow: hidden;
   background-color: #f5f5f7;
@@ -317,7 +456,7 @@ video {
   gap: 2rem;
   align-items: center;
   width: 100vw;
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
 .video-container {
@@ -329,7 +468,7 @@ video {
   overflow: hidden; /* Hide the overflowing video edges */
   position: relative;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
 @media screen and (max-width: 1085px) and (min-width: 978px) {
@@ -481,7 +620,7 @@ video {
   gap: 2rem;
   align-items: center;
   width: calc(100vw - 10%);
-  max-width: 1000px;
+  max-width: 1100px;
 }
 
 #adventureai-cover {
