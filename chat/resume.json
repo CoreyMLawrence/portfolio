@@ -13,8 +13,8 @@
   "Years coding": "10+",
   "Years in marketing": "10+",
   "Years in AI": "3+",
-  "headline": "Full stack marketer and engineer who builds AI powered systems that drive growth and reduce manual work.",
-  "professional_summary": "I have delivered more than 100 marketing and technical projects across multiple industries. Eight years at Highland taught me what drives real commercial results, not vanity metrics. The last several years in tech roles at Phonelo AI and Ashton Gray gave me the engineering experience to build systems that support those outcomes. This mix lets me do something most cannot. I can identify what the business needs, design the customer facing experience, and then build the automation, data flows, and AI tooling that make the process scalable. I enjoy solving problems at the point where business goals, modern technology, and real user behavior meet.",
+  "headline": "Marketing Technology & Revenue Systems Leader who builds workflows, platforms, and data governance that drive growth.",
+  "professional_summary": "I use my background in marketing and engineering to build and own revenue systems. I focus on the core parts of the GTM stack that must work together reliably: web platforms, CRM architecture, analytics, and automation. My approach emphasizes embedded data governance to ensure teams can trust their data. I turn revenue goals into clear technical plans, reduce manual work through automation, and build reporting foundations that improve attribution and decision making.",
   "education": [
     {
       "degree": "Bachelor of Science",
@@ -45,7 +45,8 @@
   "rev_ops_fit": {
     "summary": "I'm a good fit for RevOps because my background covers the four main areas the role requires: marketing, sales, systems, and enablement. Instead of coming at it from just one angle, I have experience in all of them, which helps me solve the practical problems that RevOps teams face.",
     "certifications": [
-      "HubSpot Revenue Operations Certification #70850fc04a014dc3a716d96589160fec"
+      "HubSpot Revenue Operations Certification #70850fc04a014dc3a716d96589160fec",
+      "Google Analytics Certification (GA4) #169825557"
     ],
     "breakdown": {
       "revenue_engine_context": "I understand how revenue teams work because I've been part of them. With ten years in marketing, I know how campaigns, attribution, and funnels operate. I also have experience with cold calling, so I know what sales reps actually need to close deals. This helps me build systems that make their jobs easier rather than adding unnecessary steps.",
@@ -56,9 +57,304 @@
     "value_statement": "I understand the goals of revenue teams, build the systems to support them, and help the organization adopt those systems effectively.",
     "strategic_impact": "For growing companies, I can help establish clean CRM architecture, clear lifecycle stages, and reliable data for ABM. I focus on automation that saves time and reduces manual work. My background has prepared me to step into a RevOps role and start contributing immediately."
   },
+  "revops_and_platform_stories": [
+    {
+      "story_id": "ag-01-platform-transformation",
+      "company": "Ashton Gray",
+      "role": "Full-Stack Developer",
+      "domain": "Commercial real estate",
+      "situation": {
+        "initial_platform": "WordPress-based one-page marketing site with basic blogging",
+        "limitations": [
+          "Very limited customization",
+          "Mostly copy edits and blog posts",
+          "No structured property data",
+          "No dedicated property pages",
+          "Minimal ability to scale content"
+        ],
+        "reasonable_baseline_metrics": {
+          "monthly_visitors": "2,000 to 4,000",
+          "content_update_frequency": "Infrequent and manual",
+          "engagement_depth": "Shallow, single-page focused",
+          "marketing_footprint": "Small and constrained"
+        }
+      },
+      "task": {
+        "objective": "Transform a one-page marketing site into a scalable web platform that meaningfully expands the company's digital footprint.",
+        "responsibilities": [
+          "Own site architecture and rebuild",
+          "Advise leadership on structure and presentation",
+          "Enable content and property-level scalability"
+        ]
+      },
+      "actions": {
+        "platform_expansion": [
+          "Replaced the single-page structure with a multi-page platform",
+          "Built dedicated pages for every individual property",
+          "Implemented a property listings page for browsing and search",
+          "Built a full blogging platform"
+        ],
+        "technical_execution": [
+          "Moved beyond WordPress constraints into a more flexible architecture",
+          "Designed structured content models to support growth",
+          "Ensured consistent metadata generation across pages"
+        ],
+        "leadership_involvement": [
+          "Acted as subject matter expert for web and technology",
+          "Advised on site structure, marketing direction, and presentation",
+          "Participated directly in stakeholder meetings",
+          "Communicated decisions clearly with founders and executives"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Significantly expanded the company's web presence",
+          "Enabled scalable property and content publishing",
+          "Reduced reliance on manual, fragile updates"
+        ],
+        "reasonable_current_state_metrics": {
+          "page_count": "Dozens of indexed pages instead of one",
+          "content_types": "Properties, listings, blog content",
+          "marketing_footprint": "Substantially larger and more discoverable",
+          "maintenance_effort": "Lower and more predictable"
+        }
+      }
+    },
+    {
+      "story_id": "ag-02-hubspot-attribution-and-tracking",
+      "company": "Ashton Gray",
+      "role": "Full-Stack Developer",
+      "domain": "RevOps-adjacent web systems",
+      "situation": {
+        "problem": "No clear visibility into who was visiting the website or how web activity tied back to prospects.",
+        "impact": [
+          "Limited attribution",
+          "Minimal insight into prospect engagement"
+        ]
+      },
+      "task": {
+        "objective": "Integrate CRM tracking to support attribution and prospect-level insight."
+      },
+      "actions": {
+        "crm_integration": [
+          "Integrated HubSpot CRM into the website",
+          "Enabled user-level tracking for known prospects",
+          "Connected website activity to CRM records"
+        ],
+        "attribution_support": [
+          "Allowed visibility into which prospects were visiting the site",
+          "Improved ability to connect web engagement to sales activity"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Improved attribution clarity",
+          "Better insight into prospect behavior",
+          "Stronger connection between marketing activity and sales follow-up"
+        ]
+      }
+    },
+    {
+      "story_id": "hi-01-crm-deduplication-and-trust",
+      "company": "Highland International",
+      "role": "Head of Marketing",
+      "domain": "Revenue operations",
+      "situation": {
+        "problem_state": [
+          "Duplicate CRM records",
+          "Inconsistent and optional fields",
+          "Sales reps lacked confidence in CRM data",
+          "Reporting could not be trusted"
+        ],
+        "business_impact": [
+          "Duplicate outreach to prospects",
+          "Damaged customer trust",
+          "Inability to run meaningful reports"
+        ]
+      },
+      "task": {
+        "objective": "Restore CRM trust so sales could rely on data for execution and reporting."
+      },
+      "actions": {
+        "data_cleanup": [
+          "Deduplicated CRM records",
+          "Manually enriched incomplete data",
+          "Changed key fields to required",
+          "Standardized how data was entered"
+        ],
+        "sales_alignment": [
+          "Got explicit sales buy-in",
+          "Aligned on what accurate data meant",
+          "Reinforced CRM usage as a system of record"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "CRM data became trustworthy",
+          "Sales reps felt confident using the system",
+          "Reporting became usable and meaningful"
+        ]
+      }
+    },
+    {
+      "story_id": "hi-02-route-planning-automation",
+      "company": "Highland International",
+      "role": "Head of Marketing",
+      "domain": "Sales operations",
+      "situation": {
+        "previous_process": [
+          "Reps manually copied CRM data into Google Maps",
+          "Routes were built by hand",
+          "No confidence they were prioritizing the right stops"
+        ],
+        "impact": [
+          "Inefficient road trips",
+          "Wasted time",
+          "High cognitive load on reps"
+        ]
+      },
+      "task": {
+        "objective": "Make route planning fast, accurate, and low-effort for sales reps."
+      },
+      "actions": {
+        "data_foundation": [
+          "Cleaned and standardized CRM data",
+          "Ensured location data was reliable"
+        ],
+        "tooling": [
+          "Installed a CRM mapping plugin",
+          "Enabled automatic route generation"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Ultra-efficient routing",
+          "Minimal effort required by reps",
+          "Faster, more productive sales trips"
+        ]
+      }
+    },
+    {
+      "story_id": "hi-03-lead-qualification-definition",
+      "company": "Highland International",
+      "role": "Marketing Manager",
+      "domain": "RevOps and demand quality",
+      "situation": {
+        "problem": [
+          "High volume of unqualified inbound leads",
+          "Many prospects seeking residential-grade products",
+          "Mismatch with industrial-grade offerings"
+        ]
+      },
+      "task": {
+        "objective": "Define and focus on leads that matched the company's industrial product offering."
+      },
+      "actions": {
+        "qualification_definition": [
+          "Defined qualified leads as those needing industrial-grade materials",
+          "Filtered out residential-grade inquiries"
+        ],
+        "alignment": [
+          "Aligned marketing efforts with what sales could actually sell"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Higher quality leads",
+          "Less wasted sales effort",
+          "Better alignment between marketing and sales"
+        ]
+      }
+    },
+    {
+      "story_id": "hi-04-reporting-and-attribution-repair",
+      "company": "Highland International",
+      "role": "Head of Marketing",
+      "domain": "Revenue reporting",
+      "situation": {
+        "problem": [
+          "Duplicate records caused sales to be split across contacts",
+          "Reports contradicted each other",
+          "Leadership did not trust numbers"
+        ]
+      },
+      "task": {
+        "objective": "Make reporting meaningful by fixing underlying data integrity."
+      },
+      "actions": {
+        "data_integrity": [
+          "Removed duplicates",
+          "Standardized records",
+          "Ensured sales were attributed correctly"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Reports became trustworthy",
+          "Leadership could make decisions based on data",
+          "Sales performance was accurately reflected"
+        ]
+      }
+    },
+    {
+      "story_id": "hi-05-cms-and-seo-structure",
+      "company": "Highland International",
+      "role": "Marketing Specialist to Head of Marketing",
+      "domain": "Content operations",
+      "situation": {
+        "platform": "WordPress",
+        "challenge": "Need to improve organic visibility and content structure without heavy engineering resources"
+      },
+      "task": {
+        "objective": "Improve SEO and content performance through structured execution."
+      },
+      "actions": {
+        "tools": [
+          "Used Yoast SEO plugin",
+          "Applied manual technical SEO techniques"
+        ],
+        "execution": [
+          "Optimized headers",
+          "Improved content structure",
+          "Focused on clarity and relevance"
+        ]
+      },
+      "results": {
+        "outcomes": [
+          "Organic traffic increased by roughly 300 percent",
+          "Content became easier to manage and scale"
+        ]
+      }
+    }
+  ],
   "experience_summary": "Over 100 projects delivered across marketing and engineering. I combine customer insight with hands on technical execution to create workflows that cut waste, increase clarity, and support measurable growth.",
   "unique_value": "Lots of people can run campaigns and lots of people can write code. Very few can do both well enough to connect strategy, brand, data, and automation into a system that produces repeatable outcomes. That is where I am strongest.",
   "featured_projects": [
+    {
+      "name": "Portfolio Chat Assistant",
+      "subtitle": "RAG-Powered Resume Chatbot",
+      "technologies": [
+        "JavaScript",
+        "Google Gemini AI",
+        "RAG",
+        "HTML5",
+        "CSS3"
+      ],
+      "description": "The interactive chat application you are using right now. It serves as a RAG (Retrieval-Augmented Generation) interface for my resume, allowing users to ask natural language questions about my experience and skills. Designed and implemented entirely by me to demonstrate practical AI integration.",
+      "key_features": [
+        "Client-side RAG architecture using the resume JSON as a dynamic knowledge base.",
+        "Real-time integration with Google's Gemini AI for natural language understanding and response generation.",
+        "Context-aware conversation history for seamless follow-up questions.",
+        "Streaming responses with markdown rendering and auto-scrolling.",
+        "Dynamic prompt engineering to enforce factual accuracy and third-person tone."
+      ],
+      "technical_highlights": [
+        "Implemented using the Google Generative AI SDK directly in the browser.",
+        "Custom prompt construction logic to map user queries to resume sections.",
+        "Responsive design with mobile-friendly navigation and animations.",
+        "Zero-backend architecture; runs entirely client-side for speed and privacy."
+      ]
+    },
     {
       "name": "Comfort Airlines Aircraft Simulator",
       "subtitle": "Full-Stack Airline Operations Simulation Platform",
@@ -269,35 +565,15 @@
       ]
     },
     {
-      "title": "Founder | Independent Consultant",
-      "company": "Catalon Consulting",
-      "location": "Winston-Salem, NC",
-      "start_date": "2025-01",
-      "end_date": "Present",
-      "summary": "Provides AI consulting and custom web solutions to help businesses streamline operations and enhance digital presence.",
-      "key_responsibilities": [
-        "Developed tailored AI powered solutions to automate workflows, cut costs, and improve efficiency for small to mid sized businesses.",
-        "Designed and deployed custom websites with integrated content management systems.",
-        "Worked directly with business owners to translate operational needs into functional, easy to use digital tools."
-      ],
-      "skills_used": [
-        "AI Tools Integration",
-        "Custom CMS Development",
-        "JavaScript",
-        "Client Consulting",
-        "Business Process Automation"
-      ]
-    },
-    {
-      "title": "Full-Stack Developer",
+      "title": "Lead Web Platform Architect",
       "company": "Inceed (Contract)",
       "location": "Remote",
       "start_date": "2025-03",
       "end_date": "Present",
-      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, from architecture to front end experience.",
+      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, focusing on CMS architecture, automation, and scalable content systems.",
       "key_responsibilities": [
         "Rebuilt Ashton Gray's website from scratch using Eleventy, Sanity CMS, and modular design principles.",
-        "Hand coded responsive front end with HTML, CSS, JavaScript, and GSAP animations.",
+        "Architected a scalable content model and CMS structure to support property data and investor relations.",
         "Connected Sanity CMS content to dynamic Nunjucks templates for maintainable rendering.",
         "Developed Node based scripts for CMS data fetching, image caching, and automated build triggers.",
         "Set up GitHub Actions for CI/CD deployment tied to content updates.",
@@ -326,20 +602,25 @@
       "Marketing Automation",
       "Node.js",
       "Eleventy",
-      "Nunjucks"
+      "Nunjucks",
+      "Lifecycle Automation",
+      "GTM Systems"
     ],
-    "cms_platforms": ["WordPress", "Sanity"],
+    "cms_platforms": ["WordPress", "Sanity", "CMS Architecture"],
     "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
     "marketing": [
       "Customer Research",
       "Product Lifecycle Management",
       "SEO Strategy",
+      "AEO (Answer Engine Optimization)",
       "Google Ads Campaigns",
       "Content Marketing",
       "Conversion Optimization",
       "Analytics Tracking",
       "Email Campaigns",
-      "Brand Development"
+      "Brand Development",
+      "Data Governance",
+      "CRM Architecture"
     ],
     "soft_skills": [
       "Cross Functional Collaboration",

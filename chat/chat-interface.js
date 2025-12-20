@@ -1197,10 +1197,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           <h3>Ask me anything about Corey</h3>
           <p>I have access to his complete resume and can provide detailed information about his experience, projects, and skills.</p>
           <div class="suggestion-chips">
-            <button class="suggestion-chip">Tell me about Corey's projects</button>
-            <button class="suggestion-chip">What technologies does Corey use?</button>
-            <button class="suggestion-chip">What is Corey's background?</button>
-            <button class="suggestion-chip">Show me Corey's best work</button>
+            <button class="suggestion-chip">Why is Corey a good fit for RevOps?</button>
+            <button class="suggestion-chip">How does he use automation?</button>
+            <button class="suggestion-chip">Show me his platform work</button>
+            <button class="suggestion-chip">Tell me about his GTM systems work</button>
           </div>`;
         chatMessages.appendChild(wrap);
 
