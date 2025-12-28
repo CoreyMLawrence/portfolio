@@ -8,13 +8,24 @@
     "phone": "(828) 773-2391"
   },
   "location": "Winston-Salem, NC",
-  "timezone": "America/New_York (US Eastern)",
+  "timezone": "America/New_York",
   "preferred_contact": "Any (no preference)",
-  "Years coding": "10+",
-  "Years in marketing": "10+",
-  "Years in AI": "3+",
-  "headline": "Marketing Technology & Revenue Systems Leader who builds workflows, platforms, and data governance that drive growth.",
-  "professional_summary": "I use my background in marketing and engineering to build and own revenue systems. I focus on the core parts of the GTM stack that must work together reliably: web platforms, CRM architecture, analytics, and automation. My approach emphasizes embedded data governance to ensure teams can trust their data. I turn revenue goals into clear technical plans, reduce manual work through automation, and build reporting foundations that improve attribution and decision making.",
+  "years_experience": {
+    "engineering": "10+",
+    "revenue_systems": "8+",
+    "marketing_operations": "10+",
+    "applied_ai": "3+"
+  },
+  "headline": "Revenue Systems Engineer | Software & Data-Governed Platforms",
+  "professional_summary": "I design and own revenue systems where data accuracy, lifecycle clarity, and system trust matter. My background spans software engineering, CRM architecture, and go-to-market operations, which lets me build platforms that connect web, CRM, analytics, and automation into a reliable system of record. I focus on embedding data governance directly into system design so teams can trust their data without constant manual cleanup.",
+  "core_focus_areas": [
+    "Revenue systems architecture",
+    "Data governance and lifecycle design",
+    "CRM integrity and attribution",
+    "Web to CRM data flow",
+    "Automation and system reliability",
+    "Analytics foundations and reporting trust"
+  ],
   "education": [
     {
       "degree": "Bachelor of Science",
@@ -24,8 +35,204 @@
       "honors": "Graduated cum laude"
     }
   ],
+  "certifications": [
+    {
+      "name": "HubSpot Revenue Operations Certification",
+      "issuer": "HubSpot",
+      "id": "70850fc04a014dc3a716d96589160fec"
+    },
+    {
+      "name": "Google Analytics GA4 Certification",
+      "issuer": "Google",
+      "id": "169825557"
+    }
+  ],
+  "data_governance_strengths": {
+    "principles": [
+      "Clear system ownership",
+      "Required fields where accuracy matters",
+      "Lifecycle stage enforcement",
+      "Single source of truth design",
+      "Governance embedded at data creation"
+    ],
+    "applied_examples": [
+      "Structured CMS schemas with enforced metadata",
+      "CRM deduplication and field standardization",
+      "Web form to CRM lifecycle mapping",
+      "Attribution-safe tracking design",
+      "Automation that reduces manual correction"
+    ],
+    "scorecard": [
+      {
+        "category": "Canonical Data Models and Standards",
+        "strength": "Very Strong",
+        "resume_bullets": [
+          "Designed and enforced canonical data models for property and content data using required fields, controlled types, and schema validation.",
+          "Standardized field formats and constraints to ensure consistent data across CMS, site builds, and downstream use."
+        ],
+        "story": "I built the CMS so properties and content could not be entered freely. Every required field had a defined format and validation, which meant the site only ever consumed consistent, predictable data and never broke due to bad inputs."
+      },
+      {
+        "category": "Business Glossary and Metadata Management",
+        "strength": "Very Strong",
+        "resume_bullets": [
+          "Embedded field-level definitions and examples directly into the CMS to clarify meaning and expected input.",
+          "Created internal user documentation explaining content structure, field purpose, and proper usage."
+        ],
+        "story": "Instead of relying on tribal knowledge, I put definitions where people actually work. Editors always knew what belonged in a field because the rules and examples were built into the system itself."
+      },
+      {
+        "category": "Source of Truth and Decision Authority",
+        "strength": "Strong",
+        "resume_bullets": [
+          "Established the CMS as the authoritative source of truth for site content with clear ownership and approval rules.",
+          "Implemented draft and publish workflows to control when and how content changes reached production."
+        ],
+        "story": "Marketing owned site content, editors could update values, and only approved drafts could publish. When conflicts came up, the system enforced authority instead of ad hoc overrides."
+      },
+      {
+        "category": "Data Quality Controls and Validation",
+        "strength": "Very Strong",
+        "resume_bullets": [
+          "Implemented intake and build-time validation to prevent incomplete or invalid records from publishing.",
+          "Added clear error messaging and QA guidance to help users correct issues at the point of entry."
+        ],
+        "story": "Bad data never made it into production. If required fields were missing or formatted incorrectly, the build failed or the record was excluded, which shifted quality control from cleanup to prevention."
+      },
+      {
+        "category": "Role-Based Access Control and Stewardship",
+        "strength": "Strong",
+        "resume_bullets": [
+          "Implemented role-based permissions separating content editing, schema control, and administrative access.",
+          "Restricted high-risk actions such as schema changes and account management to designated roles."
+        ],
+        "story": "Not everyone could change the rules of the system. Editors edited content, marketing approved changes, and only technical leadership could modify structure or account-level settings."
+      },
+      {
+        "category": "Data Lineage, Auditability, and Change Tracking",
+        "strength": "Strong",
+        "resume_bullets": [
+          "Enabled full content revision history through the CMS with visibility into who changed what and when.",
+          "Maintained auditable deployment history through Git-based version control and automated build pipelines."
+        ],
+        "story": "Any public site change could be traced back to a specific CMS edit and a specific code version. If something went wrong, we could see exactly what changed and roll back safely."
+      },
+      {
+        "category": "Lead Data Lifecycle and Privacy-Aware Intake",
+        "strength": "Moderate",
+        "resume_bullets": [
+          "Implemented privacy-aware lead capture that remained anonymous until explicit user submission.",
+          "Defined clear data intake boundaries and ownership handoff to internal stakeholders after submission."
+        ],
+        "story": "Behavioral data was collected anonymously and only attached to a lead if the user chose to submit a contact request. I owned intake quality and privacy posture, then handed responsibility to the business once the data left the site."
+      }
+    ],
+    "overall_takeaway": "Strongest in data modeling, quality enforcement, metadata, access control, and auditability; credible in lifecycle and retention with ownership properly scoped to the business."
+  },
+  "data_governance_artifacts": {
+    "overview": "These artifacts were produced through hands-on ownership of a revenue-critical web and CRM platform. They represent practical data governance embedded directly into system design rather than standalone documentation.",
+    "artifacts": [
+      {
+        "name": "Canonical Content and Property Data Model",
+        "governance_domain": "Data Architecture and Modeling",
+        "description": "Defined and implemented the authoritative data model for properties, pages, investor content, and site-wide settings.",
+        "implementation": [
+          "Sanity CMS schemas with explicit field types and relationships",
+          "Required fields for core business data",
+          "Single definition of a Property entity used across the platform"
+        ],
+        "business_value": "Ensured consistent structure and meaning of data across web, analytics, and CRM integrations."
+      },
+      {
+        "name": "Metadata and Field Standards",
+        "governance_domain": "Data Quality Management",
+        "description": "Established required metadata standards to support attribution, analytics, and search discovery.",
+        "implementation": [
+          "Enforced titles, descriptions, slugs, and identifiers at publish time",
+          "Prevented incomplete or malformed records from being deployed"
+        ],
+        "business_value": "Improved trust in reporting and reduced downstream data cleanup."
+      },
+      {
+        "name": "Web to CMS to Build Data Lineage",
+        "governance_domain": "Data Lineage and Flow",
+        "description": "Defined and enforced how content data moves from creation to consumption.",
+        "implementation": [
+          "Sanity CMS as system of record",
+          "Structured JSON exports",
+          "Deterministic Eleventy static site builds"
+        ],
+        "business_value": "Made data flow predictable, explainable, and debuggable."
+      },
+      {
+        "name": "Web to CRM Attribution Flow",
+        "governance_domain": "Integration and Attribution Governance",
+        "description": "Designed the flow that connects web engagement and form submissions to CRM records.",
+        "implementation": [
+          "Form submission mapping to CRM contacts",
+          "Preservation of tracking and context metadata",
+          "Alignment with CRM lifecycle stages"
+        ],
+        "business_value": "Enabled meaningful attribution and clearer handoff between marketing and sales."
+      },
+      {
+        "name": "Lifecycle Safe Content Publishing Process",
+        "governance_domain": "Lifecycle and Retention Management",
+        "description": "Established lifecycle rules for how content is drafted, published, updated, and propagated.",
+        "implementation": [
+          "Draft and publish states enforced in CMS",
+          "Automated rebuilds triggered by content changes",
+          "Consistent propagation of updates across dependent pages"
+        ],
+        "business_value": "Reduced risk of stale or inconsistent data appearing across the platform."
+      },
+      {
+        "name": "Role Based CMS Access Model",
+        "governance_domain": "Access Control and Ownership",
+        "description": "Separated content editing from system architecture to reduce operational risk.",
+        "implementation": [
+          "Editors limited to governed fields",
+          "Schema and structural changes owned centrally",
+          "Clear system ownership boundaries"
+        ],
+        "business_value": "Protected data integrity while enabling non-technical teams to operate independently."
+      },
+      {
+        "name": "Tracking Script Governance Framework",
+        "governance_domain": "Integration Governance",
+        "description": "Centralized control of third party tracking and analytics scripts.",
+        "implementation": [
+          "CMS controlled injection of GTM, HubSpot, and other scripts",
+          "Explicit header and footer placement rules"
+        ],
+        "business_value": "Reduced risk of broken analytics and undocumented tracking changes."
+      },
+      {
+        "name": "Attribution Ready Analytics Foundation",
+        "governance_domain": "Analytics and Reporting Governance",
+        "description": "Prepared structured data and tracking foundations to support reliable analytics.",
+        "implementation": [
+          "Consistent page and property identifiers",
+          "Session, scroll depth, and engagement tracking",
+          "Structured data for search engines and AI crawlers"
+        ],
+        "business_value": "Improved confidence in analytics and downstream reporting."
+      },
+      {
+        "name": "Automated Build and Deployment Controls",
+        "governance_domain": "Automation and Control Mechanisms",
+        "description": "Removed manual steps from deployment and content propagation.",
+        "implementation": [
+          "Content triggered builds",
+          "Partial rebuild logic for changed content only",
+          "Versioned CI/CD pipelines"
+        ],
+        "business_value": "Increased reliability, reduced human error, and supported safe scaling."
+      }
+    ]
+  },
   "marketing_summary": {
-    "overview": "10 years of marketing experience, including eight years at Highland International where I moved from specialist to manager to head of marketing. That time gave me a ground up understanding of how customers behave, how markets shift, and what actually drives growth. I did not inherit marketing systems. I built them, tested them, and refined them with real revenue outcomes. That experience now informs how I design and connect technology, automation, and AI tools to business goals.",
+    "overview": "10 years of marketing experience, including eight years at Highland International where I moved from specialist to manager to head of marketing. I built the marketing systems and the underlying data foundations, then saw firsthand how broken data undermines attribution and decision-making. That experience now informs how I design revenue systems, data models, and automation so teams can trust the numbers.",
     "experience_depth": {
       "full_funnel": "I learned how to run the entire lifecycle of demand generation. I conducted customer research, developed messaging based on real objections, built campaigns that targeted each awareness stage, and connected everything to sales outcomes. I have created SEO strategies, paid search structures, landing pages, email nurture paths, and analytics dashboards that tracked progress from interest to revenue.",
       "seo_and_content": "I rebuilt site structure around intent clusters, cleaned up index bloat, and aligned metadata with how people searched rather than how the business described itself. I created anchor content that drew traffic from national competitors and used internal linking and page authority to lift entire product lines in search. That work tripled organic traffic and created steady compounding gains.",
@@ -34,7 +241,7 @@
       "content_strategy": "I wrote copy, guides, articles, landing pages, email sequences, and collateral that supported real sales conversations. I tested headlines, structure, and tone until the market confirmed what worked. I learned what makes someone click and what makes them buy.",
       "cross_functional_alignment": "I worked directly with leadership to tie campaigns to revenue goals. I partnered with sales teams to understand objections and built materials that supported those conversations. I created reporting that gave leaders clarity instead of noise. This taught me how to move teams from ideas to execution."
     },
-    "how_it_connects_to_my_tech_work": "My marketing foundation lets me build technology, automation, and AI systems that do not sit in isolation. I understand what needs to happen between a campaign and a closed deal, so when I build tools, they serve a real business purpose. This combination of marketing experience and engineering skill lets me solve problems end to end instead of handing off incomplete work.",
+    "how_it_connects_to_my_tech_work": "My marketing foundation lets me build revenue systems that reflect real buyer and sales workflows. I understand what needs to happen between a campaign and a closed deal, so I design web, CRM, analytics, and automation with clear ownership boundaries and reliable data flow.",
     "key_metrics": {
       "organic_traffic_growth": "300 percent increase",
       "monthly_visitors": "From 2,000 to more than 6,000",
@@ -43,19 +250,24 @@
     }
   },
   "rev_ops_fit": {
-    "summary": "I'm a good fit for RevOps because my background covers the four main areas the role requires: marketing, sales, systems, and enablement. Instead of coming at it from just one angle, I have experience in all of them, which helps me solve the practical problems that RevOps teams face.",
-    "certifications": [
-      "HubSpot Revenue Operations Certification #70850fc04a014dc3a716d96589160fec",
-      "Google Analytics Certification (GA4) #169825557"
-    ],
+    "summary": "I'm a strong fit for RevOps and revenue systems ownership because I bridge engineering, CRM architecture, and go-to-market operations. I design canonical data models, enforce lifecycle rules, and build automation that prevents bad data instead of cleaning it up later.",
     "breakdown": {
-      "revenue_engine_context": "I understand how revenue teams work because I've been part of them. With ten years in marketing, I know how campaigns, attribution, and funnels operate. I also have experience with cold calling, so I know what sales reps actually need to close deals. This helps me build systems that make their jobs easier rather than adding unnecessary steps.",
-      "systems_thinking": "My computer science background helps me approach RevOps with an engineering mindset. I focus on breaking problems down to their root causes and understanding how different systems connect. Instead of just fixing individual tickets, I try to build scalable processes that prevent issues from happening in the first place.",
-      "technical_execution": "I can handle the technical side of things myself. I write Node.js, which is useful for HubSpot APIs and custom automations. This means I can connect systems, clean up data, and fix bottlenecks directly without always needing to wait for a developer to step in.",
-      "enablement_and_adoption": "I focus on making sure people actually use the systems I build. I enjoy teaching and can explain technical concepts in a way that makes sense to non-technical teams. I also use AI tools to create quick training materials, ensuring that new processes are adopted rather than ignored."
+      "revenue_engine_context": "I understand revenue teams because I've owned the CRM and the funnel. Ten years in marketing means I know how attribution, lifecycle stages, and handoffs actually work and where they break.",
+      "systems_thinking": "I treat RevOps as a system-of-record problem: define canonical entities, enforce required fields, and design ownership boundaries so data stays trustworthy.",
+      "technical_execution": "I build the pipelines: CMS schemas, API integrations, web-to-CRM tracking, validation logic, and CI/CD that keeps data flow deterministic.",
+      "enablement_and_adoption": "I bake governance into the tools people use through field definitions, guardrails, and feedback at the point of entry so adoption is natural and cleanup is rare."
     },
-    "value_statement": "I understand the goals of revenue teams, build the systems to support them, and help the organization adopt those systems effectively.",
-    "strategic_impact": "For growing companies, I can help establish clean CRM architecture, clear lifecycle stages, and reliable data for ABM. I focus on automation that saves time and reduces manual work. My background has prepared me to step into a RevOps role and start contributing immediately."
+    "value_statement": "I design revenue systems teams can trust, operate, and scale without constant manual cleanup.",
+    "strategic_impact": "For growing companies, I reduce attribution ambiguity, improve CRM integrity, and make reporting defensible by aligning web, CRM, analytics, and automation to a single system of record."
+  },
+  "revops_positioning": {
+    "role_fit": [
+      "Revenue Systems Engineer",
+      "Technical RevOps",
+      "Business Systems Engineer",
+      "Revenue Platform Owner"
+    ],
+    "value_statement": "I design revenue systems that teams can trust, operate, and scale without constant intervention."
   },
   "revops_and_platform_stories": [
     {
@@ -96,8 +308,8 @@
         ],
         "technical_execution": [
           "Moved beyond WordPress constraints into a more flexible architecture",
-          "Designed structured content models to support growth",
-          "Ensured consistent metadata generation across pages"
+          "Designed a canonical property and content data model with required fields and relationships",
+          "Ensured consistent metadata and identifiers across pages for reliable analytics and CRM use"
         ],
         "leadership_involvement": [
           "Acted as subject matter expert for web and technology",
@@ -139,7 +351,9 @@
         "crm_integration": [
           "Integrated HubSpot CRM into the website",
           "Enabled user-level tracking for known prospects",
-          "Connected website activity to CRM records"
+          "Connected website activity to CRM records",
+          "Preserved tracking and context metadata on form submissions",
+          "Aligned form mapping with CRM lifecycle stages"
         ],
         "attribution_support": [
           "Allowed visibility into which prospects were visiting the site",
@@ -327,8 +541,28 @@
       }
     }
   ],
-  "experience_summary": "Over 100 projects delivered across marketing and engineering. I combine customer insight with hands on technical execution to create workflows that cut waste, increase clarity, and support measurable growth.",
-  "unique_value": "Lots of people can run campaigns and lots of people can write code. Very few can do both well enough to connect strategy, brand, data, and automation into a system that produces repeatable outcomes. That is where I am strongest.",
+  "experience_summary": "Over 100 projects delivered across revenue systems, web platforms, and marketing operations. I combine GTM context with hands-on engineering to build data-governed systems that reduce risk, increase clarity, and support reliable revenue decisions.",
+  "unique_value": "Lots of people can run campaigns and lots of people can write code. Very few can connect engineering, CRM architecture, and go-to-market operations well enough to build systems of record teams can actually trust. That is where I am strongest.",
+  "featured_systems_work": [
+    {
+      "name": "RAG Powered Resume and Portfolio Assistant",
+      "description": "Client side retrieval system using structured resume JSON as a governed knowledge base.",
+      "relevance": [
+        "Structured data design",
+        "Deterministic retrieval",
+        "Clear system boundaries"
+      ]
+    },
+    {
+      "name": "Commercial Real Estate Web Platform",
+      "description": "CMS driven platform with enforced schemas, CRM tracking, and automated deployment.",
+      "relevance": [
+        "Content governance",
+        "Web to CRM integration",
+        "Attribution readiness"
+      ]
+    }
+  ],
   "featured_projects": [
     {
       "name": "Portfolio Chat Assistant",
@@ -340,7 +574,7 @@
         "HTML5",
         "CSS3"
       ],
-      "description": "The interactive chat application you are using right now. It serves as a RAG (Retrieval-Augmented Generation) interface for my resume, allowing users to ask natural language questions about my experience and skills. Designed and implemented entirely by me to demonstrate practical AI integration.",
+      "description": "The interactive chat application you are using right now. It serves as a RAG (Retrieval-Augmented Generation) interface for my resume, using structured resume JSON as a governed knowledge base so answers stay grounded. Designed and implemented entirely by me to demonstrate practical AI integration.",
       "key_features": [
         "Client-side RAG architecture using the resume JSON as a dynamic knowledge base.",
         "Real-time integration with Google's Gemini AI for natural language understanding and response generation.",
@@ -490,20 +724,18 @@
       "location": "Boone, NC",
       "start_date": "2017-01",
       "end_date": "2020-05",
-      "summary": "Owned product lifecycles, directed digital campaigns, and led a major web transformation that significantly boosted traffic and revenue.",
+      "summary": "Led revenue-facing systems, CRM integrity, and reporting foundations alongside marketing execution.",
       "key_responsibilities": [
-        "Led the seamless transition of the company website from HTTP to HTTPS, boosting security and SEO rankings.",
-        "Increased organic search traffic by 300% through targeted SEO strategies and data driven content optimization.",
+        "Owned CRM cleanup, deduplication, and required field enforcement to restore data trust.",
+        "Aligned sales and marketing on data definitions and lifecycle stages.",
+        "Repaired reporting by fixing underlying data integrity issues and attribution foundations.",
+        "Led a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+        "Increased organic search traffic by 300% through targeted SEO and content optimization.",
         "Directed brand positioning and messaging across digital, print, and product marketing channels.",
         "Developed and executed integrated marketing strategies in collaboration with company leadership.",
-        "Managed email marketing campaigns and wrote blog content to strengthen customer engagement.",
-        "Conducted professional product photography to elevate marketing visuals across all platforms.",
-        "Oversaw the full marketing function, ensuring initiatives supported overarching business objectives.",
-        "Owned multiple products across lifecycle, from ideation to sales.",
-        "Directed a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
-        "Designed product labels, packaging, brochures, and digital campaigns.",
-        "Tripled organic traffic and outranked national competitors.",
-        "Aligned marketing with sales strategies to grow market presence."
+        "Managed email marketing campaigns and content to strengthen customer engagement.",
+        "Conducted professional product photography and created sales collateral.",
+        "Owned multiple products across lifecycle from ideation to sales."
       ]
     },
     {
@@ -518,9 +750,7 @@
         "Implemented SEO strategies that improved search rankings and drove consistent traffic growth.",
         "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
         "Coordinated multi channel campaigns while mentoring newer marketing team members.",
-        "Executed Google Ads campaigns that doubled qualified leads.",
-        "Oversaw packaging redesigns and collateral updates for brand consistency.",
-        "Coordinated multi channel marketing campaigns."
+        "Oversaw packaging redesigns and collateral updates for brand consistency."
       ]
     },
     {
@@ -534,25 +764,22 @@
         "Supported day to day marketing operations, including email campaigns, blog content, and social media updates.",
         "Produced product photography and design assets to strengthen online and offline marketing.",
         "Created print collateral such as flyers, brochures, and mailers to support sales efforts.",
-        "Assisted with website maintenance and collaborated with teams on small marketing projects.",
         "Maintained website content and implemented keyword driven updates.",
-        "Produced product photography, print collateral, and marketing emails.",
-        "Contributed to early product rollouts with research and promotion efforts."
+        "Assisted with website maintenance and collaborated on early product rollouts."
       ]
     },
     {
-      "title": "UI/UX Engineer",
+      "title": "Frontend Engineer",
       "company": "Phonelo AI",
       "location": "Remote",
       "start_date": "2024-05",
       "end_date": "2025-01",
-      "summary": "Focused on front end architecture, accessibility, and user experience for AI powered transcription tools.",
+      "summary": "Built production UI for an AI driven SaaS platform with emphasis on clarity, accuracy, and user trust.",
       "key_responsibilities": [
-        "Developed a responsive React based UI for an AI transcription tool, integrating real time audio syncing and transcript playback.",
-        "Implemented accessibility standards (WCAG) to ensure usability across devices and audiences.",
-        "Created interactive transitions, animations, and real time state management across components.",
-        "Worked with product, backend, and design teams to translate business requirements into user friendly features.",
-        "Optimized performance and responsiveness for mobile and desktop."
+        "Developed React interfaces for reviewing AI generated transcripts and audio.",
+        "Implemented real time state handling to clearly distinguish system actions.",
+        "Worked closely with product and backend teams to ensure UI behavior matched system truth.",
+        "Implemented accessibility standards (WCAG) and optimized responsiveness across devices."
       ],
       "skills_used": [
         "React.js",
@@ -565,20 +792,21 @@
       ]
     },
     {
-      "title": "Lead Web Platform Architect",
+      "title": "Full-Stack Engineer",
       "company": "Inceed (Contract)",
       "location": "Remote",
       "start_date": "2025-03",
       "end_date": "Present",
-      "summary": "Leads the full rebuild and deployment of a real estate development company's web platform, focusing on CMS architecture, automation, and scalable content systems.",
+      "summary": "Owns the rebuild of a revenue-critical web platform with a focus on structured data, CRM integration, and system reliability.",
       "key_responsibilities": [
-        "Rebuilt Ashton Gray's website from scratch using Eleventy, Sanity CMS, and modular design principles.",
-        "Architected a scalable content model and CMS structure to support property data and investor relations.",
-        "Connected Sanity CMS content to dynamic Nunjucks templates for maintainable rendering.",
-        "Developed Node based scripts for CMS data fetching, image caching, and automated build triggers.",
-        "Set up GitHub Actions for CI/CD deployment tied to content updates.",
+        "Rebuilt Ashton Gray's website using Eleventy, Sanity CMS, and modular design principles.",
+        "Designed a governed content and property data model in Sanity with required fields and relationships.",
+        "Built automated pipelines that export structured content into deterministic Eleventy builds.",
+        "Implemented web to CRM tracking and form ingestion aligned to lifecycle stages.",
+        "Embedded attribution ready metadata and structured data for analytics and reporting.",
+        "Owned CI/CD pipelines, hosting, and release reliability.",
         "Optimized SEO, caching, and image handling to improve page speed and search rankings.",
-        "Collaborated with stakeholders to ensure tools and features align with business goals."
+        "Collaborated with stakeholders to ensure platform decisions aligned with business goals."
       ],
       "skills_used": [
         "Eleventy",
@@ -597,14 +825,14 @@
   ],
   "skills_overview": {
     "web_development": [
+      "Data Governance",
       "AI Integration",
-      "Web Applications",
-      "Marketing Automation",
-      "Node.js",
+      "Software",
+      "CRM Automation",
       "Eleventy",
       "Nunjucks",
-      "Lifecycle Automation",
-      "GTM Systems"
+      "Lifecycle Governance",
+      "Attribution Systems"
     ],
     "cms_platforms": ["WordPress", "Sanity", "CMS Architecture"],
     "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
@@ -639,6 +867,15 @@
   "dream_collaborator": {
     "choice": "Alan Turing",
     "reason": "Turing laid the foundation for modern computing. It would be meaningful to walk through how far applied systems, automation, and AI have come, and to see how he might approach building reliable, human centered tools with what we have today."
+  },
+  "working_style": {
+    "approach": "Systems first, tools second",
+    "strengths": [
+      "Calm under pressure",
+      "Strong ownership mindset",
+      "Clear technical communication",
+      "Practical governance over theory"
+    ]
   },
   "professional_traits": {
     "work_ethic": "Treats every project like it matters",
