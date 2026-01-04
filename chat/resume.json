@@ -297,6 +297,68 @@
       "qualified_leads": "Doubled through paid and organic improvements"
     }
   },
+  "aeo_implementation_summary": {
+    "context": "Designed and implemented a complete Answer Engine Optimization (AEO) strategy for AG Capital's healthcare real estate investment site, with SEC Rule 506(c) compliance built into the system.",
+    "plain_language_summary": [
+      "Mapped real investor questions into four intent groups so content matched how people search and how AI answers.",
+      "Structured the site so AI systems can understand the company, the fund, and the regulatory boundaries without confusion.",
+      "Built the data layer so performance metrics, FAQs, and disclosures stay consistent and update from a central source.",
+      "Automated legal disclaimers so every performance or distribution mention includes required risk language."
+    ],
+    "hiring_manager_version": [
+      "Built an AEO system that translates complex investment offerings into machine-readable structure for AI and search engines.",
+      "Defined entity relationships, intent mapping, and compliance rules so AI responses stay accurate and legally safe.",
+      "Implemented schema, AI training files, and crawl directives so the brand appears consistently across search and AI tools.",
+      "Kept performance data and FAQs synced through a single JSON source to prevent mismatched claims."
+    ],
+    "what_was_implemented": [
+      "Semantic HTML and screen-reader-friendly markup to strengthen machine understanding.",
+      "JSON-LD schema for organization, financial service, FAQ, how-to investment process, and performance metrics.",
+      "AI training files (`llms.txt`, `llms.json`, `ai-optimization.json`) with entity relationships and intent triggers.",
+      "AI-aware `robots.txt` directives and a sitemap with search-intent mapping.",
+      "Eleventy + Nunjucks templates pulling structured data from a single JSON source."
+    ],
+    "strategy_artifacts": [
+      {
+        "file": "humans.txt",
+        "purpose": "Team/stack and SEO/AEO overview with compliance notes."
+      },
+      {
+        "file": "llms.txt",
+        "purpose": "Plain-language AI briefing with intent mapping and mandatory disclaimers."
+      },
+      {
+        "file": "llms.json",
+        "purpose": "Structured AI training data for company structure, intent, and compliance templates."
+      },
+      {
+        "file": "ai-optimization.json",
+        "purpose": "Conversation triggers, persona adaptation, and knowledge graph relationships."
+      },
+      {
+        "file": "robots.txt",
+        "purpose": "Crawler directives plus AI context and compliance reminders."
+      },
+      {
+        "file": "sitemap.xml",
+        "purpose": "URL and image discovery with embedded intent and entity context."
+      }
+    ],
+    "compliance_and_risk_controls": [
+      "Rule 506(c) accredited-investor focus baked into content and training data.",
+      "Mandatory disclaimers included in FAQs, performance references, and AI outputs.",
+      "Clear boundaries around what can be promised or implied in responses."
+    ],
+    "monitoring_and_optimization": [
+      "Tracked AI visibility, intent capture, and entity association metrics.",
+      "Monthly FAQ updates and compliance reviews; quarterly intent and content performance reviews."
+    ],
+    "impact_summary": [
+      "Positioned AG Capital as an authoritative source for healthcare real estate investment queries.",
+      "Improved lead quality by targeting high-intent search queries.",
+      "Reduced compliance risk through systematic disclaimer automation."
+    ]
+  },
   "rev_ops_fit": {
     "summary": "I'm a strong fit for RevOps and revenue systems ownership because I bridge engineering, CRM architecture, and go-to-market operations. I design canonical data models, enforce lifecycle rules, and build automation that prevents bad data instead of cleaning it up later.",
     "breakdown": {
