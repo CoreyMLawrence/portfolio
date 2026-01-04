@@ -846,6 +846,38 @@
         "Managed email marketing campaigns and content to strengthen customer engagement.",
         "Conducted professional product photography and created sales collateral.",
         "Owned multiple products across lifecycle from ideation to sales."
+      ],
+      "key_responsibilities_by_category": [
+        {
+          "category": "Revenue systems & attribution",
+          "bullets": [
+            "Owned CRM cleanup, deduplication, and required field enforcement to restore data trust.",
+            "Aligned sales and marketing on data definitions and lifecycle stages.",
+            "Repaired reporting by fixing underlying data integrity issues and attribution foundations."
+          ]
+        },
+        {
+          "category": "Growth strategy & demand generation",
+          "bullets": [
+            "Led a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+            "Increased organic search traffic by 300% through targeted SEO and content optimization.",
+            "Developed and executed integrated marketing strategies in collaboration with company leadership."
+          ]
+        },
+        {
+          "category": "Brand, content & enablement",
+          "bullets": [
+            "Directed brand positioning and messaging across digital, print, and product marketing channels.",
+            "Managed email marketing campaigns and content to strengthen customer engagement.",
+            "Conducted professional product photography and created sales collateral."
+          ]
+        },
+        {
+          "category": "Product lifecycle ownership",
+          "bullets": [
+            "Owned multiple products across lifecycle from ideation to sales."
+          ]
+        }
       ]
     },
     {
@@ -861,6 +893,28 @@
         "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
         "Coordinated multi channel campaigns while mentoring newer marketing team members.",
         "Oversaw packaging redesigns and collateral updates for brand consistency."
+      ],
+      "key_responsibilities_by_category": [
+        {
+          "category": "Paid acquisition & SEO",
+          "bullets": [
+            "Designed and executed Google Ads campaigns, doubling qualified leads through ongoing optimization.",
+            "Implemented SEO strategies that improved search rankings and drove consistent traffic growth."
+          ]
+        },
+        {
+          "category": "Brand & collateral",
+          "bullets": [
+            "Oversaw the redesign of product labels and marketing materials to enhance brand identity.",
+            "Oversaw packaging redesigns and collateral updates for brand consistency."
+          ]
+        },
+        {
+          "category": "Campaign coordination & team support",
+          "bullets": [
+            "Coordinated multi channel campaigns while mentoring newer marketing team members."
+          ]
+        }
       ]
     },
     {
@@ -876,6 +930,28 @@
         "Created print collateral such as flyers, brochures, and mailers to support sales efforts.",
         "Maintained website content and implemented keyword driven updates.",
         "Assisted with website maintenance and collaborated on early product rollouts."
+      ],
+      "key_responsibilities_by_category": [
+        {
+          "category": "Campaign & content operations",
+          "bullets": [
+            "Supported day to day marketing operations, including email campaigns, blog content, and social media updates."
+          ]
+        },
+        {
+          "category": "Creative & collateral",
+          "bullets": [
+            "Produced product photography and design assets to strengthen online and offline marketing.",
+            "Created print collateral such as flyers, brochures, and mailers to support sales efforts."
+          ]
+        },
+        {
+          "category": "Web content & rollout support",
+          "bullets": [
+            "Maintained website content and implemented keyword driven updates.",
+            "Assisted with website maintenance and collaborated on early product rollouts."
+          ]
+        }
       ]
     },
     {
@@ -914,9 +990,46 @@
         "Built automated pipelines that export structured content into deterministic Eleventy builds.",
         "Implemented web to CRM tracking and form ingestion aligned to lifecycle stages.",
         "Embedded attribution ready metadata and structured data for analytics and reporting.",
+        "Implemented a comprehensive Answer Engine Optimization (AEO) strategy including JSON-LD schema, AI training files, and compliance-first disclosures.",
         "Owned CI/CD pipelines, hosting, and release reliability.",
         "Optimized SEO, caching, and image handling to improve page speed and search rankings.",
         "Collaborated with stakeholders to ensure platform decisions aligned with business goals."
+      ],
+      "key_responsibilities_by_category": [
+        {
+          "category": "Platform & full-stack delivery",
+          "bullets": [
+            "Rebuilt Ashton Gray's website using Eleventy, Sanity CMS, and modular design principles.",
+            "Built automated pipelines that export structured content into deterministic Eleventy builds.",
+            "Owned CI/CD pipelines, hosting, and release reliability."
+          ]
+        },
+        {
+          "category": "Data governance & reliability",
+          "bullets": [
+            "Designed a governed content and property data model in Sanity with required fields and relationships.",
+            "Embedded attribution ready metadata and structured data for analytics and reporting."
+          ]
+        },
+        {
+          "category": "RevOps & lifecycle integrity",
+          "bullets": [
+            "Implemented web to CRM tracking and form ingestion aligned to lifecycle stages."
+          ]
+        },
+        {
+          "category": "AEO, SEO & performance",
+          "bullets": [
+            "Implemented a comprehensive Answer Engine Optimization (AEO) strategy including JSON-LD schema, AI training files, and compliance-first disclosures.",
+            "Optimized SEO, caching, and image handling to improve page speed and search rankings."
+          ]
+        },
+        {
+          "category": "Stakeholder alignment",
+          "bullets": [
+            "Collaborated with stakeholders to ensure platform decisions aligned with business goals."
+          ]
+        }
       ],
       "skills_used": [
         "Eleventy",
@@ -931,6 +1044,92 @@
         "SEO Optimization"
       ],
       "proud_of": "I am especially proud of this Ashton Gray project because it let me merge my marketing background with my technical skills. I was able to think about brand story, investor needs, and user flow while also owning the architecture, front end, hosting, and automated build systems. It is a clear example of how I connect business goals with practical engineering."
+    }
+  ],
+  "experience_showcase_by_category": [
+    {
+      "category": "Revenue systems & lifecycle integrity",
+      "items": [
+        {
+          "role": "Head of Marketing — Highland International",
+          "bullets": [
+            "Owned CRM cleanup, deduplication, and required field enforcement to restore data trust.",
+            "Aligned sales and marketing on data definitions and lifecycle stages.",
+            "Repaired reporting by fixing underlying data integrity issues and attribution foundations."
+          ]
+        },
+        {
+          "role": "Full-Stack Engineer — Inceed (Ashton Gray)",
+          "bullets": [
+            "Implemented web to CRM tracking and form ingestion aligned to lifecycle stages.",
+            "Embedded attribution ready metadata and structured data for analytics and reporting."
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Marketing technology & growth systems",
+      "items": [
+        {
+          "role": "Head of Marketing — Highland International",
+          "bullets": [
+            "Led a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+            "Increased organic search traffic by 300% through targeted SEO and content optimization.",
+            "Managed email marketing campaigns and content to strengthen customer engagement."
+          ]
+        },
+        {
+          "role": "Marketing Manager — Highland International",
+          "bullets": [
+            "Designed and executed Google Ads campaigns, doubling qualified leads through ongoing optimization.",
+            "Implemented SEO strategies that improved search rankings and drove consistent traffic growth."
+          ]
+        }
+      ]
+    },
+    {
+      "category": "AEO & AI-ready content systems",
+      "items": [
+        {
+          "role": "Full-Stack Engineer — Inceed (Ashton Gray)",
+          "bullets": [
+            "Implemented a comprehensive Answer Engine Optimization (AEO) strategy including JSON-LD schema, AI training files, and compliance-first disclosures.",
+            "Mapped entity relationships, intent triggers, and crawl directives to improve AI visibility and consistency."
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Software engineering & platform delivery",
+      "items": [
+        {
+          "role": "Full-Stack Engineer — Inceed (Ashton Gray)",
+          "bullets": [
+            "Rebuilt Ashton Gray's website using Eleventy, Sanity CMS, and modular design principles.",
+            "Built automated pipelines that export structured content into deterministic Eleventy builds.",
+            "Owned CI/CD pipelines, hosting, and release reliability."
+          ]
+        },
+        {
+          "role": "Frontend Engineer — Phonelo AI",
+          "bullets": [
+            "Developed React interfaces for reviewing AI generated transcripts and audio.",
+            "Implemented accessibility standards (WCAG) and optimized responsiveness across devices."
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Data governance & system trust",
+      "items": [
+        {
+          "role": "Full-Stack Engineer — Inceed (Ashton Gray)",
+          "bullets": [
+            "Designed a governed content and property data model in Sanity with required fields and relationships.",
+            "Embedded attribution ready metadata and structured data for analytics and reporting."
+          ]
+        }
+      ]
     }
   ],
   "skills_overview": {
