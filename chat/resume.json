@@ -16,15 +16,63 @@
     "marketing_operations": "10+",
     "applied_ai": "3+"
   },
-  "headline": "Revenue Systems Engineer | Software & Data-Governed Platforms",
-  "professional_summary": "I design and own revenue systems where data accuracy, lifecycle clarity, and system trust matter. My background spans software engineering, CRM architecture, and go-to-market operations, which lets me build platforms that connect web, CRM, analytics, and automation into a reliable system of record. I focus on embedding data governance directly into system design so teams can trust their data without constant manual cleanup.",
+  "headline": "Systems Engineer | Data-Governed Revenue & Marketing Platforms",
+  "professional_summary": "I design and own data-governed revenue and marketing systems where accuracy, lifecycle clarity, and system trust matter. My background spans software engineering, CRM architecture, and go-to-market operations, which lets me build platforms that connect web, CRM, analytics, and automation into a reliable system of record. I embed governance directly into system design so teams can trust their data, improve attribution, and keep reporting defensible without constant manual cleanup.",
   "core_focus_areas": [
-    "Revenue systems architecture",
-    "Data governance and lifecycle design",
-    "CRM integrity and attribution",
-    "Web to CRM data flow",
+    "Data-governed revenue and marketing systems",
+    "Canonical data models and lifecycle design",
+    "CRM integrity, attribution, and handoffs",
+    "Web-to-CRM tracking and form ingestion",
+    "Marketing technology and analytics foundations",
     "Automation and system reliability",
-    "Analytics foundations and reporting trust"
+    "Full-stack web platform delivery",
+    "Reporting trust and measurement clarity"
+  ],
+  "capability_clusters": [
+    {
+      "area": "Data governance and system trust",
+      "summary": "Builds governed data models, validation, and ownership rules so teams can trust the system of record.",
+      "evidence": [
+        "Designed and enforced canonical data models for property and content data using required fields, controlled types, and schema validation.",
+        "Embedded field-level definitions and examples directly into the CMS to clarify meaning and expected input.",
+        "Implemented intake and build-time validation to prevent incomplete or invalid records from publishing.",
+        "Implemented role-based permissions separating content editing, schema control, and administrative access.",
+        "Enabled full content revision history through the CMS with visibility into who changed what and when."
+      ]
+    },
+    {
+      "area": "Revenue and lifecycle systems",
+      "summary": "Connects web, CRM, and lifecycle stages into reliable handoffs and attribution flows.",
+      "evidence": [
+        "Owned CRM cleanup, deduplication, and required field enforcement to restore data trust.",
+        "Aligned sales and marketing on data definitions and lifecycle stages.",
+        "Implemented web to CRM tracking and form ingestion aligned to lifecycle stages.",
+        "Designed the flow that connects web engagement and form submissions to CRM records.",
+        "Built automation that reduces manual correction."
+      ]
+    },
+    {
+      "area": "Marketing technology and growth systems",
+      "summary": "Brings hands-on marketing execution with the technology foundations that make attribution, SEO, and campaigns reliable.",
+      "evidence": [
+        "Rebuilt site structure around intent clusters, cleaned up index bloat, and aligned metadata with how people searched rather than how the business described itself.",
+        "Ran paid campaigns that produced measurable results by refining keyword strategy, landing page alignment, negative keyword filters, and call tracking.",
+        "Led a full web redesign with SEO and paid ad strategy, increasing online revenue by 400%.",
+        "Centralized control of third party tracking and analytics scripts.",
+        "Created reporting that gave leaders clarity instead of noise."
+      ]
+    },
+    {
+      "area": "Software engineering and full-stack delivery",
+      "summary": "Owns end-to-end platform delivery across frontend, CMS, automation, and CI/CD.",
+      "evidence": [
+        "Rebuilt Ashton Gray's website using Eleventy, Sanity CMS, and modular design principles.",
+        "Built automated pipelines that export structured content into deterministic Eleventy builds.",
+        "Developed React interfaces for reviewing AI generated transcripts and audio.",
+        "Designed and implemented a RAG-powered resume chat assistant using structured resume JSON as a governed knowledge base.",
+        "Built a full-stack airline operations simulation platform with a Python backend and web interface."
+      ]
+    }
   ],
   "education": [
     {
@@ -614,7 +662,7 @@
     {
       "project": "Ashton Gray Website Rebuild",
       "client": "Ashton Gray Development",
-      "role": "Full-Stack Developer (Contract)",
+      "role": "Full-Stack Developer",
       "duration": "March 2025 - Present",
       "live_url": "https://ashtongray.com/",
       "overview": "Led the complete rebuild of Ashton Gray's corporate website, transforming it from static files into a modern, CMS driven platform powered by Sanity, Eleventy, and GitHub Actions. Delivered a fully automated, SEO optimized, and highly performant site designed for scalability, ease of content management, and polished user experience.",
@@ -793,7 +841,7 @@
     },
     {
       "title": "Full-Stack Engineer",
-      "company": "Inceed (Contract)",
+      "company": "Inceed",
       "location": "Remote",
       "start_date": "2025-03",
       "end_date": "Present",
@@ -826,17 +874,18 @@
   "skills_overview": {
     "web_development": [
       "Data Governance",
-      "AI Integration",
-      "Software",
-      "CRM Automation",
-      "Eleventy",
-      "Nunjucks",
-      "Lifecycle Governance",
-      "Attribution Systems"
+      "RevOps",
+      "Marketing",
+      "Software Engineering",
+      "React.js",
+      "JavaScript",
+      "Node.js",
+      "Automation"
     ],
     "cms_platforms": ["WordPress", "Sanity", "CMS Architecture"],
     "design_tools": ["Adobe Photoshop", "Adobe Illustrator", "InDesign"],
     "marketing": [
+      "Marketing Systems",
       "Customer Research",
       "Product Lifecycle Management",
       "SEO Strategy",
@@ -848,7 +897,8 @@
       "Email Campaigns",
       "Brand Development",
       "Data Governance",
-      "CRM Architecture"
+      "CRM Architecture",
+      "Attribution Systems"
     ],
     "soft_skills": [
       "Cross Functional Collaboration",
