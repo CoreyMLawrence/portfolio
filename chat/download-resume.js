@@ -5,7 +5,28 @@
 
 (function () {
   // Track if download action is in progress to prevent multiple simultaneous requests
+
   let downloadInProgress = false;
+
+  function getChatSessionId() {
+    try {
+      const raw = localStorage.getItem('chat_session_ga4');
+      if (!raw) return '';
+      const session = JSON.parse(raw);
+      return session && session.id ? session.id : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function trackFileDownload(fileName) {
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', 'file_download', {
+      file_name: fileName,
+      chat_session_id: getChatSessionId(),
+    });
+  }
+
 
   // Inline chat helpers for download status
   function showDownloadTypingIndicator() {
@@ -39,7 +60,7 @@
 
   function appendChatMessage(html) {
     const chat = document.getElementById('chat-messages');
-    if (!chat) return;
+    if (!chat) return null;
     const wrap = document.createElement('div');
     wrap.className = 'message ai';
     const content = document.createElement('div');
@@ -48,6 +69,7 @@
     wrap.appendChild(content);
     chat.appendChild(wrap);
     chat.scrollTop = chat.scrollHeight;
+    return wrap;
   }
 
   // Simple resume download: provide direct link to existing PDF
@@ -79,7 +101,16 @@
       setTimeout(() => {
         hideDownloadTypingIndicator();
         const linkHtml = `<span>Resume ready:</span> <a href="${resumePath}" target="_blank" rel="noopener noreferrer" download="Corey Lawrence - Product Manager.pdf">Download Resume (PDF)</a>`;
-        appendChatMessage(linkHtml);
+        const messageEl = appendChatMessage(linkHtml);
+        const link = messageEl ? messageEl.querySelector('a') : null;
+        if (link) {
+          const fileName = (resumePath.split('/').pop() || 'resume.pdf').trim();
+          link.addEventListener(
+            'click',
+            () => trackFileDownload(fileName),
+            { once: true }
+          );
+        }
       }, 500); // Shorter delay since no processing is needed
     } catch (error) {
       console.error('Resume download failed:', error);
