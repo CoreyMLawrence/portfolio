@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   function createChatSessionId() {
-    return (window.crypto && crypto.randomUUID)
+    return window.crypto && crypto.randomUUID
       ? crypto.randomUUID()
       : `chat_${Date.now()}_${Math.random().toString(16).slice(2)}`;
   }
@@ -151,10 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const session = { ...getChatSession(), ...patch };
     chatSessionMemory = session;
     try {
-      localStorage.setItem(
-        CHAT_SESSION_STORAGE_KEY,
-        JSON.stringify(session)
-      );
+      localStorage.setItem(CHAT_SESSION_STORAGE_KEY, JSON.stringify(session));
     } catch (e) {
       // Ignore storage failures.
     }
@@ -209,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       'chat_message_sent',
       {
         message_index: nextCount,
-        char_count: (message || '').length,
+        chat_message_length: (message || '').length,
         word_count: countWords(message),
       },
       updated.id
