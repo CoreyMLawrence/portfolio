@@ -83,6 +83,63 @@ document.addEventListener('DOMContentLoaded', async () => {
   // API key loaded on page init
   let API_KEY = '';
 
+  // Chat analytics session tracking (GA4 via gtag)
+  const CHAT_SESSION_STORAGE_KEY = 'chat_session_ga4';
+  const CHAT_SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+  function trackChatMessageSent(message, extra = {}) {
+    // Basic guard so we don't throw if GA hasn't loaded yet
+    if (typeof window.gtag !== 'function') return;
+
+    const now = Date.now();
+    let session = null;
+
+    try {
+      session = JSON.parse(
+        localStorage.getItem(CHAT_SESSION_STORAGE_KEY) || 'null'
+      );
+    } catch (e) {
+      session = null;
+    }
+
+    const expired =
+      !session?.lastActivityAt ||
+      now - session.lastActivityAt > CHAT_SESSION_TIMEOUT_MS;
+
+    if (!session || expired) {
+      session = {
+        id: crypto.randomUUID(),
+        messageCount: 0,
+        startedAt: now,
+        lastActivityAt: now,
+      };
+
+      window.gtag('event', 'chat_session_start', {
+        chat_session_id: session.id,
+      });
+    }
+
+    session.messageCount += 1;
+    session.lastActivityAt = now;
+
+    try {
+      localStorage.setItem(
+        CHAT_SESSION_STORAGE_KEY,
+        JSON.stringify(session)
+      );
+    } catch (e) {
+      // Ignore storage failures.
+    }
+
+    window.gtag('event', 'chat_message_sent', {
+      chat_session_id: session.id,
+      message_index: session.messageCount,
+      chat_message_length: (message || '').length,
+      chat_model: extra.model || '',
+      chat_thread_id: extra.threadId || '',
+    });
+  }
+
   // Chat anchor state for pinning user messages at top during streaming
   const __chatAnchor = {
     element: null, // DOM element of the latest user message to pin
@@ -259,6 +316,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     const display = (label || sectionLabelMap[section] || 'About').trim();
     if (display) {
+      trackChatMessageSent(display);
+
       // Add user message with preventAutoScroll and set up anchor state like in handleSendMessage
       const userMessageDiv = addMessage('user', display, {
         preventAutoScroll: true,
@@ -317,6 +376,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   function handleSendMessage() {
     const message = chatInput.value.trim();
     if (!message) return;
+
+    trackChatMessageSent(message);
 
     // Add user message with preventAutoScroll
     const userMessageDiv = addMessage('user', message, {
@@ -874,7 +935,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Generate system instruction based on current session state
   function getSystemInstruction() {
     const baseInstruction =
-      "You are 'Corey Portfolio Assistant'. You help hiring managers understand Corey as a Revenue Systems Engineer who focuses on data governance, CRM integrity, attribution readiness, and automation. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the résumé JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, governed data work, and integration details when relevant.";
+      "You are 'Corey Portfolio Assistant'. You help hiring managers understand Corey as a systems-minded engineer who blends software engineering with marketing technology, revenue operations, and data governance. Emphasize how he connects product, web, CRM, analytics, and automation into reliable, business-ready platforms. Primary goal: demonstrate Corey's fit and value for the user's needs. Speak in third person about Corey (he/him). Use only factual details from the resume JSON or prior messages; never invent facts. If the user shares a job description or role text, tailor the response to: (1) a 2–3 line fit summary, (2) requirement → Corey evidence mapping, (3) relevant achievements with outcomes/metrics, (4) tech/skills coverage, (5) suggested next steps/CTA. Focus on strengths and relevance; do not call out gaps or negatives unless the user asks directly. Keep a confident, warm, and succinct tone. Prefer short sentences and scannable bullets. Include titles, companies, dates, scope, impact, governed data work, marketing outcomes, and engineering delivery details when relevant.";
 
     const pdfProtocol =
       'Hidden action protocol: ONLY when the user explicitly uses words like "download PDF", "export PDF", "save as PDF", or directly asks for a PDF version of the conversation, append the hidden control token [[ACTION:EXPORT_PDF]] at the very end of your response on its own line. Do NOT add this token for general resume requests, job applications, or any other purpose.';
