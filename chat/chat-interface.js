@@ -174,7 +174,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.gtag('event', eventName, {
       chat_session_id: sessionId,
       chat_provider: 'gemini',
-      page_path: window.location ? window.location.pathname : '',
       ...params,
     });
     return true;
@@ -228,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       message_index: chatAnalyticsState.pendingMessageIndex,
     };
     if (Number.isFinite(latencyMs)) {
-      params.latency_ms = latencyMs;
+      params.response_total_ms = latencyMs;
     }
 
     pushChatEvent(
@@ -290,7 +289,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       params.message_index = index;
     }
     if (Number.isFinite(latencyMs)) {
-      params.latency_ms = latencyMs;
+      params.response_total_ms = latencyMs;
     }
 
     pushChatEvent('chat_error', params, chatAnalyticsState.pendingSessionId);
