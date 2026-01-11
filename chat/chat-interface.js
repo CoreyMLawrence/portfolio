@@ -83,45 +83,73 @@ document.addEventListener('DOMContentLoaded', async () => {
   // API key loaded on page init
   let API_KEY = '';
 
-  // Chat analytics session tracking (GA4 via gtag)
+  // Chat analytics state (GA4 via gtag)
   const CHAT_SESSION_STORAGE_KEY = 'chat_session_ga4';
   const CHAT_SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+  let chatSessionMemory = null;
 
-  function trackChatMessageSent(message, extra = {}) {
-    // Basic guard so we don't throw if GA hasn't loaded yet
-    if (typeof window.gtag !== 'function') return;
+  const chatAnalyticsState = {
+    pendingResponseStartMs: null,
+    pendingMessageIndex: null,
+    pendingSessionId: null,
+  };
 
+  function createChatSessionId() {
+    return (window.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `chat_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+  }
+
+  function getChatSession() {
     const now = Date.now();
-    let session = null;
+
+    if (chatSessionMemory && chatSessionMemory.id) {
+      const isExpired =
+        !chatSessionMemory.lastActivityAt ||
+        now - chatSessionMemory.lastActivityAt > CHAT_SESSION_TIMEOUT_MS;
+      if (!isExpired) return chatSessionMemory;
+    }
 
     try {
-      session = JSON.parse(
-        localStorage.getItem(CHAT_SESSION_STORAGE_KEY) || 'null'
+      const raw = localStorage.getItem(CHAT_SESSION_STORAGE_KEY);
+      if (raw) {
+        const session = JSON.parse(raw);
+        const isExpired =
+          !session.lastActivityAt ||
+          now - session.lastActivityAt > CHAT_SESSION_TIMEOUT_MS;
+        if (!isExpired && session.id) {
+          chatSessionMemory = session;
+          return session;
+        }
+      }
+    } catch (e) {
+      // Fall back to in-memory session if storage is unavailable.
+    }
+
+    const newSession = {
+      id: createChatSessionId(),
+      messageCount: 0,
+      startedAt: now,
+      lastActivityAt: now,
+      startedEventSent: false,
+    };
+
+    chatSessionMemory = newSession;
+    try {
+      localStorage.setItem(
+        CHAT_SESSION_STORAGE_KEY,
+        JSON.stringify(newSession)
       );
     } catch (e) {
-      session = null;
+      // Ignore storage failures.
     }
 
-    const expired =
-      !session?.lastActivityAt ||
-      now - session.lastActivityAt > CHAT_SESSION_TIMEOUT_MS;
+    return newSession;
+  }
 
-    if (!session || expired) {
-      session = {
-        id: crypto.randomUUID(),
-        messageCount: 0,
-        startedAt: now,
-        lastActivityAt: now,
-      };
-
-      window.gtag('event', 'chat_session_start', {
-        chat_session_id: session.id,
-      });
-    }
-
-    session.messageCount += 1;
-    session.lastActivityAt = now;
-
+  function updateChatSession(patch) {
+    const session = { ...getChatSession(), ...patch };
+    chatSessionMemory = session;
     try {
       localStorage.setItem(
         CHAT_SESSION_STORAGE_KEY,
@@ -130,14 +158,149 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       // Ignore storage failures.
     }
+    return session;
+  }
 
-    window.gtag('event', 'chat_message_sent', {
-      chat_session_id: session.id,
-      message_index: session.messageCount,
-      chat_message_length: (message || '').length,
-      chat_model: extra.model || '',
-      chat_thread_id: extra.threadId || '',
+  function canUseGtag() {
+    return typeof window.gtag === 'function';
+  }
+
+  function nowMs() {
+    return typeof performance !== 'undefined' && performance.now
+      ? performance.now()
+      : Date.now();
+  }
+
+  function pushChatEvent(eventName, params = {}, sessionIdOverride = null) {
+    if (!canUseGtag()) return false;
+    const sessionId = sessionIdOverride || getChatSession().id;
+    window.gtag('event', eventName, {
+      chat_session_id: sessionId,
+      chat_provider: 'gemini',
+      page_path: window.location ? window.location.pathname : '',
+      ...params,
     });
+    return true;
+  }
+
+  function countWords(text) {
+    const trimmed = (text || '').trim();
+    if (!trimmed) return 0;
+    return trimmed.split(/\s+/).length;
+  }
+
+  function trackChatMessageSent(message) {
+    const session = getChatSession();
+
+    if (!session.startedEventSent) {
+      const sent = pushChatEvent('chat_start', {}, session.id);
+      if (sent) {
+        updateChatSession({ startedEventSent: true });
+      }
+    }
+
+    const nextCount = (session.messageCount || 0) + 1;
+    const updated = updateChatSession({
+      messageCount: nextCount,
+      lastActivityAt: Date.now(),
+    });
+
+    pushChatEvent(
+      'chat_message_sent',
+      {
+        message_index: nextCount,
+        char_count: (message || '').length,
+        word_count: countWords(message),
+      },
+      updated.id
+    );
+
+    chatAnalyticsState.pendingResponseStartMs = nowMs();
+    chatAnalyticsState.pendingMessageIndex = nextCount;
+    chatAnalyticsState.pendingSessionId = updated.id;
+  }
+
+  function trackChatResponseReceived() {
+    if (!chatAnalyticsState.pendingMessageIndex) return;
+
+    const startedAt = chatAnalyticsState.pendingResponseStartMs;
+    const latencyMs =
+      typeof startedAt === 'number' ? Math.round(nowMs() - startedAt) : null;
+
+    const params = {
+      message_index: chatAnalyticsState.pendingMessageIndex,
+    };
+    if (Number.isFinite(latencyMs)) {
+      params.latency_ms = latencyMs;
+    }
+
+    pushChatEvent(
+      'chat_response_received',
+      params,
+      chatAnalyticsState.pendingSessionId
+    );
+
+    chatAnalyticsState.pendingResponseStartMs = null;
+    chatAnalyticsState.pendingMessageIndex = null;
+    chatAnalyticsState.pendingSessionId = null;
+  }
+
+  function classifyChatError(err) {
+    const status = err?.status || err?.response?.status || err?.code;
+    const message = String(err?.message || '').toLowerCase();
+
+    if (
+      status == 429 ||
+      message.includes('429') ||
+      message.includes('rate') ||
+      message.includes('quota') ||
+      message.includes('resource_exhausted')
+    ) {
+      return 'rate_limited';
+    }
+    if (
+      message.includes('blocked') ||
+      message.includes('safety') ||
+      message.includes('harm')
+    ) {
+      return 'blocked';
+    }
+    if (message.includes('timeout') || err?.name === 'AbortError') {
+      return 'timeout';
+    }
+    if (
+      message.includes('failed to fetch') ||
+      message.includes('network') ||
+      err?.name === 'TypeError'
+    ) {
+      return 'network_error';
+    }
+    return 'unknown';
+  }
+
+  function trackChatError(err) {
+    const startedAt = chatAnalyticsState.pendingResponseStartMs;
+    const latencyMs =
+      typeof startedAt === 'number' ? Math.round(nowMs() - startedAt) : null;
+
+    const params = {
+      error_type: classifyChatError(err),
+    };
+
+    const index =
+      chatAnalyticsState.pendingMessageIndex || chatSessionMemory?.messageCount;
+    if (index) {
+      params.message_index = index;
+    }
+    if (Number.isFinite(latencyMs)) {
+      params.latency_ms = latencyMs;
+    }
+
+    pushChatEvent('chat_error', params, chatAnalyticsState.pendingSessionId);
+
+    chatAnalyticsState.pendingResponseStartMs = null;
+    chatAnalyticsState.pendingMessageIndex = null;
+    chatAnalyticsState.pendingSessionId = null;
   }
 
   // Chat anchor state for pinning user messages at top during streaming
