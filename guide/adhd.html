@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Action Guide</title>
+    <style>
+      /* BRUTAL MINIMALIST + DEEP FOREST WOODSY PALETTE
+      High contrast, visible structure, stark typography.
+    */
+      :root {
+        /* Base Colors */
+        --birch: #eae6df;
+        --charcoal: #1f2421;
+
+        /* Theme Colors */
+        --redwood: #82322a;
+        --golden-oak: #b87a24;
+        --deep-pine: #284430;
+        --slate-lake: #324754;
+
+        /* Dynamic Variables (Updated via JS) */
+        --bg-color: var(--birch);
+        --text-color: var(--charcoal);
+        --border-color: var(--charcoal);
+        --accent-bg: var(--redwood);
+        --accent-text: var(--birch);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        /* Using linear transitions for a stark, mathematically consistent brutalist feel */
+        transition:
+          background-color 0.25s linear,
+          color 0.25s linear;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* TYPOGRAPHY */
+      h1 {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        line-height: 0.85;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+
+      .subtitle {
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-top: 3px solid var(--border-color);
+        padding-top: 0.5rem;
+        display: inline-block;
+        transition: border-color 0.25s linear;
+      }
+
+      /* HEADER */
+      header {
+        padding: 2rem 1.5rem;
+        border-bottom: 3px solid var(--border-color);
+        transition: border-color 0.25s linear;
+      }
+
+      /* NAVIGATION - MOBILE SCALABLE GRID */
+      nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2x2 grid on mobile */
+        border-bottom: 3px solid var(--border-color);
+        transition: border-color 0.25s linear;
+      }
+
+      @media (min-width: 768px) {
+        nav {
+          grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+        }
+      }
+
+      .nav-btn {
+        padding: 1.5rem 1rem;
+        background: transparent;
+        color: var(--text-color);
+        border: none;
+        border-right: 3px solid var(--border-color);
+        border-bottom: 3px solid var(--border-color);
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        cursor: pointer;
+        transition:
+          background-color 0.2s linear,
+          color 0.2s linear,
+          border-color 0.25s linear;
+        text-align: left;
+      }
+
+      /* Fix borders for the grid */
+      .nav-btn:nth-child(even) {
+        border-right: none;
+      }
+      .nav-btn:nth-child(n + 3) {
+        border-bottom: none;
+      }
+
+      @media (min-width: 768px) {
+        .nav-btn:nth-child(even) {
+          border-right: 3px solid var(--border-color);
+        }
+        .nav-btn:nth-child(n + 3) {
+          border-bottom: 3px solid var(--border-color);
+        }
+        .nav-btn:last-child {
+          border-right: none;
+        }
+        .nav-btn {
+          border-bottom: none !important;
+        }
+      }
+
+      .nav-btn:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-btn.active {
+        background-color: var(--text-color);
+        color: var(--bg-color);
+      }
+
+      /* MAIN CONTENT */
+      main {
+        flex: 1;
+        padding: 3rem 1.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .content-section {
+        display: none;
+        animation: fadeIn 0.25s linear forwards;
+      }
+      .content-section.active {
+        display: block;
+      }
+
+      /* Removed vertical translation to keep layout anchored */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* BRUTALIST CARDS */
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      @media (min-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .card {
+        border: 3px solid var(--border-color);
+        padding: 2rem;
+        background-color: transparent;
+        transition: border-color 0.25s linear;
+      }
+
+      .card-header {
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        transition: border-color 0.25s linear;
+      }
+
+      .card-title {
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-body {
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+
+      .play-step {
+        margin-bottom: 1.5rem;
+      }
+      .play-step strong {
+        display: block;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+      }
+
+      /* READ MORE / EMPATHY TOGGLE */
+      details {
+        margin-top: 1.5rem;
+        border-top: 3px solid var(--border-color);
+        padding-top: 1rem;
+        transition: border-color 0.25s linear;
+      }
+
+      summary {
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+        list-style: none;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        transition: opacity 0.2s ease;
+      }
+      summary:hover {
+        opacity: 0.7;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .empathy-text {
+        margin-top: 1rem;
+        font-size: 1.15rem;
+        font-weight: 400;
+        font-style: italic;
+        line-height: 1.6;
+        padding-left: 1rem;
+        border-left: 3px solid var(--text-color);
+        opacity: 0.9;
+        transition: border-color 0.25s linear;
+      }
+
+      .empathy-text p {
+        margin-bottom: 1rem;
+      }
+      .empathy-text p:last-child {
+        margin-bottom: 0;
+      }
+
+      .clinical-insight {
+        margin-top: 1.25rem;
+        font-size: 1rem;
+        font-weight: 600;
+        background-color: rgba(0, 0, 0, 0.08);
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-style: normal;
+      }
+      body[data-theme="golden-oak"] .clinical-insight {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+      body[data-theme="redwood"] .clinical-insight,
+      body[data-theme="deep-pine"] .clinical-insight,
+      body[data-theme="slate-lake"] .clinical-insight {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      /* CONTINGENCY PROTOCOLS (FAQ SECTION) */
+      .contingency-section {
+        margin-top: 2rem;
+        border: 3px solid var(--border-color);
+        padding: 2rem;
+        transition: border-color 0.25s linear;
+      }
+
+      .contingency-header {
+        font-size: 1.5rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.5rem;
+        display: block;
+        width: 100%;
+        border-bottom: 3px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        transition: border-color 0.25s linear;
+      }
+
+      .faq-item {
+        border-bottom: 2px solid var(--border-color);
+        transition: border-color 0.25s linear;
+        padding: 0;
+        margin: 0;
+      }
+      .faq-item:first-of-type {
+        border-top: none;
+      }
+      .faq-item:last-of-type {
+        border-bottom: none;
+      }
+
+      .faq-item summary {
+        font-size: 1.15rem;
+        font-weight: 700;
+        text-transform: none; /* Override uppercase for readability */
+        letter-spacing: 0;
+        padding: 1.5rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: none;
+      }
+      .faq-item summary::after {
+        content: "+";
+        font-size: 1.5rem;
+        font-weight: 400;
+        display: inline-block;
+        width: 1.5rem;
+        text-align: right;
+      }
+      .faq-item[open] summary::after {
+        content: "−"; /* Minus sign */
+      }
+
+      .faq-answer {
+        padding-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        font-weight: 500;
+        padding-right: 2rem;
+      }
+    </style>
+  </head>
+  <body data-theme="redwood">
+    <header>
+      <h1>Action Guide</h1>
+      <div class="subtitle">Operational Parameters for Executive Support</div>
+    </header>
+
+    <nav>
+      <button class="nav-btn active" data-target="anger" data-theme="redwood">
+        The Hard "No"
+      </button>
+      <button class="nav-btn" data-target="routine" data-theme="golden-oak">
+        Routine Shifts
+      </button>
+      <button class="nav-btn" data-target="environment" data-theme="deep-pine">
+        Potty Protocol
+      </button>
+      <button class="nav-btn" data-target="sensory" data-theme="slate-lake">
+        Sensory Overload
+      </button>
+    </nav>
+
+    <main>
+      <!-- SECTION: ANGER / THE HARD NO -->
+      <div id="anger" class="content-section active">
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">Scan For</div>
+            <h2 class="card-title">Explosive Resistance</h2>
+            <div class="card-body">
+              Intense anger, explosive fits, and a complete inability to
+              self-soothe after being denied a request, told "no," or facing a
+              sudden boundary.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Execute Play</div>
+            <h2 class="card-title">The Pivot & Brake</h2>
+            <div class="card-body">
+              <div class="play-step">
+                <strong>1. Validate, Then Pivot</strong>
+                ADHD brains need to know they are heard. First, validate the
+                feeling: "I know it's really hard to stop." Then, wrap the
+                boundary in a choice: "Screen time is paused. Option A or Option
+                B?"
+              </div>
+              <div class="play-step">
+                <strong>2. External Brakes</strong>
+                When a fit hits, stop talking. Go low-verbal. Sit near him,
+                project an unbothered calm, and become the physical anchor his
+                dysregulated system needs to reboot.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Core Directive</div>
+            <h2 class="card-title">Deficient Emotional Regulation</h2>
+            <div class="card-body">
+              His prefrontal cortex lacks the neurological brakes (inhibitory
+              control) required to moderate intense feelings.
+
+              <details>
+                <summary>[+] Read Neurological Breakdown</summary>
+                <div class="empathy-text">
+                  <p>
+                    Imagine driving fast and someone suddenly yanks the
+                    emergency brake. That jarring physical shock is exactly what
+                    a sudden "no" feels like to his brain.
+                  </p>
+                  <p>
+                    He isn't pitching a fit to manipulate you. He is trapped in
+                    an instantaneous flood of adrenaline and disappointment, and
+                    his brain physically has not developed the "pause" button
+                    needed to stop it. He is overwhelmed, frightened by his own
+                    intensity, and desperately needs you to lend him your calm
+                    until the storm passes.
+                  </p>
+                  <div class="clinical-insight">
+                    <strong>Clinical Insight:</strong> This is an "Amygdala
+                    Hijack." During a meltdown, the brain's logic center shuts
+                    down and the survival center takes over. Verbal processing
+                    is offline, meaning talking or reasoning with him actively
+                    prolongs the fit. Silence is your strongest tool.
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTINGENCY PROTOCOLS -->
+        <div class="contingency-section">
+          <div class="contingency-header">
+            Contingency Protocols: When the Play Fails
+          </div>
+
+          <details class="faq-item">
+            <summary>
+              What if he keeps asking for the denied item over and over?
+            </summary>
+            <div class="faq-answer">
+              This is called "perseveration"—his ADHD brain is stuck in a
+              thought loop and literally cannot move on. Use the "Broken Record"
+              technique, but lead with empathy rather than dismissal. State the
+              boundary and the pivot choice exactly once. If he repeats the
+              demand, reply with calm validation: "I hear how much you want
+              that, and I know it's frustrating, but my answer is still no." Do
+              not engage in a debate loop. Calm consistency eventually breaks
+              the loop without making him feel unheard.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              What if the fit escalates into physical aggression (hitting,
+              throwing)?
+            </summary>
+            <div class="faq-answer">
+              Prioritize physical safety and completely disengage verbally. Move
+              out of striking distance or use a couch cushion to block. State
+              clearly, exactly once: "I will keep you safe, but I will not let
+              you hit." Give zero additional verbal or emotional feedback until
+              his nervous system de-escalates. Reacting strongly to the hit
+              reinforces it as an effective way to control the room.
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- SECTION: ROUTINE DISRUPTIONS -->
+      <div id="routine" class="content-section">
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">Scan For</div>
+            <h2 class="card-title">Rigidity Panic</h2>
+            <div class="card-body">
+              Extreme distress, meltdowns, or rigid stubbornness when a planned
+              path deviates, an expected food is swapped, or the "normal" way of
+              doing things is broken.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Execute Play</div>
+            <h2 class="card-title">Map & Condition</h2>
+            <div class="card-body">
+              <div class="play-step">
+                <strong>1. Visual Front-Loading</strong>
+                Never rely on surprises or spoken warnings. Use a visual map
+                (whiteboard, drawings) so his working memory doesn't have to
+                hold the plan. Talk through the "what-ifs": "If X happens, our
+                backup plan is Y."
+              </div>
+              <div class="play-step">
+                <strong>2. Reward Flexibility</strong>
+                Intentionally introduce micro-changes (a different plate, a new
+                route to the store) in safe environments. Heavily praise and
+                reward him for tolerating the pivot to build his resilience
+                muscle.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Core Directive</div>
+            <h2 class="card-title">Cognitive Inflexibility</h2>
+            <div class="card-body">
+              His brain struggles immensely to shift gears. Strict routines
+              serve as an essential anchor, saving him massive amounts of
+              cognitive energy.
+
+              <details>
+                <summary>[+] Read Neurological Breakdown</summary>
+                <div class="empathy-text">
+                  <p>
+                    For an ADHD brain, the internal world is often a chaotic
+                    storm of unfiltered thoughts and impulses. To manage this,
+                    he relies heavily on a predictable external world.
+                  </p>
+                  <p>
+                    When a routine breaks, the ground falls out from under him.
+                    He isn't just being stubborn; he is experiencing the panic
+                    of unpredictability. Having to calculate a new plan on the
+                    fly drains his mental battery instantly. He demands "normal"
+                    because predictability equals safety.
+                  </p>
+                  <div class="clinical-insight">
+                    <strong>Clinical Insight:</strong> This is compounded by
+                    ADHD "Time Blindness." Because he struggles to sense the
+                    passage of time, any transition feels sudden and abrupt.
+                    Visual maps and timers act as neurological prosthetics,
+                    externalizing the concept of time and sequence so his brain
+                    doesn't have to guess.
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTINGENCY PROTOCOLS -->
+        <div class="contingency-section">
+          <div class="contingency-header">
+            Contingency Protocols: When the Play Fails
+          </div>
+
+          <details class="faq-item">
+            <summary>
+              What if he refuses the backup plan (Plan B) completely and shuts
+              down?
+            </summary>
+            <div class="faq-answer">
+              Wait it out. The goal isn't to force him to *like* Plan B right
+              away, but to ride out the profound disappointment of Plan A
+              failing. Sit with him in the disappointment: "It's hard when plans
+              change." Let the shutdown run its natural course before
+              aggressively pushing the new activity. Forcing a pivot during a
+              shutdown will trigger a meltdown.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              What if the change is completely unexpected and we didn't have a
+              backup plan?
+            </summary>
+            <div class="faq-answer">
+              Co-regulate first, logic second. Say, "Whoa, that was a surprise!
+              I didn't see that coming either." Acknowledge the shock to
+              validate his physical reaction. Give his brain a minute to process
+              the sudden change of state before attempting to problem-solve or
+              offer a solution.
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- SECTION: ENVIRONMENT / POTTY CHAIR -->
+      <div id="environment" class="content-section">
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">Scan For</div>
+            <h2 class="card-title">Object Dependency</h2>
+            <div class="card-body">
+              Inability or refusal to perform bodily functions (pooping) without
+              a highly specific object—namely, his designated potty
+              seat—regardless of the actual bathroom environment.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Execute Play</div>
+            <h2 class="card-title">Gradual Decoupling</h2>
+            <div class="card-body">
+              <div class="play-step">
+                <strong>1. Transport the Anchor</strong>
+                If traveling, bring the exact seat. Do not attempt training in
+                high-stress, unfamiliar public environments. It is his
+                neurological anchor.
+              </div>
+              <div class="play-step">
+                <strong>2. Systematic Micro-Transitions</strong>
+                To build independence, change one variable at a time at home.
+                Move the seat to a different toilet. Then, introduce a "travel
+                version" of the seat at home. Never force a bare toilet in
+                public until he masters a bare toilet in his safe home.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Core Directive</div>
+            <h2 class="card-title">Autonomic Lockdown</h2>
+            <div class="card-body">
+              Physical release requires absolute neurological safety. His brain
+              has inextricably mapped "safety" directly to the physical
+              sensation of that specific seat.
+
+              <details>
+                <summary>[+] Read Neurological Breakdown</summary>
+                <div class="empathy-text">
+                  <p>
+                    Going to the bathroom leaves a mammal incredibly vulnerable.
+                    Over time, his brain learned that the specific pressure,
+                    shape, and familiarity of his potty seat means "we are safe
+                    from danger."
+                  </p>
+                  <p>
+                    Without that specific physical input, his nervous system
+                    sends a blaring red-alert signal to his body, literally
+                    clinching his autonomic muscles. He couldn't go even if he
+                    wanted to. It is a biological lockdown, an involuntary
+                    defense mechanism, not a behavioral act of defiance.
+                  </p>
+                  <div class="clinical-insight">
+                    <strong>Clinical Insight:</strong> This relies on
+                    "State-Dependent Learning." His brain cannot generalize the
+                    skill of using a toilet until the new environment perfectly
+                    mimics the original, safe physical state. Pushing too fast
+                    increases his "allostatic load" (chronic stress), which
+                    actively prevents muscle relaxation.
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTINGENCY PROTOCOLS -->
+        <div class="contingency-section">
+          <div class="contingency-header">
+            Contingency Protocols: When the Play Fails
+          </div>
+
+          <details class="faq-item">
+            <summary>
+              What if we forgot the travel seat and he is holding it or in pain?
+            </summary>
+            <div class="faq-answer">
+              Do not force the bare toilet during a high-stress moment—this will
+              only increase his anxiety and resistance toward new bathrooms.
+              Instead, focus on providing physical stability to mimic the
+              feeling of his safe seat. You can hold him securely around the
+              waist or let him brace his feet on your legs for grounding. If the
+              panic is too high and he cannot release, abort the mission and
+              head home or to a familiar safe place. Preventing painful holding
+              and severe constipation is the priority. Emotional and physical
+              health always overrides the convenience of a public restroom.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              What if he refuses to even look at the "travel seat" at home
+              during micro-transitions?
+            </summary>
+            <div class="faq-answer">
+              Dial back the difficulty. If he won't sit on the new seat, have
+              the travel seat just sit *next* to the toilet while he uses his
+              normal seat. Reward that passive visual exposure. The next week,
+              have him touch it with his hand. In occupational therapy, these
+              micro-transitions must be truly microscopic to avoid triggering
+              the threat response.
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- SECTION: SENSORY OVERLOAD -->
+      <div id="sensory" class="content-section">
+        <div class="grid">
+          <div class="card">
+            <div class="card-header">Scan For</div>
+            <h2 class="card-title">Sensory Rejection</h2>
+            <div class="card-body">
+              Extreme physical aversions to stimuli: gagging at the dentist,
+              refusing the unpredictable textures of new foods, or panicking
+              under bright lights or noise.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Execute Play</div>
+            <h2 class="card-title">Input Management</h2>
+            <div class="card-body">
+              <div class="play-step">
+                <strong>1. Zero-Pressure Data Collection</strong>
+                For new foods, utilize the SOS feeding approach. Remove the
+                demand to consume. Frame it as gathering data. Touch it, smell
+                it, tap it to the lips. The goal is exposure, not completion.
+              </div>
+              <div class="play-step">
+                <strong>2. Proprioceptive Reset</strong>
+                Before entering a high-sensory environment (dentist), have him
+                do "heavy work"—pushing a wall, carrying a heavy basket. Deep
+                muscle pressure grounds the nervous system.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Core Directive</div>
+            <h2 class="card-title">Sensory Gating Failure</h2>
+            <div class="card-body">
+              His executive function struggles to filter out irrelevant sensory
+              data, causing a literal "fight or flight" overload response in his
+              nervous system.
+
+              <details>
+                <summary>[+] Read Neurological Breakdown</summary>
+                <div class="empathy-text">
+                  <p>
+                    Right now, your brain is seamlessly filtering out background
+                    noise, the feeling of your clothing, and the brightness of
+                    the lights so you can read this text. His brain struggles to
+                    do this automatically.
+                  </p>
+                  <p>
+                    The dentist's light isn't just bright; it's blinding. The
+                    metallic taste isn't just weird; it's agonizing. Every piece
+                    of sensory data hits his working memory at maximum intensity
+                    simultaneously. Gagging isn't him being dramatic; it is his
+                    body's desperate, physical attempt to reject painful sensory
+                    input.
+                  </p>
+                  <div class="clinical-insight">
+                    <strong>Clinical Insight:</strong> Deep proprioceptive input
+                    (heavy work, weighted blankets) provides organizing feedback
+                    to the central nervous system. It physically down-regulates
+                    the sympathetic nervous system (fight or flight) and boosts
+                    dopamine and serotonin, acting as a natural buffer against
+                    sensory pain.
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTINGENCY PROTOCOLS -->
+        <div class="contingency-section">
+          <div class="contingency-header">
+            Contingency Protocols: When the Play Fails
+          </div>
+
+          <details class="faq-item">
+            <summary>
+              What if the "heavy work" didn't help and he goes into a full
+              meltdown at the dentist?
+            </summary>
+            <div class="faq-answer">
+              Abort the mission. A sensory meltdown is a severe neurological
+              event, not bad behavior. Forcing compliance during a meltdown
+              reinforces a massive stress response and ensures the next visit
+              will be much harder to tolerate. Stop the procedure, soothe him,
+              and discuss mild sedation options or desensitization visits with
+              the provider for the next attempt.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              What if he gags or vomits during the "data collection" phase of a
+              new food?
+            </summary>
+            <div class="faq-answer">
+              Maintain a perfectly neutral reaction. Clean it up without
+              frustration, anger, or pity. Say, "Data logged. That texture is a
+              'no' for right now." End the exposure immediately and offer a
+              safe, highly predictable food. Do not make the involuntary
+              physical reaction a point of shame or behavioral correction.
+            </div>
+          </details>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Color Palettes corresponding to themes
+      const themes = {
+        redwood: { bg: "#82322A", text: "#EAE6DF" },
+        "golden-oak": { bg: "#B87A24", text: "#1F2421" },
+        "deep-pine": { bg: "#284430", text: "#EAE6DF" },
+        "slate-lake": { bg: "#324754", text: "#EAE6DF" },
+      };
+
+      const buttons = document.querySelectorAll(".nav-btn");
+      const sections = document.querySelectorAll(".content-section");
+      const root = document.documentElement;
+
+      function setTheme(themeName) {
+        const colors = themes[themeName];
+        if (colors) {
+          root.style.setProperty("--bg-color", colors.bg);
+          root.style.setProperty("--text-color", colors.text);
+          root.style.setProperty("--border-color", colors.text);
+        }
+      }
+
+      // Initialize first theme
+      setTheme("redwood");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const targetId = button.getAttribute("data-target");
+          const targetTheme = button.getAttribute("data-theme");
+
+          // Update UI State
+          buttons.forEach((btn) => btn.classList.remove("active"));
+          sections.forEach((sec) => sec.classList.remove("active"));
+
+          button.classList.add("active");
+
+          const targetSection = document.getElementById(targetId);
+          if (targetSection) {
+            targetSection.classList.add("active");
+          }
+
+          // Apply Colors
+          setTheme(targetTheme);
+
+          // Close all details toggles when switching
+          document.querySelectorAll("details").forEach((detail) => {
+            detail.removeAttribute("open");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
